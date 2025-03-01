@@ -1,0 +1,41 @@
+server:
+  port: 8080
+  forward-headers-strategy: FRAMEWORK
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+Spring:
+  application:
+    name: outsourcing
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/newsfeed
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+
+springdoc:
+  version: V.0.0.1
+  swagger-ui:
+    path: /swagger.html
+    tags-sorter: alpha
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
