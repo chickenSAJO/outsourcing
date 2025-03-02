@@ -1,4 +1,4 @@
-﻿package xyz.tomorrowlearncamp.outsourcing.auth.service;
+package xyz.tomorrowlearncamp.outsourcing.auth.service;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -58,7 +58,8 @@ public class AuthService {
 
         String token = UUID.randomUUID().toString();
 
-        session.setAttribute("user_token", token);
+        session.setAttribute("USER_TOKEN", token);
+        session.setAttribute("LOGIN_USER", user.getId());
 
         return token;
     }

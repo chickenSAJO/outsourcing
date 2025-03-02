@@ -1,6 +1,5 @@
-﻿package xyz.tomorrowlearncamp.outsourcing.auth.controller;
+package xyz.tomorrowlearncamp.outsourcing.auth.controller;
 
-import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto dto, HttpSession session) throws AuthException {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto dto, HttpSession session) {
         String token = authService.login(dto, session);
         return ResponseEntity.ok("session : " + token);
     }

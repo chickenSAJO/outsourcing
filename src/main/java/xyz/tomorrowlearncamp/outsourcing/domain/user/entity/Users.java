@@ -1,4 +1,4 @@
-﻿package xyz.tomorrowlearncamp.outsourcing.domain.user.entity;
+package xyz.tomorrowlearncamp.outsourcing.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

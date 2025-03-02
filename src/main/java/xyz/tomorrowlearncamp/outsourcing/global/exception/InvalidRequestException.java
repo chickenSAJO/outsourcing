@@ -1,4 +1,4 @@
-﻿package xyz.tomorrowlearncamp.outsourcing.global.exception;
+package xyz.tomorrowlearncamp.outsourcing.global.exception;
 
 public class InvalidRequestException extends RuntimeException {
     public InvalidRequestException(String message) {

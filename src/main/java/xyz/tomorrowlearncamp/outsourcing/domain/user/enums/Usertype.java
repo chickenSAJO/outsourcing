@@ -1,4 +1,4 @@
-﻿package xyz.tomorrowlearncamp.outsourcing.domain.user.enums;
+package xyz.tomorrowlearncamp.outsourcing.domain.user.enums;
 
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 

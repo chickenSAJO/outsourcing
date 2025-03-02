@@ -1,4 +1,4 @@
-﻿package xyz.tomorrowlearncamp.outsourcing.auth.dto.request;
+package xyz.tomorrowlearncamp.outsourcing.auth.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
