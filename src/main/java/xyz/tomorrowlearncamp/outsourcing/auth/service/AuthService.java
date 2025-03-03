@@ -13,8 +13,6 @@ import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
