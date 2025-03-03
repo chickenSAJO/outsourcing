@@ -19,7 +19,6 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final HttpSession httpSession;
 
     @Transactional
     public Long signup(SignupRequestDto dto) {
