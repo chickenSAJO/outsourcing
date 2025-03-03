@@ -56,11 +56,8 @@ public class AuthService {
             throw new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
-        String token = UUID.randomUUID().toString();
-
-        session.setAttribute("USER_TOKEN", token);
         session.setAttribute("LOGIN_USER", user.getId());
 
-        return token;
+        return "로그인 되었습니다.";
     }
 }
