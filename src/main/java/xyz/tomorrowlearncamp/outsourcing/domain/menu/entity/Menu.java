@@ -1,6 +1,7 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.menu.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +15,9 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "STORE_ID", nullable = false)
-    private Store store;
+//    @ManyToOne
+//    @JoinColumn(name = "STORE_ID", nullable = false)
+//    private Store store;
 
     @Column(name = "MENU_NAME", length = 100, nullable = false)
     private String menuName;
@@ -34,12 +35,13 @@ public class Menu {
     private String menuStatus;
 
 
-    public Menu(Store store, String menuName, String menuContent, int price, String menuImageUrl, String menuStatus) {
-        this.store = store;
+    public Menu(String menuName, String menuContent, int price, String menuImageUrl, String menuStatus) {
+//        this.store = store;
         this.menuName = menuName;
         this.menuContent = menuContent;
         this.price = price;
         this.menuImageUrl = menuImageUrl;
         this.menuStatus = menuStatus;
     }
+
 }

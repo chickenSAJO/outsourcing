@@ -17,12 +17,4 @@ public class MenuAddRequestDto {
 
     private String menuImageUrl;
     private String menuStatus;
-
-    public MenuAddRequestDto(String menuName, String menuContent, int price, String menuImageUrl, String menuStatus) {
-        this.menuName = menuName;
-        this.menuContent = menuContent;
-        this.price = price;
-        this.menuImageUrl = menuImageUrl;
-        this.menuStatus = menuStatus;
-    }
 }
