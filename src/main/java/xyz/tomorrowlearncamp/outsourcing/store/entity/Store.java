@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
 @Getter
 @Entity
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE store Set is_deleted = true, deleted_at = NOW() WHERE id = ?")//소프트 딜리트
 @SQLRestriction("is_deleted = false")//소프트 딜리트
-public class Store {
+public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +25,6 @@ public class Store {
     /*추가할것*/
     private Long userId;
     //유저 아이디 @OneToMany
-    //창업일 //상속
-    //수정일 //상속
 
     public Store(String storeTitle, String openTime, String closeTime, int minimumOrder, Long userId) {
         this.storeTitle = storeTitle;

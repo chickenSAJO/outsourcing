@@ -35,3 +35,13 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### folder ###
+
+
+
+### security ###
+.env.*
+.key
+.pem
