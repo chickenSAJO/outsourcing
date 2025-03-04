@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.entity.ReviewEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.review.enums.ReviewErrorMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.repository.ReviewRepository;
+import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 @Service
 @RequiredArgsConstructor
@@ -41,13 +43,8 @@ public class UserWriteReviewService {
 
     @Transactional
     public void deleteReview(@NotBlank @Positive Long reviewId) {
-        // todo : 에러 통합하기
-        if(!reviewRepository.existsById(reviewId)) {
-            throw new RuntimeException();
-        }
-
         ReviewEntity deleteReview = reviewRepository.findById(reviewId).orElseThrow(
-                RuntimeException::new
+                () -> new InvalidRequestException(ReviewErrorMessage.NOT_FOUND_REVIEW.getErrorMessage())
         );
 
         reviewRepository.delete(deleteReview);

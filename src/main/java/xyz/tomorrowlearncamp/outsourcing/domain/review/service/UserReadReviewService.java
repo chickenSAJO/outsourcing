@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.dto.response.ReadReviewResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.entity.ReviewEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.review.enums.ReviewErrorMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.repository.ReviewRepository;
+import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.List;
 
@@ -20,6 +22,12 @@ import java.util.List;
 public class UserReadReviewService {
 
     private final ReviewRepository reviewRepository;
+
+    public ReviewEntity findReview(Long reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(
+                () -> new InvalidRequestException(ReviewErrorMessage.NOT_FOUND_REVIEW.getErrorMessage())
+        );
+    }
 
     public Page<ReadReviewResponseDto> getReviews(@Nullable Long storeId, Integer minStar, Integer maxStar, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
