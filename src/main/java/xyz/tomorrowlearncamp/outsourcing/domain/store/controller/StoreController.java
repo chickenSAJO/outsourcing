@@ -1,7 +1,8 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.store.controller;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class StoreController {
 
     //가게 수정
     @PutMapping("/api/v1/stores/{storeId}")
-    public ResponseEntity<StoreUpdateResponseDto> updateStore(@PathVariable Long storeId){
+    public ResponseEntity<StoreUpdateResponseDto> updateStore(@NotNull @Positive @PathVariable Long storeId){
         return ResponseEntity.ok(storeService.updateStore(storeId));
     }
 
@@ -36,13 +37,13 @@ public class StoreController {
     //가게 단건 조회
     /*메뉴 연결 필요*/
     @GetMapping("/api/v1/stores/{storeId}")
-    public ResponseEntity<StoreOneResponseDto> findOneStore(@PathVariable Long storeId){
+    public ResponseEntity<StoreOneResponseDto> findOneStore(@NotNull @Positive @PathVariable Long storeId){
         return ResponseEntity.ok(storeService.findOneStore(storeId));
     }
 
     //가게 삭제
     @DeleteMapping("/api/v1/stores/{storeId}")
-    public void deleteStore(@PathVariable Long storeId){
+    public void deleteStore(@NotNull @Positive @PathVariable Long storeId){
         storeService.deleteStore(storeId);
     }
 }

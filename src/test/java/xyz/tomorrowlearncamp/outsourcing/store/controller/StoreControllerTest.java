@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StoreController.class)
-public class StoreEntityControllerTest {
+public class StoreControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -38,7 +38,7 @@ public class StoreEntityControllerTest {
     @MockitoBean
     private final StoreService storeService;
 
-    public StoreEntityControllerTest(StoreService storeService) {
+    public StoreControllerTest(StoreService storeService) {
         this.storeService = storeService;
     }
 
@@ -98,7 +98,7 @@ public class StoreEntityControllerTest {
         given(storeService.updateStore(any(Long.class))).willReturn(responseDto);
 
         // when & then
-        mockMvc.perform(put("/api/v1/stores/{storeId}", responseDto.getId())
+        mockMvc.perform(put("/api/v1/stores/{storeId}", responseDto.getStoreId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -147,7 +147,7 @@ public class StoreEntityControllerTest {
         given(storeService.findOneStore(any(Long.class))).willReturn(responseDto);
 
         // when & then
-        mockMvc.perform(get("/api/v1/stores/{storeId}",responseDto.getId())
+        mockMvc.perform(get("/api/v1/stores/{storeId}",responseDto.getStoreId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("국밥맛집"))  //가게 이름

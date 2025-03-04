@@ -6,15 +6,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.SignupRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.auth.service.AuthService;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.StoreSaveRequestDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
-import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,18 +49,18 @@ public class StoreServiceTest {
                 mockUser
         );
 
-        given(userRepository.existsByEmail(storeSaveRequestDto.getEmail())).willReturn(false);
+        given(storeRepository.existsByEmail(storeSaveRequestDto.getEmail())).willReturn(false);
         given(passwordEncoder.encode(storeSaveRequestDto.getPassword())).willReturn("encodedPassword");
 
-        UserEntity savedUser = makeUserEntity();
-        savedUser.setId(1L);
+        StoreEntity savedStore = makeStoreEntity();
+        savedStore.setId(1L);
 
-        given(storeRepository.saveStore(any(UserEntity.class))).willReturn(savedUser);
+        given(storeRepository.save(any(StoreEntity.class))).willReturn(savedStore);
 
         // when
-        Long userId = storeService.signup(storeSaveRequestDto);
+        Long storeId = storeService.saveStore(storeSaveRequestDto);
 
         // when & then
-        assertEquals(1L, userId);
+        assertEquals(1L, storeId);
     }
 }
