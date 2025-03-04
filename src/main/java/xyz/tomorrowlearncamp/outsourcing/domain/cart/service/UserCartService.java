@@ -7,6 +7,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.request.AddToCartReques
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.AddCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.UserCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.cart.enums.ErrorCartMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.repository.CartRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
@@ -28,7 +29,7 @@ public class UserCartService {
             AddToCartRequestDto dto
     ) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new InvalidRequestException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new InvalidRequestException(ErrorCartMessage.USER_NOT_FOUND.getMessage()));
 
         CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, dto.getMenuId())
                 .map(existingCart -> {
@@ -50,7 +51,7 @@ public class UserCartService {
     @Transactional
     public void removeCartItem(Long userId, Long menuId) {
         CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, menuId)
-                .orElseThrow(() -> new InvalidRequestException("장바구니에서 메뉴를 찾을 수 없습니다."));
+                .orElseThrow(() -> new InvalidRequestException(ErrorCartMessage.CART_ITEM_NOT_FOUND.getMessage()));
         cartRepository.delete(cart);
     }
 
