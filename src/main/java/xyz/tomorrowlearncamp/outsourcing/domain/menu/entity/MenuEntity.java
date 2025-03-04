@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DialectOverride;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 
 @Getter
@@ -25,11 +28,12 @@ public class MenuEntity {
     @Column(name = "MENU_CONTENT", length = 255, nullable = false)
     private String menuContent;
 
-    @Column(name = "MENU_PRICE", nullable = false)
+    @Column(name = "PRICE", nullable = false)
     private int menuPrice;
 
     @Column(name = "MENU_IMAGE_URL")
     private String menuImageUrl;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "MENU_STATUS", length = 20)

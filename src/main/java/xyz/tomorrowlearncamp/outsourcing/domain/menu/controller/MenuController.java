@@ -1,7 +1,7 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.menu.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping
-    public ResponseEntity<MenuAddResponseDto> addMenu(@RequestBody MenuAddRequestDto menuAddRequestDto) {
+    public ResponseEntity<MenuAddResponseDto> addMenu(@Valid @RequestBody MenuAddRequestDto menuAddRequestDto) {
         MenuAddResponseDto response = menuService.addMenu(menuAddRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
