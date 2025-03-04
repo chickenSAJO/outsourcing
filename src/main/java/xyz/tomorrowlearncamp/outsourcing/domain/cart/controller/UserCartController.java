@@ -31,4 +31,21 @@ public class UserCartController {
     ) {
         return ResponseEntity.ok(userCartService.getCart(userId));
     }
+
+    @DeleteMapping("/{menuId}")
+    public ResponseEntity<Void> removeCartItem(
+            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @PathVariable Long menuId
+    ) {
+        userCartService.removeCartItem(userId, menuId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> removeAllCartItem(
+            @SessionAttribute(name = "LOGIN_USER") Long userId
+    ) {
+        userCartService.removeAllCartItem(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

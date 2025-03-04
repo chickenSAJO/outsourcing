@@ -10,6 +10,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.repository.CartRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
+import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class UserCartService {
             AddToCartRequestDto dto
     ) {
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new InvalidRequestException("사용자를 찾을 수 없습니다."));
 
         CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, dto.getMenuId())
                 .map(existingCart -> {
@@ -44,5 +45,17 @@ public class UserCartService {
 
         return cartItems.stream()
                 .map(UserCartResponseDto::from).toList();
+    }
+
+    @Transactional
+    public void removeCartItem(Long userId, Long menuId) {
+        CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, menuId)
+                .orElseThrow(() -> new InvalidRequestException("장바구니에서 메뉴를 찾을 수 없습니다."));
+        cartRepository.delete(cart);
+    }
+
+    @Transactional
+    public void removeAllCartItem(Long userId) {
+        cartRepository.deleteByUserId(userId);
     }
 }
