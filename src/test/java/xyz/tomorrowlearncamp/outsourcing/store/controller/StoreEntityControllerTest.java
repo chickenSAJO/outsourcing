@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StoreController.class)
-public class StoreControllerTest {
+public class StoreEntityControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -38,7 +38,7 @@ public class StoreControllerTest {
     @MockitoBean
     private final StoreService storeService;
 
-    public StoreControllerTest(StoreService storeService) {
+    public StoreEntityControllerTest(StoreService storeService) {
         this.storeService = storeService;
     }
 

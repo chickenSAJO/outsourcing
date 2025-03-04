@@ -14,7 +14,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 @SQLDelete(sql = "UPDATE store Set is_deleted = true, deleted_at = NOW() WHERE id = ?")//소프트 딜리트
 @SQLRestriction("is_deleted = false")//소프트 딜리트
 @Table(name = "stores")
-public class Store extends BaseEntity {
+public class StoreEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;
@@ -31,7 +31,7 @@ public class Store extends BaseEntity {
     //메뉴 manu>>store @ManyToOne
     //주문 order>>store @ManyToOne
 
-    public Store(String storeTitle, String openTime, String closeTime, int minimumOrder, UserEntity user) {
+    public StoreEntity(String storeTitle, String openTime, String closeTime, int minimumOrder, UserEntity user) {
         this.storeTitle = storeTitle;
         this.openTime = openTime;
         this.closeTime = closeTime;

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.Store;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreErrorMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
 
@@ -23,56 +23,56 @@ public class StoreService {
             throw new IllegalStateException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
         }
 
-        Store store = new Store(
+        StoreEntity storeEntity = new StoreEntity(
                 dto.getStoreTitle(),
                 dto.getOpenTime(),
                 dto.getCloseTime(),
                 dto.getMinimumOrder(),
                 dto.getUser()
         );
-        storeRepository.save(store);
+        storeRepository.save(storeEntity);
         return new StoreSaveResponseDto(
-                store.getStoreId(),
-                store.getStoreTitle(),
-                store.getOpenTime(),
-                store.getCloseTime(),
-                store.getMinimumOrder(),
-                store.getUser().getName()
+                storeEntity.getStoreId(),
+                storeEntity.getStoreTitle(),
+                storeEntity.getOpenTime(),
+                storeEntity.getCloseTime(),
+                storeEntity.getMinimumOrder(),
+                storeEntity.getUser().getName()
         );
     }
 
     //가게 수정
     @Transactional
     public StoreUpdateResponseDto updateStore(Long storeId) {
-        Store store = storeRepository.findById(storeId)
+        StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalStateException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
-        store.update(
-                store.getStoreTitle(),
-                store.getOpenTime(),
-                store.getCloseTime(),
-                store.getMinimumOrder()
+        storeEntity.update(
+                storeEntity.getStoreTitle(),
+                storeEntity.getOpenTime(),
+                storeEntity.getCloseTime(),
+                storeEntity.getMinimumOrder()
         );
         return new StoreUpdateResponseDto(
-                store.getStoreId(),
-                store.getStoreTitle(),
-                store.getOpenTime(),
-                store.getCloseTime(),
-                store.getMinimumOrder()
+                storeEntity.getStoreId(),
+                storeEntity.getStoreTitle(),
+                storeEntity.getOpenTime(),
+                storeEntity.getCloseTime(),
+                storeEntity.getMinimumOrder()
         );
     }
 
     //가게 다건 조회
     @Transactional(readOnly = true)
     public List<StoreResponseDto> findAllStore() {
-        List<Store> stores = storeRepository.findAll();
+        List<StoreEntity> storeEntities = storeRepository.findAll();
         List<StoreResponseDto> dtos = new ArrayList<>();
-        for (Store store : stores) {
+        for (StoreEntity storeEntity : storeEntities) {
             dtos.add(new StoreResponseDto(
-                    store.getStoreId(),
-                    store.getStoreTitle(),
-                    store.getOpenTime(),
-                    store.getCloseTime(),
-                    store.getMinimumOrder()
+                    storeEntity.getStoreId(),
+                    storeEntity.getStoreTitle(),
+                    storeEntity.getOpenTime(),
+                    storeEntity.getCloseTime(),
+                    storeEntity.getMinimumOrder()
                     )
             );
         }
@@ -83,9 +83,9 @@ public class StoreService {
     /*메뉴 연결 필요*/
     @Transactional(readOnly = true)
     public StoreOneResponseDto findOneStore(Long storeId) {
-        Store store = storeRepository.findById(storeId)
+        StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalStateException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
-        return new StoreOneResponseDto(store.getStoreId(), store.getStoreTitle(), store.getOpenTime(), store.getCloseTime(), store.getMinimumOrder());
+        return new StoreOneResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder());
     }
 
     //가게 삭제
