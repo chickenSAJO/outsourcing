@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.User;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 
 @Getter
 @NoArgsConstructor
@@ -25,9 +25,9 @@ public class StoreSaveRequestDto {
     @Range(min=0, max=99999) //0원부터 10만원 미만까지 (null허용)
     private int minimumOrder;
 
-    private User user;
+    private UserEntity user;
 
-    public StoreSaveRequestDto(String storeTitle, String openTime, String closeTime, int minimumOrder, User user) {
+    public StoreSaveRequestDto(String storeTitle, String openTime, String closeTime, int minimumOrder, UserEntity user) {
         this.storeTitle = storeTitle;
         this.openTime = openTime;
         this.closeTime = closeTime;

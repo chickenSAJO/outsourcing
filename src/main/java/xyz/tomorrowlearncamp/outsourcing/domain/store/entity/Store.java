@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.User;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
 @Getter
@@ -28,11 +28,11 @@ public class Store extends BaseEntity {
     //유저 아이디
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    private UserEntity user;
     //메뉴 manu>>store @ManyToOne
     //리뷰 Review>>store @ManyToOne
 
-    public Store(String storeTitle, String openTime, String closeTime, int minimumOrder, User user) {
+    public Store(String storeTitle, String openTime, String closeTime, int minimumOrder, UserEntity user) {
         this.storeTitle = storeTitle;
         this.openTime = openTime;
         this.closeTime = closeTime;
