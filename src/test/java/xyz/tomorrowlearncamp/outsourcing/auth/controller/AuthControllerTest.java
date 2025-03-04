@@ -28,14 +28,10 @@ public class AuthControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private final AuthService authService;
-
-    public AuthControllerTest(AuthService authService) {
-        this.authService = authService;
-    }
+    private AuthService authService;
 
     @Test
-    public void signup() throws Exception {
+    public void signupTest() throws Exception {
         // given
         SignupRequestDto request = new SignupRequestDto(
                 "test@test.com",
@@ -58,7 +54,7 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void login() throws Exception {
+    public void loginTest() throws Exception {
         // given
         LoginRequestDto request = new LoginRequestDto(
                 "test@test.com",
