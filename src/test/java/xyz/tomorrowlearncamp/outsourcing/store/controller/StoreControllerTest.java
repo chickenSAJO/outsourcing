@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -164,7 +165,7 @@ public class StoreControllerTest {
         doNothing().when(storeService).deleteStore(any(Long.class));//삭제와 같이, 출력 아무것도 안할때, 사용하는 given = doNothing
 
         // when & then
-        mockMvc.perform(get("/api/v1/stores/{storeId}", storeId)
+        mockMvc.perform(delete("/api/v1/stores/{storeId}", storeId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
