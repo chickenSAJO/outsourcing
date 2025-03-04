@@ -13,6 +13,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE store Set is_deleted = true, deleted_at = NOW() WHERE id = ?")//소프트 딜리트
 @SQLRestriction("is_deleted = false")//소프트 딜리트
+@Table(name = "stores")
 public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

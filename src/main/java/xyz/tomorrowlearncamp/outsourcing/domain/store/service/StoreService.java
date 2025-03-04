@@ -18,10 +18,10 @@ public class StoreService {
     //가게 생성
     @Transactional
     public StoreSaveResponseDto saveStore(StoreSaveRequestDto dto) {
-        long storeCount = storeRepository.countByUserId(dto.getUser().getId());
-        if (storeCount >= 3){
+        if (storeRepository.countByUserId(dto.getUser().getId()) >= 3){
             throw new IllegalStateException("가게는 최대 3개만 등록 가능합니다.");
         }
+
         Store store = new Store(
                 dto.getStoreTitle(),
                 dto.getOpenTime(),

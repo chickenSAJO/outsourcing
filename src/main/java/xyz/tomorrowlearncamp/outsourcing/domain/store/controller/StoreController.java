@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 
 import java.util.List;
