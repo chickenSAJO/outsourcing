@@ -31,7 +31,7 @@ public class AuthControllerTest {
     private AuthService authService;
 
     @Test
-    public void signupTest() throws Exception {
+    public void 회원가입에_성공한다() throws Exception {
         // given
         SignupRequestDto request = new SignupRequestDto(
                 "test@test.com",
@@ -54,7 +54,7 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void loginTest() throws Exception {
+    public void 로그인에_성공한다() throws Exception {
         // given
         LoginRequestDto request = new LoginRequestDto(
                 "test@test.com",
