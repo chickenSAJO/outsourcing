@@ -1,16 +1,16 @@
-package xyz.tomorrowlearncamp.outsourcing.store.dto;
+package xyz.tomorrowlearncamp.outsourcing.domain.store.dto;
 
 import lombok.Getter;
 
 @Getter
-public class StoreSaveResponseDto {
+public class StoreResponseDto {
     private final Long id;
     private final String storeTitle;
     private final String openTime;
     private final String closeTime;
     private final int minimumOrder;
 
-    public StoreSaveResponseDto(Long id, String storeTitle, String openTime, String closeTime, int minimumOrder) {
+    public StoreResponseDto(Long id, String storeTitle, String openTime, String closeTime, int minimumOrder) {
         this.id = id;
         this.storeTitle = storeTitle;
         this.openTime = openTime;

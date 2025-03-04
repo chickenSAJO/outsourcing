@@ -1,10 +1,11 @@
-package xyz.tomorrowlearncamp.outsourcing.store.dto;
+package xyz.tomorrowlearncamp.outsourcing.domain.store.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Range;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.User;
 
 @Getter
 public class StoreSaveRequestDto {
@@ -21,4 +22,6 @@ public class StoreSaveRequestDto {
 
     @Range(min=0, max=99999)
     private int minimumOrder;
+
+    private User user;
 }

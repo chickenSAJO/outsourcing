@@ -1,11 +1,11 @@
-package xyz.tomorrowlearncamp.outsourcing.store.service;
+package xyz.tomorrowlearncamp.outsourcing.domain.store.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.*;
-import xyz.tomorrowlearncamp.outsourcing.store.entity.Store;
-import xyz.tomorrowlearncamp.outsourcing.store.repository.StoreRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.Store;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class StoreService {
     //가게 생성
     @Transactional
     public StoreSaveResponseDto saveStore(StoreSaveRequestDto dto) {
-        long storeCount = storeRepository.countByUserId(userId);
+        long storeCount = storeRepository.countByUserId(dto.getUser().getId());
         if (storeCount >= 3){
             throw new IllegalStateException("가게는 최대 3개만 등록 가능합니다.");
         }
@@ -27,7 +27,7 @@ public class StoreService {
                 dto.getOpenTime(),
                 dto.getCloseTime(),
                 dto.getMinimumOrder(),
-                userId
+                dto.getUser()
         );
         storeRepository.save(store);
         return new StoreSaveResponseDto(
@@ -35,7 +35,8 @@ public class StoreService {
                 store.getStoreTitle(),
                 store.getOpenTime(),
                 store.getCloseTime(),
-                store.getMinimumOrder()
+                store.getMinimumOrder(),
+                store.getUser().getName()
         );
     }
 
