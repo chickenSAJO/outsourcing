@@ -8,8 +8,8 @@ import lombok.Getter;
 public class AddToCartRequestDto {
 
     @NotNull(message = "메뉴는 필수 입력값입니다.")
-    Long menuId;
+    private Long menuId;
 
     @Positive(message = "수량은 1개 이상이어야 합니다.")
-    int quantity;
+    private int quantity;
 }
