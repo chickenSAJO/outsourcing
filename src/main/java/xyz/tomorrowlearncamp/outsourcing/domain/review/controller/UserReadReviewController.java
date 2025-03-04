@@ -29,12 +29,10 @@ public class UserReadReviewController {
             @Nullable @RequestParam Long storeId, // nullable
             @Positive @RequestParam(defaultValue = "1") int page,
             @Positive @RequestParam(defaultValue = "10") int size,
-            @NotBlank @RequestParam String star // 별 점수
+            @Positive @RequestParam(defaultValue = "1") Integer minStar, // 최소 별 점수
+            @Positive @RequestParam(defaultValue = "5") Integer maxStar // 최대 별 점수
     ) {
-        List<Integer> starValues = Arrays.stream(star.split("-"))
-                        .map(Integer::parseInt)
-                        .toList();
-        Page<ReadReviewResponseDto> responseDtos = userReadReviewService.getReviews(storeId, starValues.get(0), starValues.get(1), page, size);
+        Page<ReadReviewResponseDto> responseDtos = userReadReviewService.getReviews(storeId, minStar, maxStar, page, size);
 
         return ResponseEntity.ok(responseDtos);
     }

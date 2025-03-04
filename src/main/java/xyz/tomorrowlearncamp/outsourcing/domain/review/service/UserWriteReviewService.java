@@ -23,8 +23,9 @@ public class UserWriteReviewService {
     public void saveReview(
             /*@NotBlack @Positive Long userId,
             @NotBlank @Positive Long orderId,*/
-            @NotBlank @Size(min = 10, max = 100) String contents,
-            @NotBlank @Min(1) @Max(5) Integer star,
+            @NotNull @Positive Long storeId,
+            @NotNull @Size(min = 10, max = 100) String contents,
+            @NotNull @Min(1) @Max(5) Integer star,
             String reviewImageUrl
     ) {
 //        UserEntity user = userReadService.getUser(userId);
@@ -33,6 +34,7 @@ public class UserWriteReviewService {
         ReviewEntity review = ReviewEntity.builder()
 //                .user(user)
 //                .order(order)
+                .storeId(storeId)
                 .contents(contents)
                 .star(star)
                 .reviewImageUrl(reviewImageUrl)

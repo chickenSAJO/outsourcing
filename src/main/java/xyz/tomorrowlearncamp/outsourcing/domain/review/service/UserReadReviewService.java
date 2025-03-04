@@ -32,14 +32,14 @@ public class UserReadReviewService {
     public Page<ReadReviewResponseDto> getReviews(@Nullable Long storeId, Integer minStar, Integer maxStar, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        Page<ReviewEntity> result;
+        Page<ReadReviewResponseDto> result;
 
-        if( storeId == null ) {
+        if (storeId != null) {
             result = reviewRepository.findAllByStore_Id(storeId, pageable); // 가게로 조회
         } else {
             result = reviewRepository.findAllByStar(minStar, maxStar, pageable); // 별점으로 조회
         }
 
-        return result.map(ReviewEntity::toDto);
+        return result;
     }
 }

@@ -13,19 +13,24 @@ public class WriteReviewRequestDto {
 //    @Positive
 //    private Long orderId;
 
-    @NotBlank
+    @NotNull
+    @Positive
+    private Long storeId;
+
+    @NotNull
     @Size(min = 10, max = 100)
     private String contents;
 
-    @NotBlank
+    @NotNull
     @Min(1)
     @Max(5)
     private Integer star;
 
     private String reviewUrl;
 
-    public WriteReviewRequestDto (Long orderId, String contents, Integer star, @Nullable String reviewUrl) {
+    public WriteReviewRequestDto(/*Long orderId,*/Long storeId, String contents, Integer star, @Nullable String reviewUrl) {
 //        this.orderId = orderId;
+        this.storeId = storeId;
         this.star = star;
         this.contents = contents;
         this.reviewUrl = reviewUrl;

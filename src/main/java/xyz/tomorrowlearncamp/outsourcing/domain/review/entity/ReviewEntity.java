@@ -42,7 +42,8 @@ public class ReviewEntity extends BaseEntity {
     private String reviewImageUrl;
 
     @Builder
-    public ReviewEntity(/*UserEntity user, OrderEntity order*/ String contents, Integer star, @Nullable String reviewImageUrl) {
+    public ReviewEntity(/*UserEntity user, OrderEntity order*/Long storeId, String contents, Integer star, @Nullable String reviewImageUrl) {
+        this.storeId = storeId;
         this.contents = contents;
         this.star = star;
         this.reviewImageUrl = reviewImageUrl;
@@ -50,11 +51,7 @@ public class ReviewEntity extends BaseEntity {
 
     public ReadReviewResponseDto toDto() {
         return ReadReviewResponseDto.builder()
-                .id(this.id)
-                .contents(this.contents)
-                .image(this.reviewImageUrl)
-                .createdAt(this.getCreatedAt())
-                .updatedAt(this.getUpdatedAt())
+                .review(this)
                 .build();
     }
 }

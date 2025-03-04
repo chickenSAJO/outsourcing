@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StoreWriteCommentService {
 
-    private final StoreRepository storeRepository;
+//    private final StoreRepository storeRepository;
 }
