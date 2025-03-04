@@ -8,7 +8,7 @@ import xyz.tomorrowlearncamp.outsourcing.auth.AuthValidationMessages;
 
 @Getter
 @NoArgsConstructor
-public class SignupRequestDto implements AuthValidationMessages {
+public class SignupRequestDto {
 
     @Schema(description = "이메일", example = "sparta@sparta.com")
     @NotBlank
