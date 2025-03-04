@@ -1,7 +1,9 @@
 package xyz.tomorrowlearncamp.outsourcing.auth.service;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +16,8 @@ import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
 import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -50,15 +54,29 @@ public class AuthService {
     }
 
     @Transactional
-    public String login(@Valid LoginRequestDto dto) {
-        UserEntity user = userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다."));
+    public String login(@Valid LoginRequestDto dto, HttpServletResponse response) {
+        UserEntity user = userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new InvalidRequestException(AuthValidationMessages.EMAIL_OR_PASSWORD_DIFF_MESSAGE));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다.");
+            throw new InvalidRequestException(AuthValidationMessages.EMAIL_OR_PASSWORD_DIFF_MESSAGE);
         }
 
-        String bearerToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUsertype());
+        String accessToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUsertype());
+        String refreshToken = UUID.randomUUID().toString();
 
-        return "Bearer token : " + bearerToken;
+        user.setRefreshToken(refreshToken);
+        userRepository.save(user);
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", refreshCookie.toString());
+
+        return "access token : " + accessToken;
     }
 }

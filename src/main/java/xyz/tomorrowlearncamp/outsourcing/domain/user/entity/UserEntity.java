@@ -24,6 +24,7 @@ public class UserEntity extends BaseEntity {
     private String name;
     private String address;
     private Usertype usertype;
+    private String refreshToken;
 
     public UserEntity(String email, String password, String phone, String nickname, String name, String address, Usertype usertype) {
         this.email = email;

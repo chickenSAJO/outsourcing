@@ -6,13 +6,16 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
+import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.io.IOException;
 
@@ -21,6 +24,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -47,8 +51,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
 
-            Usertype usertype = Usertype.valueOf(claims.get("usertype", String.class));
-
             request.setAttribute("userId", Long.parseLong(claims.getSubject()));
             request.setAttribute("email", claims.get("email"));
             request.setAttribute("userType", claims.get("usertype"));
@@ -56,12 +58,12 @@ public class JwtFilter extends OncePerRequestFilter {
             // 권한에 따른 검증 코드 진행
 
             filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            log.error("Expired JWT token. Trying to refresh, 만료된 JWT token 입니다. 재발급을 진행합니다.", e);
+            handleExpiredToken(request, response);
         } catch (SecurityException | MalformedJwtException e) {
             log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.", e);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "유효하지 않는 JWT 서명입니다.");
-        } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token, 만료된 JWT token 입니다.", e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "지원되지 않는 JWT 토큰입니다.");
@@ -69,5 +71,32 @@ public class JwtFilter extends OncePerRequestFilter {
             log.error("Invalid JWT token, 유효하지 않는 JWT 토큰 입니다.", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "유효하지 않는 JWT 토큰입니다.");
         }
+    }
+
+    private void handleExpiredToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String refreshToken = getRefreshTokenFromCookie(request);
+
+        if (refreshToken == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "리프레쉬 토큰이 없습니다.");
+        }
+
+        UserEntity user = userRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new InvalidRequestException("유효하지 않은 리프레쉬 토큰입니다."));
+
+        String newAccessToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUsertype());
+
+        response.setHeader("Authorization", newAccessToken);
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    private String getRefreshTokenFromCookie(HttpServletRequest request) {
+        if (request.getCookies() == null) { return  null; }
+
+        for (Cookie cookie : request.getCookies()) {
+            if ("refresh_token".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        return null;
     }
 }
