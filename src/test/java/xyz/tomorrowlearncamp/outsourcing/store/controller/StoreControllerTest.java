@@ -131,6 +131,7 @@ public class StoreControllerTest {
 
 
     //findOneStore 테스트
+    /*메뉴 부분 추가 요망*/
     @Test
     public void findOneStore() throws Exception {
         // given
