@@ -17,15 +17,13 @@ public class StoreController {
 
     //가게 생성
     @PostMapping("/api/v1/stores")
-    public ResponseEntity<StoreSaveResponseDto> saveStore(@Valid @RequestBody StoreSaveRequestDto dto, HttpSession session){
-        Long loginStore = (Long) session.getAttribute("LOGIN_OWNER");
+    public ResponseEntity<StoreSaveResponseDto> saveStore(@Valid @RequestBody StoreSaveRequestDto dto){
         return ResponseEntity.ok(storeService.saveStore(dto));
     }
 
     //가게 수정
     @PutMapping("/api/v1/stores/{storeId}")
-    public ResponseEntity<StoreUpdateResponseDto> updateStore(@PathVariable Long storeId, HttpSession session){
-        Long loginStore = (Long) session.getAttribute("LOGIN_OWNER");
+    public ResponseEntity<StoreUpdateResponseDto> updateStore(@PathVariable Long storeId){
         return ResponseEntity.ok(storeService.updateStore(storeId));
     }
 
@@ -44,8 +42,7 @@ public class StoreController {
 
     //가게 삭제
     @DeleteMapping("/api/v1/stores/{storeId}")
-    public void deleteStore(@PathVariable Long storeId, HttpSession session){
-        Long loginStore = (Long) session.getAttribute("LOGIN_OWNER");
+    public void deleteStore(@PathVariable Long storeId){
         storeService.deleteStore(storeId);
     }
 }
