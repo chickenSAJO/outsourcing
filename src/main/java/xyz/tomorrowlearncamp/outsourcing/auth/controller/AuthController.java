@@ -31,12 +31,13 @@ public class AuthController {
                 .buildAndExpand(userId)
                 .toUri();
 
-        return ResponseEntity.created(location).body("회원가입이 완료되었습니다.");
+        return ResponseEntity.created(location).body("");
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto dto, HttpSession session) {
-        return ResponseEntity.ok(authService.login(dto, session));
+        authService.login(dto, session);
+        return ResponseEntity.ok("");
     }
 
 }

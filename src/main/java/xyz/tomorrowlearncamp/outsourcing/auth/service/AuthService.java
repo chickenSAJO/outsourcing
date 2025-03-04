@@ -5,9 +5,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.LoginRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.SignupRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.Users;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.User;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
@@ -15,6 +16,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestExceptio
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -30,7 +32,7 @@ public class AuthService {
 
         Usertype usertype = Usertype.of(dto.getUsertype());
 
-        Users user = new Users(
+        User user = new User(
                 dto.getEmail(),
                 encodedPassword,
                 dto.getPhone(),
@@ -40,21 +42,19 @@ public class AuthService {
                 usertype
         );
 
-        Users savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         return savedUser.getId();
     }
 
     @Transactional
-    public String login(@Valid LoginRequestDto dto, HttpSession session) {
-        Users user = userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다."));
+    public void login(@Valid LoginRequestDto dto, HttpSession session) {
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다."));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
         session.setAttribute("LOGIN_USER", user.getId());
-
-        return "로그인 되었습니다.";
     }
 }

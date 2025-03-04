@@ -10,17 +10,20 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-public class LoginRequestDto {
+public class LoginRequestDto implements ValidationMessages {
 
     @Schema(description = "이메일", example = "sparta@sparta.com")
     @NotBlank
-    @Email(message = "유효한 이메일 형식이 아닙니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = EMAIL_VALIDATION_MESSAGE)
     private String email;
 
     @Schema(description = "비밀번호")
     @NotBlank
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\\W_]).{8,}$", message = "비밀번호는 최소 8글자 이상이어야 하며, 대소문자 포함 영문 + 숫자 + 특수문자를 최소 1글자씩 포함해야 합니다.")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\\W_]).{8,}$", message = PASSWORD_VALIDATION_MESSAGE)
     private String password;
 
+    public LoginRequestDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

@@ -10,7 +10,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
-public class Users extends BaseEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Users extends BaseEntity {
     private String address;
     private Usertype usertype;
 
-    public Users(String email, String password, String phone, String nickname, String name, String address, Usertype usertype) {
+    public User(String email, String password, String phone, String nickname, String name, String address, Usertype usertype) {
         this.email = email;
         this.password = password;
         this.phone = phone;

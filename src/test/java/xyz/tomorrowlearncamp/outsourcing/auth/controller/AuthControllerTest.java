@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.LoginRequestDto;
@@ -49,8 +50,8 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/v1/auth/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
-
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"));
     }
 
     @Test
@@ -60,16 +61,13 @@ public class AuthControllerTest {
                 "test@test.com",
                 "Test1234!23"
         );
-
-        String expectedToken = "mock-token";
-
-        given(authService.login(any(LoginRequestDto.class), any(HttpSession.class))).willReturn(expectedToken);
+        MockHttpSession session = new MockHttpSession();
 
         // when & then
         mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                .session(session))
                 .andExpect(status().isOk());
-
     }
 }
