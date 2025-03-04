@@ -4,10 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import xyz.tomorrowlearncamp.outsourcing.auth.AuthValidationMessages;
 
 @Getter
 @NoArgsConstructor
-public class SignupRequestDto implements ValidationMessages {
+public class SignupRequestDto implements AuthValidationMessages {
 
     @Schema(description = "이메일", example = "sparta@sparta.com")
     @NotBlank
