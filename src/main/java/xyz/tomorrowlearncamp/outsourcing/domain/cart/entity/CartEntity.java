@@ -15,20 +15,20 @@ public class CartEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    UserEntity user;
+    private UserEntity user;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "menu_id", nullable = false)
 //    MenuEntity menu;
     @Column(nullable = false) // 임시 필드
-    Long menuId;
+    private Long menuId;
 
     @Column(nullable = false)
-    Integer quantity;
+    private Integer quantity;
 
     public CartEntity(UserEntity user, Long menuId, int quantity) {
         this.user = user;

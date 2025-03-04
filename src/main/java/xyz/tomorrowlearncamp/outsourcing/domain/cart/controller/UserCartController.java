@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.cart.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UserCartController {
     @PostMapping
     public ResponseEntity<AddCartResponseDto> addCartItem(
             @SessionAttribute(name = "LOGIN_USER") Long userId,
-            @RequestBody AddToCartRequestDto dto
+            @Valid @RequestBody AddToCartRequestDto dto
     ) {
         return ResponseEntity.ok(userCartService.addCartItem(userId, dto));
     }
