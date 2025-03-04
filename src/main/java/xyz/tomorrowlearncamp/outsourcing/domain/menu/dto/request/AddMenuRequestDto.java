@@ -1,9 +1,12 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class MenuUpdateRequestDto {
+@NoArgsConstructor
+public class AddMenuRequestDto {
+
     private String menuName;
     private String menuContent;
     private int menuPrice;

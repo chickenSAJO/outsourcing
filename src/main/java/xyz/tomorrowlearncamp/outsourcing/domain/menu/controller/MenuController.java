@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request.MenuAddRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request.MenuUpdateRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuAddResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request.AddMenuRequestDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request.UpdateMenuRequestDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.AddMenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuUpdateResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.UpdateMenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.service.MenuService;
 
 @RestController
@@ -19,10 +19,10 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping
-    public ResponseEntity<MenuAddResponseDto> addMenu(
+    public ResponseEntity<AddMenuResponseDto> addMenu(
             //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
-            @Valid @RequestBody MenuAddRequestDto menuAddRequestDto) {
-        MenuAddResponseDto response = menuService.addMenu(menuAddRequestDto);
+            @Valid @RequestBody AddMenuRequestDto addMenuRequestDto) {
+        AddMenuResponseDto response = menuService.addMenu(addMenuRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -32,10 +32,10 @@ public class MenuController {
     }
 
     @PutMapping("/{menuId}")
-    public ResponseEntity<MenuUpdateResponseDto> updateMenu(
+    public ResponseEntity<UpdateMenuResponseDto> updateMenu(
             //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
             @PathVariable Long menuId,
-            @Valid @RequestBody MenuUpdateRequestDto updateRequestDto) {
+            @Valid @RequestBody UpdateMenuRequestDto updateRequestDto) {
         return ResponseEntity.ok(menuService.updateMenu(menuId,updateRequestDto));
     }
 

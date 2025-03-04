@@ -1,11 +1,11 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class MenuAddRequestDto {
-
+@NoArgsConstructor
+public class UpdateMenuRequestDto {
     private String menuName;
     private String menuContent;
     private int menuPrice;
