@@ -17,7 +17,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long storeId;
 
     private String storeTitle;
     private String openTime;

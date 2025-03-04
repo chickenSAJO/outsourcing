@@ -21,8 +21,8 @@ public class StoreController {
 
     //가게 수정
     @PutMapping("/api/v1/stores/{storeId}")
-    public ResponseEntity<StoreUpdateResponseDto> updateStore(@PathVariable Long id){
-        return ResponseEntity.ok(storeService.updateStore(id));
+    public ResponseEntity<StoreUpdateResponseDto> updateStore(@PathVariable Long storeId){
+        return ResponseEntity.ok(storeService.updateStore(storeId));
     }
 
     //가게 다건 조회
@@ -34,13 +34,13 @@ public class StoreController {
     //가게 단건 조회
     /*메뉴 연결 필요*/
     @GetMapping("/api/v1/stores/{storeId}")
-    public ResponseEntity<StoreOneResponseDto> findOneStore(@PathVariable Long id){
-        return ResponseEntity.ok(storeService.findOneStore(id));
+    public ResponseEntity<StoreOneResponseDto> findOneStore(@PathVariable Long storeId){
+        return ResponseEntity.ok(storeService.findOneStore(storeId));
     }
 
     //가게 삭제
     @DeleteMapping("/api/v1/stores/{storeId}")
-    public void deleteStore(@PathVariable Long id){
-        storeService.deleteStore(id);
+    public void deleteStore(@PathVariable Long storeId){
+        storeService.deleteStore(storeId);
     }
 }

@@ -31,7 +31,7 @@ public class StoreService {
         );
         storeRepository.save(store);
         return new StoreSaveResponseDto(
-                store.getId(),
+                store.getStoreId(),
                 store.getStoreTitle(),
                 store.getOpenTime(),
                 store.getCloseTime(),
@@ -42,8 +42,8 @@ public class StoreService {
 
     //가게 수정
     @Transactional
-    public StoreUpdateResponseDto updateStore(Long id) {
-        Store store = storeRepository.findById(id)
+    public StoreUpdateResponseDto updateStore(Long storeId) {
+        Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalStateException("Store id가 없습니다."));
         store.update(
                 store.getStoreTitle(),
@@ -52,7 +52,7 @@ public class StoreService {
                 store.getMinimumOrder()
         );
         return new StoreUpdateResponseDto(
-                store.getId(),
+                store.getStoreId(),
                 store.getStoreTitle(),
                 store.getOpenTime(),
                 store.getCloseTime(),
@@ -67,7 +67,7 @@ public class StoreService {
         List<StoreResponseDto> dtos = new ArrayList<>();
         for (Store store : stores) {
             dtos.add(new StoreResponseDto(
-                    store.getId(),
+                    store.getStoreId(),
                     store.getStoreTitle(),
                     store.getOpenTime(),
                     store.getCloseTime(),
@@ -81,15 +81,15 @@ public class StoreService {
     //가게 단건 조회
     /*메뉴 연결 필요*/
     @Transactional(readOnly = true)
-    public StoreOneResponseDto findOneStore(Long id) {
-        Store store = storeRepository.findById(id)
+    public StoreOneResponseDto findOneStore(Long storeId) {
+        Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalStateException("Store id가 없습니다."));
-        return new StoreOneResponseDto(store.getId(), store.getStoreTitle(), store.getOpenTime(), store.getCloseTime(), store.getMinimumOrder());
+        return new StoreOneResponseDto(store.getStoreId(), store.getStoreTitle(), store.getOpenTime(), store.getCloseTime(), store.getMinimumOrder());
     }
 
     //가게 삭제
     @Transactional
-    public void deleteStore(Long id) {
-        storeRepository.deleteById(id);
+    public void deleteStore(Long storeId) {
+        storeRepository.deleteById(storeId);
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.controller.StoreController;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.User;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class StoreControllerTest {
     @Test
     public void saveStore() throws Exception {
         // given
-        User mockUser = new User(
+        UserEntity mockUser = new UserEntity(
                 "test@naver.com",
                 "Test1234!23",
                 "010-1234-5678",
