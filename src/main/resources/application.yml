@@ -40,3 +40,7 @@ springdoc:
     path: /api-docs
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
+
+jwt:
+  secret:
+    key: 7lOPWzyPwXhxly0GrFHAxKvxmzI0ed4T92jaoZH3Bp24aWnz/AZ3n/hzAacZ0Joo

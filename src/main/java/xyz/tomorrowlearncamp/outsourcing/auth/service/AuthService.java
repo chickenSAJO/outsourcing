@@ -1,6 +1,5 @@
 package xyz.tomorrowlearncamp.outsourcing.auth.service;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.SignupRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
+import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
 import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
@@ -22,6 +22,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public Long signup(SignupRequestDto dto) {
@@ -49,13 +50,15 @@ public class AuthService {
     }
 
     @Transactional
-    public void login(@Valid LoginRequestDto dto, HttpSession session) {
+    public String login(@Valid LoginRequestDto dto) {
         UserEntity user = userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다."));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
-        session.setAttribute("LOGIN_USER", user.getId());
+        String bearerToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUsertype());
+
+        return "Bearer token : " + bearerToken;
     }
 }

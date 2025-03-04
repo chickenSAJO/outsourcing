@@ -1,16 +1,22 @@
 package xyz.tomorrowlearncamp.outsourcing.global.filter;
 
-import jakarta.servlet.Filter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import xyz.tomorrowlearncamp.outsourcing.auth.filter.JwtFilter;
+import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
 
 @Configuration
+@RequiredArgsConstructor
 public class FilterConfig {
 
-    public FilterRegistrationBean<Filter> loginFilter() {
-        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new LoginFilter());
-        registrationBean.setOrder(1);
+    private final JwtUtil jwtUtil;
+
+    @Bean
+    public FilterRegistrationBean<JwtFilter> jwtFilter() {
+        FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new JwtFilter(jwtUtil));
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
