@@ -3,14 +3,16 @@ package xyz.tomorrowlearncamp.outsourcing.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +25,7 @@ public class User extends BaseEntity {
     private String address;
     private Usertype usertype;
 
-    public User(String email, String password, String phone, String nickname, String name, String address, Usertype usertype) {
+    public UserEntity(String email, String password, String phone, String nickname, String name, String address, Usertype usertype) {
         this.email = email;
         this.password = password;
         this.phone = phone;
@@ -32,4 +34,5 @@ public class User extends BaseEntity {
         this.address = address;
         this.usertype = usertype;
     }
+
 }
