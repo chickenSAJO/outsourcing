@@ -19,7 +19,9 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping
-    public ResponseEntity<MenuAddResponseDto> addMenu(@Valid @RequestBody MenuAddRequestDto menuAddRequestDto) {
+    public ResponseEntity<MenuAddResponseDto> addMenu(
+            //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
+            @Valid @RequestBody MenuAddRequestDto menuAddRequestDto) {
         MenuAddResponseDto response = menuService.addMenu(menuAddRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -31,13 +33,15 @@ public class MenuController {
 
     @PutMapping("/{menuId}")
     public ResponseEntity<MenuUpdateResponseDto> updateMenu(
+            //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
             @PathVariable Long menuId,
-            @RequestBody MenuUpdateRequestDto updateRequestDto) {
+            @Valid @RequestBody MenuUpdateRequestDto updateRequestDto) {
         return ResponseEntity.ok(menuService.updateMenu(menuId,updateRequestDto));
     }
 
     @DeleteMapping("/{menuId}")
     public void deleteMenuById(
+            //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
             @PathVariable Long menuId
     ) {
         menuService.deleteMenuById(menuId);

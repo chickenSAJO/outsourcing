@@ -10,10 +10,9 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDt
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuUpdateResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.exception.MenuNotFoundException;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
-
-import java.awt.*;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +35,7 @@ public class MenuService {
     @Transactional(readOnly = true)
     public MenuResponseDto findById(Long menuId) {
         MenuEntity menu  = menuRepository.findById(menuId).orElseThrow(
-                () -> new MenuNotFoundException()
+                () -> new IllegalArgumentException() //todo: 예외처리 통합
         );
         return MenuResponseDto.from(menu);
     }
@@ -44,7 +43,7 @@ public class MenuService {
     @Transactional
     public MenuUpdateResponseDto updateMenu(Long menuId, MenuUpdateRequestDto updateRequestDto) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new MenuNotFoundException()
+                () -> new IllegalArgumentException()
         );
 
         menu.updateMenu(updateRequestDto.getMenuName(),updateRequestDto.getMenuContent(),updateRequestDto.getMenuPrice(),updateRequestDto.getMenuImageUrl(), MenuType.valueOf(updateRequestDto.getMenuStatus()));
@@ -54,7 +53,7 @@ public class MenuService {
     @Transactional
     public void deleteMenuById(Long menuId){
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new MenuNotFoundException()
+                () -> new IllegalArgumentException()
         );
         menu.deleteMenu();
     }
