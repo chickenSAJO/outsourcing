@@ -22,15 +22,17 @@ public class Store {
     private int minimumOrder;
 
     /*추가할것*/
+    private Long userId;
     //유저 아이디 @OneToMany
     //창업일 //상속
     //수정일 //상속
 
-    public Store(String storeTitle, String openTime, String closeTime, int minimumOrder) {
+    public Store(String storeTitle, String openTime, String closeTime, int minimumOrder, Long userId) {
         this.storeTitle = storeTitle;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.minimumOrder = minimumOrder;
+        this.userId = userId;
     }
 
     public void update(String storeTitle, String openTime, String closeTime, int minimumOrder) {

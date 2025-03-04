@@ -3,10 +3,7 @@ package xyz.tomorrowlearncamp.outsourcing.store.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreSaveResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreSaveRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreUpdateResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.store.entity.Store;
 import xyz.tomorrowlearncamp.outsourcing.store.repository.StoreRepository;
 
@@ -21,11 +18,16 @@ public class StoreService {
     //가게 생성
     @Transactional
     public StoreSaveResponseDto saveStore(StoreSaveRequestDto dto) {
+        long storeCount = storeRepository.countByUserId(userId);
+        if (storeCount >= 3){
+            throw new IllegalStateException("가게는 최대 3개만 등록 가능합니다.");
+        }
         Store store = new Store(
                 dto.getStoreTitle(),
                 dto.getOpenTime(),
                 dto.getCloseTime(),
-                dto.getMinimumOrder()
+                dto.getMinimumOrder(),
+                userId
         );
         storeRepository.save(store);
         return new StoreSaveResponseDto(
@@ -78,10 +80,10 @@ public class StoreService {
     //가게 단건 조회
     /*메뉴 연결 필요*/
     @Transactional(readOnly = true)
-    public StoreResponseDto findOneStore(Long id) {
+    public StoreOneResponseDto findOneStore(Long id) {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Store id가 없습니다."));
-        return new StoreResponseDto(store.getId(), store.getStoreTitle(), store.getOpenTime(), store.getCloseTime(), store.getMinimumOrder());
+        return new StoreOneResponseDto(store.getId(), store.getStoreTitle(), store.getOpenTime(), store.getCloseTime(), store.getMinimumOrder());
     }
 
     //가게 삭제

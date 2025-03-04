@@ -3,10 +3,7 @@ package xyz.tomorrowlearncamp.outsourcing.store.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreSaveResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreSaveRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.store.dto.StoreUpdateResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.store.service.StoreService;
 
 import java.util.List;
@@ -37,7 +34,7 @@ public class StoreController {
     //가게 단건 조회
     /*메뉴 연결 필요*/
     @GetMapping("/api/v1/stores/{storeId}")
-    public ResponseEntity<StoreResponseDto> findOneStore(@PathVariable Long id){
+    public ResponseEntity<StoreOneResponseDto> findOneStore(@PathVariable Long id){
         return ResponseEntity.ok(storeService.findOneStore(id));
     }
 
