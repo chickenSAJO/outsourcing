@@ -5,7 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.request.AddToCartRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.AddCartResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.UserCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.service.UserCartService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,5 +23,12 @@ public class UserCartController {
             @RequestBody AddToCartRequestDto dto
     ) {
         return ResponseEntity.ok(userCartService.addCartItem(userId, dto));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserCartResponseDto>> getCart(
+            @SessionAttribute(name = "LOGIN_USER") Long userId
+    ) {
+        return ResponseEntity.ok(userCartService.getCart(userId));
     }
 }

@@ -5,10 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.request.AddToCartRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.AddCartResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.UserCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.repository.CartRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +37,12 @@ public class UserCartService {
                 .orElseGet(() -> cartRepository.save(new CartEntity(user, dto.getMenuId(), dto.getQuantity())));
 
         return AddCartResponseDto.from(cart);
+    }
+
+    public List<UserCartResponseDto> getCart(Long userId) {
+        List<CartEntity> cartItems = cartRepository.findByUserId(userId);
+
+        return cartItems.stream()
+                .map(UserCartResponseDto::from).toList();
     }
 }
