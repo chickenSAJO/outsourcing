@@ -9,10 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.controller.StoreController;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.StoreResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.StoreSaveRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.StoreSaveResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.StoreUpdateResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.User;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
@@ -22,6 +19,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -84,6 +82,7 @@ public class StoreControllerTest {
     }
 
 
+
     //updateStore 테스트
     @Test
     public void updateStore() throws Exception {
@@ -99,10 +98,11 @@ public class StoreControllerTest {
         given(storeService.updateStore(any(Long.class))).willReturn(responseDto);
 
         // when & then
-        mockMvc.perform(put("/api/v1/stores/1")
+        mockMvc.perform(put("/api/v1/stores/{storeId}", responseDto.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
 
 
     //findAllStore 테스트
@@ -124,8 +124,48 @@ public class StoreControllerTest {
         mockMvc.perform(get("/api/v1/stores")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$.size()").value(1)) //id=1만 사용
                 .andExpect(jsonPath("$[0].name").value("국밥맛집"))  //가게 이름
-                .andExpect(jsonPath("$[0].price").value(15000));  //최소주문금액
+                .andExpect(jsonPath("$[0].minimumOrder").value(15000));  //최소주문금액
+    }
+
+
+
+    //findOneStore 테스트
+    @Test
+    public void findOneStore() throws Exception {
+        // given
+        StoreOneResponseDto responseDto = new StoreOneResponseDto(
+                1L,
+                "국밥맛집",
+                "09:00:00",
+                "21:00:00",
+                15000
+        );
+
+        given(storeService.findOneStore(any(Long.class))).willReturn(responseDto);
+
+        // when & then
+        mockMvc.perform(get("/api/v1/stores/{storeId}",responseDto.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("국밥맛집"))  //가게 이름
+                .andExpect(jsonPath("$.minimumOrder").value(15000));  //최소주문금액
+    }
+
+
+
+    //deleteStore 테스트
+    @Test
+    public void deleteStore() throws Exception {
+        // given
+        Long storeId = 1L;
+
+        doNothing().when(storeService).deleteStore(any(Long.class));//삭제와 같이, 출력 아무것도 안할때, 사용하는 given = doNothing
+
+        // when & then
+        mockMvc.perform(get("/api/v1/stores/{storeId}", storeId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 }
