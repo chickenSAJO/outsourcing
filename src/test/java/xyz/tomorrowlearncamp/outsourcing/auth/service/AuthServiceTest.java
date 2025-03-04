@@ -87,9 +87,7 @@ class AuthServiceTest {
         given(userRepository.existsByEmail(signupRequestDto.getEmail())).willReturn(true);
 
         // when & then
-        assertThrows(InvalidRequestException.class, () -> {
-            authService.signup(signupRequestDto);
-        });
+        assertThrows(InvalidRequestException.class, () -> authService.signup(signupRequestDto));
     }
 
     @Test
@@ -132,9 +130,7 @@ class AuthServiceTest {
         given(userRepository.findByEmail(loginRequestDto.getEmail())).willReturn(Optional.empty());
 
         // when & then
-        assertThrows(InvalidRequestException.class, () -> {
-            authService.login(loginRequestDto, session);
-        });
+        assertThrows(InvalidRequestException.class, () -> authService.login(loginRequestDto, session));
     }
 
     @Test
@@ -159,8 +155,6 @@ class AuthServiceTest {
         given(passwordEncoder.matches(loginRequestDto.getPassword(), userEntity.getPassword())).willReturn(false);
 
         // when & then
-        assertThrows(InvalidRequestException.class, () -> {
-            authService.login(loginRequestDto, session);
-        });
+        assertThrows(InvalidRequestException.class, () -> authService.login(loginRequestDto, session));
     }
 }
