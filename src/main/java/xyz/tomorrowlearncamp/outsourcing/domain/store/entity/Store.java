@@ -25,12 +25,11 @@ public class Store extends BaseEntity {
     private int minimumOrder;
 
     /*추가할것*/
-    //유저 아이디
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private UserEntity user;
     //메뉴 manu>>store @ManyToOne
-    //리뷰 Review>>store @ManyToOne
+    //주문 order>>store @ManyToOne
 
     public Store(String storeTitle, String openTime, String closeTime, int minimumOrder, UserEntity user) {
         this.storeTitle = storeTitle;

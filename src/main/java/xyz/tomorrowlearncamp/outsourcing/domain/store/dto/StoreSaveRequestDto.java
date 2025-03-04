@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreTimeType;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 
 @Getter
@@ -15,11 +16,11 @@ public class StoreSaveRequestDto {
     private String storeTitle;
 
     @NotBlank
-    @Pattern(regexp = "^[0-9]{2}:[0-9]{2}:[0-9]{2}$") //00:00:00 형식
+    @Pattern(regexp = StoreTimeType.TIME_FORMAT_PATTERN)//00:00:00 형식
     private String openTime;
 
     @NotBlank
-    @Pattern(regexp = "^[0-9]{2}:[0-9]{2}:[0-9]{2}$") //00:00:00 형식
+    @Pattern(regexp = StoreTimeType.TIME_FORMAT_PATTERN) //00:00:00 형식
     private String closeTime;
 
     @Range(min=0, max=99999) //0원부터 10만원 미만까지 (null허용)

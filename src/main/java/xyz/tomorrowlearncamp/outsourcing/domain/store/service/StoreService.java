@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.Store;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreErrorMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class StoreService {
     @Transactional
     public StoreSaveResponseDto saveStore(StoreSaveRequestDto dto) {
         if (storeRepository.countByUserId(dto.getUser().getId()) >= 3){
-            throw new IllegalStateException("가게는 최대 3개만 등록 가능합니다.");
+            throw new IllegalStateException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
         }
 
         Store store = new Store(
@@ -44,7 +45,7 @@ public class StoreService {
     @Transactional
     public StoreUpdateResponseDto updateStore(Long storeId) {
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalStateException("Store id가 없습니다."));
+                .orElseThrow(() -> new IllegalStateException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         store.update(
                 store.getStoreTitle(),
                 store.getOpenTime(),
@@ -83,7 +84,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public StoreOneResponseDto findOneStore(Long storeId) {
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalStateException("Store id가 없습니다."));
+                .orElseThrow(() -> new IllegalStateException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         return new StoreOneResponseDto(store.getStoreId(), store.getStoreTitle(), store.getOpenTime(), store.getCloseTime(), store.getMinimumOrder());
     }
 
