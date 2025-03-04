@@ -44,4 +44,11 @@ public class Menu {
         this.menuStatus = menuStatus;
     }
 
+    public void update(String menuName, String menuContent, int price, String imageUrl, String menuStatus) {
+        this.menuName = menuName;
+        this.menuContent = menuContent;
+        this.price = price;
+        this.menuImageUrl = imageUrl;
+        this.menuStatus = menuStatus;
+    }
 }
