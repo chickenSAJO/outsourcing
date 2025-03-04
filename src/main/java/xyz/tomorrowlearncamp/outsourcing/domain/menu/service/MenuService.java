@@ -8,8 +8,12 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request.MenuUpdateReque
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuAddResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuUpdateResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.Menu;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.exception.MenuNotFoundException;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
+
+import java.awt.*;
 
 @Service
 @RequiredArgsConstructor
@@ -18,41 +22,40 @@ public class MenuService {
 
     @Transactional
     public MenuAddResponseDto addMenu(MenuAddRequestDto menuAddRequestDto) {
-        Menu menu = new Menu(menuAddRequestDto.getMenuName(), menuAddRequestDto.getMenuContent(), menuAddRequestDto.getPrice(), menuAddRequestDto.getMenuImageUrl(), menuAddRequestDto.getMenuStatus());
-        Menu addMenu = menuRepository.save(menu);
-        return new MenuAddResponseDto(addMenu.getId(), addMenu.getMenuName(), addMenu.getMenuContent(), addMenu.getPrice(), addMenu.getMenuImageUrl());
+        MenuEntity menu = MenuEntity.builder()
+                .menuName(menuAddRequestDto.getMenuName())
+                .menuContent(menuAddRequestDto.getMenuContent())
+                .menuPrice(menuAddRequestDto.getMenuPrice())
+                .menuImageUrl(menuAddRequestDto.getMenuImageUrl())
+                .menuStatus(MenuType.valueOf(menuAddRequestDto.getMenuStatus()))
+                .build();
+        MenuEntity addMenu = menuRepository.save(menu);
+        return new MenuAddResponseDto(addMenu.getId(), addMenu.getMenuName(), addMenu.getMenuContent(), addMenu.getMenuPrice(), addMenu.getMenuImageUrl());
     }
 
     @Transactional(readOnly = true)
     public MenuResponseDto findById(Long menuId) {
-        Menu menu  = menuRepository.findById(menuId).orElseThrow(
-                () -> new IllegalArgumentException("메뉴 없음")
+        MenuEntity menu  = menuRepository.findById(menuId).orElseThrow(
+                () -> new MenuNotFoundException()
         );
-        return new MenuResponseDto(
-                menu.getId(),
-                menu.getMenuName(),
-                menu.getMenuContent(),
-                menu.getPrice(),
-                menu.getMenuImageUrl(),
-                menu.getMenuStatus()
-        );
+        return MenuResponseDto.from(menu);
     }
 
     @Transactional
-    public MenuUpdateResponseDto update(Long menuId, MenuUpdateRequestDto updateRequestDto) {
-        Menu menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new IllegalArgumentException("메뉴 없음")
+    public MenuUpdateResponseDto updateMenu(Long menuId, MenuUpdateRequestDto updateRequestDto) {
+        MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
+                () -> new MenuNotFoundException()
         );
 
-        menu.update(updateRequestDto.getMenuName(),updateRequestDto.getMenuContent(),updateRequestDto.getPrice(),updateRequestDto.getMenuImageUrl(),updateRequestDto.getMenuStatus());
-        return new MenuUpdateResponseDto(menu.getId(), menu.getMenuName(), menu.getMenuContent(),menu.getPrice(),menu.getMenuImageUrl(),menu.getMenuStatus());
+        menu.updateMenu(updateRequestDto.getMenuName(),updateRequestDto.getMenuContent(),updateRequestDto.getMenuPrice(),updateRequestDto.getMenuImageUrl(), MenuType.valueOf(updateRequestDto.getMenuStatus()));
+        return new MenuUpdateResponseDto(menu.getId(), menu.getMenuName(), menu.getMenuContent(),menu.getMenuPrice(),menu.getMenuImageUrl(),menu.getMenuStatus());
     }
 
     @Transactional
-    public void deleteById(Long menuId){
-        Menu menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new IllegalArgumentException("메뉴 없음")
+    public void deleteMenuById(Long menuId){
+        MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
+                () -> new MenuNotFoundException()
         );
-        menuRepository.deleteById(menuId);
+        menu.deleteMenu();
     }
 }

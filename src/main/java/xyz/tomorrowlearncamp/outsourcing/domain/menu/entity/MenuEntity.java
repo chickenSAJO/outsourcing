@@ -1,7 +1,7 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.menu.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "MENU")
 @NoArgsConstructor
-public class Menu {
+public class MenuEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,30 +25,36 @@ public class Menu {
     @Column(name = "MENU_CONTENT", length = 255, nullable = false)
     private String menuContent;
 
-    @Column(name = "PRICE", nullable = false)
-    private int price;
+    @Column(name = "MENU_PRICE", nullable = false)
+    private int menuPrice;
 
     @Column(name = "MENU_IMAGE_URL")
     private String menuImageUrl;
 
-    @Column(name = "STATUS", length = 20)
-    private String menuStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "MENU_STATUS", length = 20)
+    private MenuType menuStatus;
 
 
-    public Menu(String menuName, String menuContent, int price, String menuImageUrl, String menuStatus) {
+    @Builder
+    public MenuEntity(String menuName, String menuContent, int menuPrice, String menuImageUrl, MenuType menuStatus) {
 //        this.store = store;
         this.menuName = menuName;
         this.menuContent = menuContent;
-        this.price = price;
+        this.menuPrice = menuPrice;
         this.menuImageUrl = menuImageUrl;
         this.menuStatus = menuStatus;
     }
 
-    public void update(String menuName, String menuContent, int price, String imageUrl, String menuStatus) {
+    public void updateMenu(String menuName, String menuContent, int menuPrice, String imageUrl, MenuType menuStatus) {
         this.menuName = menuName;
         this.menuContent = menuContent;
-        this.price = price;
+        this.menuPrice = menuPrice;
         this.menuImageUrl = imageUrl;
         this.menuStatus = menuStatus;
+    }
+
+    public void deleteMenu() {
+        this.menuStatus = MenuType.DELETED;
     }
 }

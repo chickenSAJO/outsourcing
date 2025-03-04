@@ -8,7 +8,7 @@ public class MenuAddRequestDto {
 
     private String menuName;
     private String menuContent;
-    private int price;
+    private int menuPrice;
     private String menuImageUrl;
     private String menuStatus;
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 public class MenuUpdateRequestDto {
     private String menuName;
     private String menuContent;
-    private int price;
+    private int menuPrice;
     private String menuImageUrl;
     private String menuStatus;
 }

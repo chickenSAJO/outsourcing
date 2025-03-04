@@ -14,32 +14,33 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.service.MenuService;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/menus")
 public class MenuController {
     private final MenuService menuService;
 
-    @PostMapping("/api/v1/menus")
-    public ResponseEntity<MenuAddResponseDto> addMenu(@RequestBody MenuAddRequestDto menuAddRequestDto){
+    @PostMapping
+    public ResponseEntity<MenuAddResponseDto> addMenu(@RequestBody MenuAddRequestDto menuAddRequestDto) {
         MenuAddResponseDto response = menuService.addMenu(menuAddRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/api/v1/menus/{menuId}")
+    @GetMapping("/{menuId}")
     public ResponseEntity<MenuResponseDto> findMenuById(@PathVariable Long menuId) {
         return ResponseEntity.ok(menuService.findById(menuId));
     }
 
-    @PutMapping("/api/v1/menus/{menuId}")
-    public ResponseEntity<MenuUpdateResponseDto> update(
+    @PutMapping("/{menuId}")
+    public ResponseEntity<MenuUpdateResponseDto> updateMenu(
             @PathVariable Long menuId,
             @RequestBody MenuUpdateRequestDto updateRequestDto) {
-        return ResponseEntity.ok(menuService.update(menuId,updateRequestDto));
+        return ResponseEntity.ok(menuService.updateMenu(menuId,updateRequestDto));
     }
 
-    @DeleteMapping("/api/v1/menus/{menuId}")
-    public void deleteById(
+    @DeleteMapping("/{menuId}")
+    public void deleteMenuById(
             @PathVariable Long menuId
     ) {
-        menuService.deleteById(menuId);
+        menuService.deleteMenuById(menuId);
     }
 
 }
