@@ -3,6 +3,7 @@ package xyz.tomorrowlearncamp.outsourcing.auth.service;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
+
     public Long signup(SignupRequestDto dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new InvalidRequestException(AuthValidationMessages.EMAIL_DUPLICATION_MESSAGE);
