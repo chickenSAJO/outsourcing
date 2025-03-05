@@ -9,8 +9,11 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.UserCartRespon
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.enums.ErrorCartMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.repository.CartRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.enums.MenuErrorMessage;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.List;
@@ -21,22 +24,25 @@ import java.util.List;
 public class UserCartService {
 
     private final CartRepository cartRepository;
-    private final UserRepository userRepository;
+    private final MenuRepository menuRepository;
+    private final UserService userService;
 
     @Transactional
     public AddCartResponseDto addCartItem(
             Long userId,
             AddToCartRequestDto dto
     ) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new InvalidRequestException(ErrorCartMessage.USER_NOT_FOUND.getMessage()));
+        UserEntity user = userService.getUserEntity(userId);
+
+        MenuEntity menu = menuRepository.findById(dto.getMenuId())
+                .orElseThrow(() -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage()));
 
         CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, dto.getMenuId())
                 .map(existingCart -> {
                     existingCart.updateQuantity(dto.getQuantity());
                     return existingCart;
                 })
-                .orElseGet(() -> cartRepository.save(new CartEntity(user, dto.getMenuId(), dto.getQuantity())));
+                .orElseGet(() -> cartRepository.save(new CartEntity(user, menu, dto.getQuantity())));
 
         return AddCartResponseDto.from(cart);
     }
@@ -58,5 +64,9 @@ public class UserCartService {
     @Transactional
     public void removeAllCartItem(Long userId) {
         cartRepository.deleteByUserId(userId);
+    }
+
+    public List<CartEntity> getCartItems(Long userId) {
+        return cartRepository.findByUserId(userId);
     }
 }
