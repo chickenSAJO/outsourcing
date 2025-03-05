@@ -41,4 +41,8 @@ public class UserOrderEntity {
         this.payment = payment;
         this.orderStatus = OrderStatus.PENDING; // 기본값 설정
     }
+
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }

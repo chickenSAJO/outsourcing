@@ -9,6 +9,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.service.UserCartService;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.request.PlaceOrderRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.PlaceOrderResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.entity.UserOrderEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.order.enums.OrderStatus;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.repository.OrderRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
@@ -24,7 +25,7 @@ public class UserOrderService {
     private final UserCartService userCartService;
 
     @Transactional
-    public PlaceOrderResponseDto placeorder(Long userId, @Valid PlaceOrderRequestDto dto) {
+    public PlaceOrderResponseDto placeOrder(Long userId, @Valid PlaceOrderRequestDto dto) {
         List<CartEntity> cartItems = userCartService.getCartItems(userId);
         if (cartItems.isEmpty()) {
             throw new InvalidRequestException("장바구니가 비었습니다.");
@@ -53,5 +54,21 @@ public class UserOrderService {
         userCartService.removeAllCartItem(userId);
 
         return new PlaceOrderResponseDto(order.getId(), "store.getStoreTitle()", totalPrice, order.getPayment());
+    }
+
+    public void cancelOrder(Long userId, Long orderId) {
+        UserOrderEntity order = userOrderRepository.findById(orderId)
+                .orElseThrow(() -> new InvalidRequestException("주문 내역이 존재하지 않습니다."));
+
+        if (!order.getUser().getId().equals(userId)) {
+            throw new InvalidRequestException("본인의 주문만 취소할 수 있습니다.");
+        }
+
+        if (!OrderStatus.PENDING.equals(order.getOrderStatus())) {
+            throw new InvalidRequestException("주문을 취소할 수 없습니다.");
+        }
+
+        order.updateOrderStatus(OrderStatus.CANCELED);
+        userOrderRepository.save(order);
     }
 }
