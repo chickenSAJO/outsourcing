@@ -7,6 +7,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreErrorMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
+import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class StoreService {
     @Transactional
     public StoreSaveResponseDto saveStore(StoreSaveRequestDto dto) {
         if (storeRepository.countByUserId(dto.getUser().getId()) >= 3){
-            throw new IllegalStateException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
+            throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
         }
 
         StoreEntity storeEntity = new StoreEntity(
@@ -45,7 +46,7 @@ public class StoreService {
     @Transactional
     public StoreUpdateResponseDto updateStore(Long storeId) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalStateException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
+                .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         storeEntity.update(
                 storeEntity.getStoreTitle(),
                 storeEntity.getOpenTime(),
@@ -84,7 +85,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public StoreOneResponseDto findOneStore(Long storeId) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalStateException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
+                .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         return new StoreOneResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder());
     }
 
