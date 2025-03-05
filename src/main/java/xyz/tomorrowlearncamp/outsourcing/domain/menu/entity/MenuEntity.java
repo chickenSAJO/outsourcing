@@ -9,7 +9,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 
 @Getter
 @Entity
-@Table(name = "MENU")
+@Table(name = "menu")
 @NoArgsConstructor
 public class MenuEntity {
     @Id

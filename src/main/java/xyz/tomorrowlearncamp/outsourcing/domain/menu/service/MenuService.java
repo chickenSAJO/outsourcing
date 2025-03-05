@@ -10,7 +10,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDt
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.UpdateMenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.enums.MenuErrorMessage;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.enums.ErrorMenuMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
@@ -28,7 +28,7 @@ public class MenuService {
     public AddMenuResponseDto addMenu(AddMenuRequestDto addMenuRequestDto, Long ownerId) {
         StoreEntity store = storeRepository.findById(addMenuRequestDto.getStoreId())
                 .orElseThrow(
-                        () -> new InvalidRequestException(MenuErrorMessage.NOT_ALLOWED_ADD_MENU.getErrorMessage())
+                        () -> new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_ADD_MENU.getErrorMessage())
                 );
 
         MenuEntity menu = new MenuEntity(
@@ -47,10 +47,10 @@ public class MenuService {
     @Transactional(readOnly = true)
     public MenuResponseDto findById(Long menuId, Long ownerId) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage())
+                () -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage())
         );
         if (!Objects.equals(ownerId, menu.getStore().getUser().getId())) {
-            throw new InvalidRequestException("본인의 가게만 메뉴를 조회할 수 있습니다.");
+            throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_VIEW_MENU.getErrorMessage());
         }
         return MenuResponseDto.from(menu);
     }
@@ -58,11 +58,11 @@ public class MenuService {
     @Transactional
     public UpdateMenuResponseDto updateMenu(Long menuId, UpdateMenuRequestDto updateRequestDto, Long ownerId) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage())
+                () -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage())
         );
 
         if (!Objects.equals(ownerId, menu.getStore().getUser().getId())) {
-            throw new InvalidRequestException("본인의 가게만 메뉴를 수정할 수 있습니다.");
+            throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_UPDATE_MENU.getErrorMessage());
         }
 
         menu.updateMenu(
@@ -78,11 +78,11 @@ public class MenuService {
     @Transactional
     public void deleteMenuById(Long menuId, Long ownerId) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
-                () -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage())
+                () -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage())
         );
 
         if (!Objects.equals(ownerId, menu.getStore().getUser().getId())) {
-            throw new InvalidRequestException("본인의 가게만 메뉴를 삭제할 수 있습니다.");
+            throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_REMOVE_MENU.getErrorMessage());
         }
 
         menu.deleteMenu();
