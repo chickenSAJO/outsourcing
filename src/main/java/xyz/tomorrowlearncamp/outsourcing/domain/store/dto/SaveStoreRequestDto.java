@@ -13,15 +13,15 @@ import java.time.LocalTime;
 @Getter
 //@RequiredArgsConstructor
 public class SaveStoreRequestDto {
-    @NotNull
+    @NotBlank
     @Size(max = 100) //100문자까지
     private String storeTitle;
 
     @NotBlank
-    private LocalTime openTime;//00:00:00 형식
+    private LocalTime openTime;//00:00:00 형식 //string 변경?
 
     @NotBlank
-    private LocalTime closeTime;//00:00:00 형식
+    private LocalTime closeTime;//00:00:00 형식 //string 변경?
 
     @Range(min=0, max=99999) //0원부터 10만원 미만까지 (null허용)
     private int minimumOrder;

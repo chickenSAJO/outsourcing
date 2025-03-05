@@ -19,11 +19,12 @@ import java.util.List;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final MenuRepository menuRepository;
+    private final int STORE_CREATION_LIMIT = 3;
 
     //가게 생성
     @Transactional
     public SaveStoreResponseDto saveStore(SaveStoreRequestDto dto) {
-        if (storeRepository.countByUserId(dto.getUser().getId()) >= 3){
+        if (storeRepository.countByUserId(dto.getUser().getId()) >= STORE_CREATION_LIMIT){
             throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
         }
 
@@ -43,6 +44,7 @@ public class StoreService {
                 storeEntity.getMinimumOrder(),
                 storeEntity.getUser().getName()
         );
+        //return SaveStoreResponseDto.from(storeEntity);
     }
 
     //가게 수정
@@ -63,6 +65,7 @@ public class StoreService {
                 storeEntity.getCloseTime(),
                 storeEntity.getMinimumOrder()
         );
+        //return UpdateStoreResponseDto.from(storeEntity);
     }
 
     //가게 다건 조회
@@ -91,6 +94,7 @@ public class StoreService {
                 .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         List<MenuEntity> menuList = menuRepository.findAllByStore(storeEntity);//todo: 처리해서 메뉴 넣어줄 예정.
         return new OneStoreResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder(), menuList);
+        //return OneStoreResponseDto.from(storeEntity);
     }
 
     //가게 삭제
