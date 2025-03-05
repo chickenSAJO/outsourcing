@@ -1,14 +1,13 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.user.controller;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.PatchInfoUserRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.PatchPasswordUserRequestDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.UpdateInfoUserRequestDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.UpdatePasswordUserRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.response.InfoUserResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
 import xyz.tomorrowlearncamp.outsourcing.global.etc.RegexpType;
@@ -32,9 +31,9 @@ public class UserController {
     @PatchMapping("")
     public ResponseEntity<Void> patchInfoUser(
             @SessionAttribute(name = "LOGIN_USER") Long loginUser,
-            @Valid @RequestBody PatchInfoUserRequestDto requestDto
+            @Valid @RequestBody UpdateInfoUserRequestDto requestDto
     ) {
-        userService.patchInfoUser(loginUser, requestDto.getNickname(), requestDto.getAddress());
+        userService.updateUserInfo(loginUser, requestDto.getNickname(), requestDto.getAddress());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -42,9 +41,9 @@ public class UserController {
     @PatchMapping("/password")
     public ResponseEntity<Void> patchPasswordUser(
             @SessionAttribute(name = "LOGIN_USER") Long loginUser,
-            @Valid @RequestBody PatchPasswordUserRequestDto requestDto
+            @Valid @RequestBody UpdatePasswordUserRequestDto requestDto
     ) {
-        userService.patchPasswordUser(loginUser, requestDto.getOldPassword(), requestDto.getNewPassword());
+        userService.updateUserPassword(loginUser, requestDto.getOldPassword(), requestDto.getNewPassword());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -8,12 +8,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PatchInfoUserRequestDto {
+public class UpdateInfoUserRequestDto {
 
-    @NotBlank
+    @NotNull
     @Size(min = 1, max = 10)
     private String nickname;
 
-    @NotNull
     private String address;
 }

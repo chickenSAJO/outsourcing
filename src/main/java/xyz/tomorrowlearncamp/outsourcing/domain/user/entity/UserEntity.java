@@ -46,7 +46,6 @@ public class UserEntity extends BaseEntity {
         this.isDeleted = false;
     }
 
-
     public void patchInfoUser(String nickname, String address) {
         this.nickname = nickname;
         this.address = address;

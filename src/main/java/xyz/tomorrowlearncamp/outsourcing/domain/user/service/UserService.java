@@ -44,8 +44,7 @@ public class UserService {
     }
 
     @Transactional
-    public void patchInfoUser(Long userId, @NotBlank @Size(min = 1, max = 10) String nickname, @NotNull String address) {
-
+    public void updateUserInfo(Long userId, @NotBlank @Size(min = 1, max = 10) String nickname, @NotNull String address) {
         UserEntity user = userRepository.findById(userId).orElseThrow(
                 () -> new InvalidRequestException(ErrorUserMessage.NOT_FOUND_USER.getErrorMassage())
         );
@@ -54,7 +53,7 @@ public class UserService {
     }
 
     @Transactional
-    public void patchPasswordUser(Long userId, @NotNull String oldPassword, @NotNull @Pattern(regexp = RegexpType.PASSWORD) String newPassword) {
+    public void updateUserPassword(Long userId, @NotNull String oldPassword, @NotNull @Pattern(regexp = RegexpType.PASSWORD) String newPassword) {
         UserEntity user = userRepository.findById(userId).orElseThrow(
                 () -> new InvalidRequestException(ErrorUserMessage.NOT_FOUND_USER.getErrorMassage())
         );

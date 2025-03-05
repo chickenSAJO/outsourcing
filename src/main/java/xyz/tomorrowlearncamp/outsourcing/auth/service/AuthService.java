@@ -25,7 +25,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-
     public Long signup(SignupRequestDto dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new InvalidRequestException(AuthValidationMessages.EMAIL_DUPLICATION_MESSAGE);
