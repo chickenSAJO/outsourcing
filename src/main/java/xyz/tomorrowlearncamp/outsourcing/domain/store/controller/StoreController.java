@@ -25,8 +25,8 @@ public class StoreController {
 
     //가게 수정
     @PutMapping("/{storeId}")
-    public ResponseEntity<UpdateStoreResponseDto> updateStore(@SessionAttribute(name = "LOGIN_USER") Long userId, @NotNull @Positive @PathVariable Long storeId){
-        return ResponseEntity.ok(storeService.updateStore(userId, storeId));
+    public ResponseEntity<UpdateStoreResponseDto> updateStore(@SessionAttribute(name = "LOGIN_USER") Long userId, @NotNull @Positive @PathVariable Long storeId, @Valid @RequestBody UpdateStoreRequestDto dto){
+        return ResponseEntity.ok(storeService.updateStore(userId, storeId, dto));
     }
 
     //가게 다건 조회

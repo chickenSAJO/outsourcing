@@ -56,7 +56,8 @@ public class StoreService {
     @Transactional
     public UpdateStoreResponseDto updateStore(
             Long userId,
-            Long storeId
+            Long storeId,
+            UpdateStoreRequestDto dto
     ) {
         if (storeRepository.countByUser_Id(userId) >= STORE_CREATION_LIMIT){
             throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
@@ -69,13 +70,13 @@ public class StoreService {
 //            throw new InvalidRequestException();
 //        }
 
-        UserEntity user = userService.getUserEntity(userId);
+        //UserEntity user = userService.getUserEntity(userId);
 
         storeEntity.update(
-                storeEntity.getStoreTitle(),
-                storeEntity.getOpenTime(),
-                storeEntity.getCloseTime(),
-                storeEntity.getMinimumOrder()
+                dto.getStoreTitle(),
+                toLocalTime(dto.getOpenTime()),
+                toLocalTime(dto.getCloseTime()),
+                dto.getMinimumOrder()
         );
 //        return new UpdateStoreResponseDto(
 //                storeEntity.getStoreId(),
