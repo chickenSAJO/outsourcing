@@ -13,6 +13,8 @@ import xyz.tomorrowlearncamp.outsourcing.domain.order.entity.UserOrderEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.enums.ErrorOrderMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.enums.OrderStatus;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.repository.OrderRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.List;
@@ -26,9 +28,12 @@ public class UserOrderService {
     private final OrderRepository orderRepository;
     private final UserOrderListService userOrderListService;
     private final UserCartService userCartService;
+    private final UserService userService;
 
     @Transactional
     public PlaceOrderResponseDto placeOrder(Long userId, @Valid PlaceOrderRequestDto dto) {
+
+        UserEntity user = userService.getUserEntity(userId);
         List<CartEntity> cartItems = userCartService.getCartItems(userId);
         if (cartItems.isEmpty()) {
             throw new InvalidRequestException(ErrorCartMessage.EMPTY_CART.getMessage());
@@ -50,7 +55,7 @@ public class UserOrderService {
 //            throw new InvalidRequestException(ErrorOrderMessage.MINIMUM_ORDER_NOT_MET.getMessage());
 //        }
 
-        UserOrderEntity order = new UserOrderEntity(totalPrice, dto.getPayment());
+        UserOrderEntity order = new UserOrderEntity(user/*, store*/, totalPrice, dto.getPayment());
         orderRepository.save(order);
 
         userOrderListService.saveOrderList(order, cartItems);
