@@ -36,15 +36,15 @@ public class StoreService {
                 dto.getUser()
         );
         storeRepository.save(storeEntity);
-        return new SaveStoreResponseDto(
-                storeEntity.getStoreId(),
-                storeEntity.getStoreTitle(),
-                storeEntity.getOpenTime(),
-                storeEntity.getCloseTime(),
-                storeEntity.getMinimumOrder(),
-                storeEntity.getUser().getName()
-        );
-        //return SaveStoreResponseDto.from(storeEntity);
+//        return new SaveStoreResponseDto(
+//                storeEntity.getStoreId(),
+//                storeEntity.getStoreTitle(),
+//                storeEntity.getOpenTime(),
+//                storeEntity.getCloseTime(),
+//                storeEntity.getMinimumOrder(),
+//                storeEntity.getUser().getName()
+//        );
+        return SaveStoreResponseDto.from(storeEntity);
     }
 
     //가게 수정
@@ -58,14 +58,14 @@ public class StoreService {
                 storeEntity.getCloseTime(),
                 storeEntity.getMinimumOrder()
         );
-        return new UpdateStoreResponseDto(
-                storeEntity.getStoreId(),
-                storeEntity.getStoreTitle(),
-                storeEntity.getOpenTime(),
-                storeEntity.getCloseTime(),
-                storeEntity.getMinimumOrder()
-        );
-        //return UpdateStoreResponseDto.from(storeEntity);
+//        return new UpdateStoreResponseDto(
+//                storeEntity.getStoreId(),
+//                storeEntity.getStoreTitle(),
+//                storeEntity.getOpenTime(),
+//                storeEntity.getCloseTime(),
+//                storeEntity.getMinimumOrder()
+//        );
+        return UpdateStoreResponseDto.from(storeEntity);
     }
 
     //가게 다건 조회
@@ -93,8 +93,15 @@ public class StoreService {
         StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         List<MenuEntity> menuList = menuRepository.findAllByStore(storeEntity);//todo: 처리해서 메뉴 넣어줄 예정.
-        return new OneStoreResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder(), menuList);
-        //return OneStoreResponseDto.from(storeEntity);
+//        return new OneStoreResponseDto(
+//                storeEntity.getStoreId(),
+//                storeEntity.getStoreTitle(),
+//                storeEntity.getOpenTime(),
+//                storeEntity.getCloseTime(),
+//                storeEntity.getMinimumOrder(),
+//                menuList
+//        );
+        return OneStoreResponseDto.from(storeEntity, menuList);
     }
 
     //가게 삭제
