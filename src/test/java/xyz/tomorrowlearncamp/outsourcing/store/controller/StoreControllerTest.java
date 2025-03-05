@@ -138,12 +138,13 @@ public class StoreControllerTest {
     public void 가게와_메뉴를_확인한다() throws Exception {
         // given
         OneStoreResponseDto responseDto = new OneStoreResponseDto(
-                1L,
-                "국밥맛집",
-                LocalTime.of(9,0,0),
-                LocalTime.of(21,0,0),
-                15000,
-                //todo: 메뉴 연결되면 작성할 예정
+            1L,
+            "국밥맛집",
+            LocalTime.of(9,0,0),
+            LocalTime.of(21,0,0),
+            15000,
+
+            //todo: 메뉴 연결되면 작성할 예정
         );
 
         given(storeService.findOneStore(any(Long.class))).willReturn(responseDto);

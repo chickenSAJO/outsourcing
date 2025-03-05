@@ -19,32 +19,32 @@ public class StoreController {
 
     //가게 생성
     @PostMapping("")
-    public ResponseEntity<SaveStoreResponseDto> saveStore(@Valid @RequestBody SaveStoreRequestDto dto){
-        return ResponseEntity.ok(storeService.saveStore(dto));
+    public ResponseEntity<SaveStoreResponseDto> saveStore(@SessionAttribute(name = "LOGIN_USER") Long userId, @Valid @RequestBody SaveStoreRequestDto dto){
+        return ResponseEntity.ok(storeService.saveStore(userId, dto));
     }
 
     //가게 수정
     @PutMapping("/{storeId}")
-    public ResponseEntity<UpdateStoreResponseDto> updateStore(@NotNull @Positive @PathVariable Long storeId){
-        return ResponseEntity.ok(storeService.updateStore(storeId));
+    public ResponseEntity<UpdateStoreResponseDto> updateStore(@SessionAttribute(name = "LOGIN_USER") Long userId, @NotNull @Positive @PathVariable Long storeId){
+        return ResponseEntity.ok(storeService.updateStore(userId, storeId));
     }
 
     //가게 다건 조회
     @GetMapping("")
-    public ResponseEntity<List<StoreResponseDto>> findAllStore(){
-        return ResponseEntity.ok(storeService.findAllStore());
+    public ResponseEntity<List<StoreResponseDto>> findAllStore(@SessionAttribute(name = "LOGIN_USER") Long userId){
+        return ResponseEntity.ok(storeService.findAllStore(userId));
     }
 
     //가게 단건 조회
     /*todo:메뉴 연결 필요*/
     @GetMapping("/{storeId}")
-    public ResponseEntity<OneStoreResponseDto> findOneStore(@NotNull @Positive @PathVariable Long storeId){
-        return ResponseEntity.ok(storeService.findOneStore(storeId));
+    public ResponseEntity<OneStoreResponseDto> findOneStore(@SessionAttribute(name = "LOGIN_USER") Long userId, @NotNull @Positive @PathVariable Long storeId){
+        return ResponseEntity.ok(storeService.findOneStore(userId, storeId));
     }
 
     //가게 삭제
     @DeleteMapping("/{storeId}")
-    public void deleteStore(@NotNull @Positive @PathVariable Long storeId){
-        storeService.deleteStore(storeId);
+    public void deleteStore(@SessionAttribute(name = "LOGIN_USER") Long userId, @NotNull @Positive @PathVariable Long storeId){
+        storeService.deleteStore(userId, storeId);
     }
 }
