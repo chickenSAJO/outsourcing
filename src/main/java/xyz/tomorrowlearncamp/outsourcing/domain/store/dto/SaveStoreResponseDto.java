@@ -14,6 +14,7 @@ public class SaveStoreResponseDto {
     private final LocalTime closeTime;
     private final int minimumOrder;
     private final String userName;
+    private boolean is_deleted;
 
     public SaveStoreResponseDto(Long storeId, String storeTitle, LocalTime openTime, LocalTime closeTime, int minimumOrder, String userName) {
         this.storeId = storeId;
@@ -22,6 +23,7 @@ public class SaveStoreResponseDto {
         this.closeTime = closeTime;
         this.minimumOrder = minimumOrder;
         this.userName = userName;
+        this.is_deleted = false;
     }
 
     public static SaveStoreResponseDto from(StoreEntity storeEntity){
