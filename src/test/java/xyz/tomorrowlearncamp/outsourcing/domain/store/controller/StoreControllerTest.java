@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.outsourcing.store.controller;
+package xyz.tomorrowlearncamp.outsourcing.domain.store.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -8,14 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.controller.StoreController;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
-import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -31,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType.ACTIVE;
 
 @WebMvcTest(StoreController.class)
 public class StoreControllerTest {
@@ -51,15 +49,15 @@ public class StoreControllerTest {
     @Test
     public void 가게를_생성한다() throws Exception {
         // given
-        UserEntity mockUser = new UserEntity(
-                "test@naver.com",
-                "Test1234!23",
-                "010-1234-5678",
-                "사장닉네임",
-                "사장명",
-                "서울시 강남구",
-                Usertype.OWNER
-        );
+//        UserEntity mockUser = new UserEntity(
+//                "test@naver.com",
+//                "Test1234!23",
+//                "010-1234-5678",
+//                "사장닉네임",
+//                "사장명",
+//                "서울시 강남구",
+//                Usertype.OWNER
+//        );
         SaveStoreRequestDto request = new SaveStoreRequestDto(
                 "국밥맛집",
                 "09:00:00",
@@ -140,30 +138,35 @@ public class StoreControllerTest {
     @Test
     public void 가게와_메뉴를_확인한다() throws Exception {
         // given
-        Long id = 1L;
+        Long menuId = 1L;
+        Long storeId = 1L;
         MenuResponseDto menuResponseDto = new MenuResponseDto(
-                id,
+                menuId,
                 "햄버거",
                 "10",
                 10000,
                 "img.jpg",
-                ACTIVE
+                ACTIVE,
+                storeId
         );
+        List<MenuResponseDto> menuList = new ArrayList<>();
+        menuList.add(menuResponseDto);
         OneStoreResponseDto responseDto = new OneStoreResponseDto(
             1L,
             "국밥맛집",
             LocalTime.of(9,0,0),
             LocalTime.of(21,0,0),
             15000,
-            menuResponseDto
-            //todo: 메뉴 연결되면 작성할 예정
+            menuList
         );
 
         given(storeService.findOneStore(any(Long.class), any(Long.class))).willReturn(responseDto);
 
         // when & then
-        mockMvc.perform(get("/api/v1/stores/{storeId}",responseDto.getStoreId())
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/stores/{storeId}?userId=1", responseDto.getStoreId())
+                .contentType(MediaType.APPLICATION_JSON))
+//        mockMvc.perform(get("/api/v1/stores/{storeId}",responseDto.getStoreId())
+//                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("국밥맛집"))  //가게 이름
                 .andExpect(jsonPath("$.minimumOrder").value(15000));  //최소주문금액
@@ -183,20 +186,5 @@ public class StoreControllerTest {
         mockMvc.perform(delete("/api/v1/stores/{storeId}", storeId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-    }
-
-
-
-    //"가게와_메뉴를_확인한다"에 사용
-    private StoreEntity makeStoreEntity(UserEntity user) {
-        StoreEntity store = new StoreEntity(
-                "국밥맛집",
-                LocalTime.of(9,0,0),
-                LocalTime.of(21,0,0),
-                15000,
-                user
-        );
-        store.setStoreId(1L);
-        return store;
     }
 }

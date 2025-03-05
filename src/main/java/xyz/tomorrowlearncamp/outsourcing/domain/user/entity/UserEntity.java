@@ -11,6 +11,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
