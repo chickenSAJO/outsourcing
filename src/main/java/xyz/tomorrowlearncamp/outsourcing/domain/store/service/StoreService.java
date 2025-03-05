@@ -1,7 +1,6 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.store.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
@@ -98,13 +97,14 @@ public class StoreService {
         List<StoreEntity> storeEntities = storeRepository.findAll();
         List<StoreResponseDto> dtos = new ArrayList<>();
         for (StoreEntity storeEntity : storeEntities) {
-            dtos.add(new StoreResponseDto(
-                    storeEntity.getStoreId(),
-                    storeEntity.getStoreTitle(),
-                    storeEntity.getOpenTime(),
-                    storeEntity.getCloseTime(),
-                    storeEntity.getMinimumOrder()
-                    )
+            dtos.add(StoreResponseDto.from(storeEntity)
+//                    new StoreResponseDto(
+//                        storeEntity.getStoreId(),
+//                        storeEntity.getStoreTitle(),
+//                        storeEntity.getOpenTime(),
+//                        storeEntity.getCloseTime(),
+//                        storeEntity.getMinimumOrder()
+//                    )
             );
         }
         return dtos;
