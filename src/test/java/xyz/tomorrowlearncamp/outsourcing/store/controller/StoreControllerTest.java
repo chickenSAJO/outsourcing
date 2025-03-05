@@ -13,6 +13,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,16 +58,16 @@ public class StoreControllerTest {
         );
         StoreSaveRequestDto request = new StoreSaveRequestDto(
                 "국밥맛집",
-                "09:00:00",
-                "21:00:00",
+                LocalTime.of(9,0,0,0),
+                LocalTime.of(21,0,0,0),
                 15000,
                 mockUser
         );
         StoreSaveResponseDto responseDto = new StoreSaveResponseDto(
                 1L,
                 "국밥맛집",
-                "09:00:00",
-                "21:00:00",
+                LocalTime.of(9,0,0,0),
+                LocalTime.of(21,0,0,0),
                 15000,
                 "사장님"
         );
@@ -90,8 +91,8 @@ public class StoreControllerTest {
         StoreUpdateResponseDto responseDto = new StoreUpdateResponseDto(
                 1L,
                 "국밥맛집",
-                "09:00:00",
-                "21:00:00",
+                LocalTime.of(9,0,0,0),
+                LocalTime.of(21,0,0,0),
                 15000
         );
 
@@ -113,8 +114,8 @@ public class StoreControllerTest {
         responseDto.add(new StoreResponseDto(
                 1L,
                 "국밥맛집",
-                "09:00:00",
-                "21:00:00",
+                LocalTime.of(9,0,0,0),
+                LocalTime.of(21,0,0,0),
                 15000
         ));
 
@@ -139,8 +140,8 @@ public class StoreControllerTest {
         StoreOneResponseDto responseDto = new StoreOneResponseDto(
                 1L,
                 "국밥맛집",
-                "09:00:00",
-                "21:00:00",
+                LocalTime.of(9,0,0,0),
+                LocalTime.of(21,0,0,0),
                 15000
         );
 
