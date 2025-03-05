@@ -8,6 +8,8 @@ import xyz.tomorrowlearncamp.outsourcing.domain.order.enums.OrderStatus;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.repository.OrderRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -19,7 +21,7 @@ public class OwnerOrderService {
     public void acceptOrder(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
-        if (!ownerId.equals(order.getStore().getUser().getId())) {
+        if (!Objects.equals(ownerId, order.getStore().getUser().getId())) {
             throw new InvalidRequestException("본인의 가게 주문만 수락할 수 있습니다.");
         }
 
@@ -34,7 +36,7 @@ public class OwnerOrderService {
     public void rejectOrder(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
-        if (!ownerId.equals(order.getStore().getUser().getId())) {
+        if (!Objects.equals(ownerId, order.getStore().getUser().getId())) {
             throw new InvalidRequestException("본인의 가게 주문만 거절할 수 있습니다.");
         }
 

@@ -16,6 +16,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.order.repository.OrderRepository
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +63,7 @@ public class UserOrderService {
         UserOrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new InvalidRequestException(ErrorOrderMessage.ORDER_NOT_FOUND.getMessage()));
 
-        if (!order.getUser().getId().equals(userId)) {
+        if (!Objects.equals(userId, order.getUser().getId())) {
             throw new InvalidRequestException(ErrorOrderMessage.ONLY_USER_CAN_CANCEL.getMessage());
         }
 

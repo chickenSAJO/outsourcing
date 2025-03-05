@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 
 
 @Getter
@@ -15,9 +16,9 @@ public class MenuEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "STORE_ID", nullable = false)
-//    private Store store;
+    @ManyToOne
+    @JoinColumn(name = "STORE_ID", nullable = false)
+    private StoreEntity store;
 
     @Column(name = "menu_name", length = 100, nullable = false)
     private String menuName;
