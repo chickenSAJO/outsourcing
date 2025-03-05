@@ -9,6 +9,8 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.UserCartRespon
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.enums.ErrorCartMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.repository.CartRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
@@ -22,6 +24,7 @@ public class UserCartService {
 
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
+    private final MenuRepository menuRepository;
 
     @Transactional
     public AddCartResponseDto addCartItem(
@@ -31,12 +34,15 @@ public class UserCartService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new InvalidRequestException(ErrorCartMessage.USER_NOT_FOUND.getMessage()));
 
+        MenuEntity menu = menuRepository.findById(dto.getMenuId())
+                .orElseThrow(() -> new InvalidRequestException("메뉴가 존재하지 않습니다."));
+
         CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, dto.getMenuId())
                 .map(existingCart -> {
                     existingCart.updateQuantity(dto.getQuantity());
                     return existingCart;
                 })
-                .orElseGet(() -> cartRepository.save(new CartEntity(user, dto.getMenuId(), dto.getQuantity())));
+                .orElseGet(() -> cartRepository.save(new CartEntity(user, menu, dto.getQuantity())));
 
         return AddCartResponseDto.from(cart);
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
@@ -21,18 +22,16 @@ public class CartEntity extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "menu_id", nullable = false)
-//    MenuEntity menu;
-    @Column(nullable = false) // 임시 필드
-    private Long menuId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id", nullable = false)
+    MenuEntity menu;
 
     @Column(nullable = false)
     private Integer quantity;
 
-    public CartEntity(UserEntity user, Long menuId, int quantity) {
+    public CartEntity(UserEntity user,MenuEntity menu, int quantity) {
         this.user = user;
-        this.menuId = menuId;
+        this.menu = menu;
         this.quantity = quantity;
     }
 
