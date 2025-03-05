@@ -17,7 +17,6 @@ public class OwnerWriteCommentController {
 
     private final OwnerWriteCommentService ownerWriteCommentService;
 
-
     @PostMapping("/{reviewId}")
     public ResponseEntity<Void> saveComment(
             @SessionAttribute(name = "LOGIN_USER") Long userId,

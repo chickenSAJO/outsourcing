@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.dto.response.ReadReviewResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.repository.ReviewRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
 @Getter
@@ -18,11 +20,11 @@ public class ReviewEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     // todo : Entity 연결하기
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private UserEntity user;
-//
 //    @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "order_id")
 //    private OrderEntity order;
@@ -42,7 +44,8 @@ public class ReviewEntity extends BaseEntity {
     private String reviewImageUrl;
 
     @Builder
-    public ReviewEntity(/*UserEntity user, OrderEntity order*/Long storeId, String contents, Integer star, @Nullable String reviewImageUrl) {
+    public ReviewEntity(UserEntity user,/* OrderEntity order*/Long storeId, String contents, Integer star, @Nullable String reviewImageUrl) {
+        this.user = user;
         this.storeId = storeId;
         this.contents = contents;
         this.star = star;
