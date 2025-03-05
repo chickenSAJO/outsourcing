@@ -45,7 +45,7 @@ public class StoreControllerTest {
 
     //saveStore 테스트
     @Test
-    public void saveStore() throws Exception {
+    public void 가게를_생성한다() throws Exception {
         // given
         UserEntity mockUser = new UserEntity(
                 "test@naver.com",
@@ -58,16 +58,16 @@ public class StoreControllerTest {
         );
         StoreSaveRequestDto request = new StoreSaveRequestDto(
                 "국밥맛집",
-                LocalTime.of(9,0,0,0),
-                LocalTime.of(21,0,0,0),
+                LocalTime.of(9,0,0),
+                LocalTime.of(21,0,0),
                 15000,
                 mockUser
         );
         StoreSaveResponseDto responseDto = new StoreSaveResponseDto(
                 1L,
                 "국밥맛집",
-                LocalTime.of(9,0,0,0),
-                LocalTime.of(21,0,0,0),
+                LocalTime.of(9,0,0),
+                LocalTime.of(21,0,0),
                 15000,
                 "사장님"
         );
@@ -86,13 +86,13 @@ public class StoreControllerTest {
 
     //updateStore 테스트
     @Test
-    public void updateStore() throws Exception {
+    public void 가게의_정보를_수정한다() throws Exception {
         // given
         StoreUpdateResponseDto responseDto = new StoreUpdateResponseDto(
                 1L,
                 "국밥맛집",
-                LocalTime.of(9,0,0,0),
-                LocalTime.of(21,0,0,0),
+                LocalTime.of(9,0,0),
+                LocalTime.of(21,0,0),
                 15000
         );
 
@@ -108,14 +108,14 @@ public class StoreControllerTest {
 
     //findAllStore 테스트
     @Test
-    public void findAllStore() throws Exception {
+    public void 모든_가게를_본다() throws Exception {
         // given
         List<StoreResponseDto> responseDto = new ArrayList<>();
         responseDto.add(new StoreResponseDto(
                 1L,
                 "국밥맛집",
-                LocalTime.of(9,0,0,0),
-                LocalTime.of(21,0,0,0),
+                LocalTime.of(9,0,0),
+                LocalTime.of(21,0,0),
                 15000
         ));
 
@@ -133,16 +133,17 @@ public class StoreControllerTest {
 
 
     //findOneStore 테스트
-    /*메뉴 부분 추가 요망*/
+    /*todo: 메뉴 부분 추가 요망*/
     @Test
-    public void findOneStore() throws Exception {
+    public void 가게와_메뉴를_확인한다() throws Exception {
         // given
         StoreOneResponseDto responseDto = new StoreOneResponseDto(
                 1L,
                 "국밥맛집",
-                LocalTime.of(9,0,0,0),
-                LocalTime.of(21,0,0,0),
-                15000
+                LocalTime.of(9,0,0),
+                LocalTime.of(21,0,0),
+                15000,
+                //todo: 메뉴 연결되면 작성할 예정
         );
 
         given(storeService.findOneStore(any(Long.class))).willReturn(responseDto);
@@ -159,7 +160,7 @@ public class StoreControllerTest {
 
     //deleteStore 테스트
     @Test
-    public void deleteStore() throws Exception {
+    public void 가게를_폐업한다() throws Exception {
         // given
         Long storeId = 1L;
 

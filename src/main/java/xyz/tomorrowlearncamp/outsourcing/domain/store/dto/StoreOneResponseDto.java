@@ -13,4 +13,5 @@ public class StoreOneResponseDto {
     private final LocalTime openTime;
     private final LocalTime closeTime;
     private final int minimumOrder;
+    private final MenuEntity menu;
 }

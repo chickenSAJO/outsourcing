@@ -3,6 +3,7 @@ package xyz.tomorrowlearncamp.outsourcing.domain.store.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreErrorMessage;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final MenuRepository menuRepository;
 
     //가게 생성
     @Transactional
@@ -86,7 +88,9 @@ public class StoreService {
     public StoreOneResponseDto findOneStore(Long storeId) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
-        return new StoreOneResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder());
+        MenuEntity menu = menuRepository.findByStore(storeEntity);
+        //처리해서 메뉴 넣어줌.
+        return new StoreOneResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder(), menu);
     }
 
     //가게 삭제
