@@ -10,6 +10,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 @Getter
 @Entity
 @NoArgsConstructor
+@Table(name = "comment_entity")
 public class CommentEntity extends BaseEntity {
 
     @Id

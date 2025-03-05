@@ -25,7 +25,7 @@ public class UserWriteReviewController {
             @SessionAttribute(name = "LOGIN_USER") Long userId,
             @Valid @RequestBody WriteReviewRequestDto requestDto
     ) {
-        userWriteReviewService.saveReview(userId, /*requestDto.getOrderId(),*/requestDto.getStoreId(), requestDto.getContents(), requestDto.getStar(), requestDto.getReviewUrl());
+        userWriteReviewService.saveReview(userId, requestDto.getOrderId(), requestDto.getContents(), requestDto.getStar(), requestDto.getReviewUrl());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
