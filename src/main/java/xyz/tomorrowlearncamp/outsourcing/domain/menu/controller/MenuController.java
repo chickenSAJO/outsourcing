@@ -36,7 +36,7 @@ public class MenuController {
             //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
             @PathVariable Long menuId,
             @Valid @RequestBody UpdateMenuRequestDto updateRequestDto) {
-        return ResponseEntity.ok(menuService.updateMenu(menuId,updateRequestDto));
+        return ResponseEntity.ok(menuService.updateMenu(menuId, updateRequestDto));
     }
 
     @DeleteMapping("/{menuId}")

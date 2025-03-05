@@ -28,13 +28,14 @@ public class MenuService {
                 .menuImageUrl(addMenuRequestDto.getMenuImageUrl())
                 .menuStatus(MenuType.valueOf(addMenuRequestDto.getMenuStatus()))
                 .build();
+
         MenuEntity addMenu = menuRepository.save(menu);
-        return new AddMenuResponseDto(addMenu.getId(), addMenu.getMenuName(), addMenu.getMenuContent(), addMenu.getMenuPrice(), addMenu.getMenuImageUrl());
+        return AddMenuResponseDto.from(addMenu);
     }
 
     @Transactional(readOnly = true)
     public MenuResponseDto findById(Long menuId) {
-        MenuEntity menu  = menuRepository.findById(menuId).orElseThrow(
+        MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage())
         );
         return MenuResponseDto.from(menu);
@@ -46,12 +47,18 @@ public class MenuService {
                 () -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage())
         );
 
-        menu.updateMenu(updateRequestDto.getMenuName(),updateRequestDto.getMenuContent(),updateRequestDto.getMenuPrice(),updateRequestDto.getMenuImageUrl(), MenuType.valueOf(updateRequestDto.getMenuStatus()));
-        return new UpdateMenuResponseDto(menu.getId(), menu.getMenuName(), menu.getMenuContent(),menu.getMenuPrice(),menu.getMenuImageUrl(),menu.getMenuStatus());
+        menu.updateMenu(
+                updateRequestDto.getMenuName(),
+                updateRequestDto.getMenuContent(),
+                updateRequestDto.getMenuPrice(),
+                updateRequestDto.getMenuImageUrl(),
+                MenuType.valueOf(updateRequestDto.getMenuStatus())
+        );
+        return UpdateMenuResponseDto.from(menu);
     }
 
     @Transactional
-    public void deleteMenuById(Long menuId){
+    public void deleteMenuById(Long menuId) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage())
         );

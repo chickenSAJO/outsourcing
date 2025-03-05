@@ -19,20 +19,20 @@ public class MenuEntity {
 //    @JoinColumn(name = "STORE_ID", nullable = false)
 //    private Store store;
 
-    @Column(name = "MENU_NAME", length = 100, nullable = false)
+    @Column(name = "menu_name", length = 100, nullable = false)
     private String menuName;
 
-    @Column(name = "MENU_CONTENT", length = 255, nullable = false)
+    @Column(name = "menu_content", length = 255, nullable = false)
     private String menuContent;
 
-    @Column(name = "MENU_PRICE", nullable = false)
+    @Column(name = "menu_price", nullable = false)
     private int menuPrice;
 
-    @Column(name = "MENU_IMAGE_URL")
+    @Column(name = "menu_image_url")
     private String menuImageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "MENU_STATUS", length = 20)
+    @Column(name = "menu_status", length = 20)
     private MenuType menuStatus;
 
 
