@@ -17,7 +17,7 @@ public class UserOrderListEntity {
     private Long id;
 
     @Column(nullable = false)
-    private int count;
+    private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
@@ -27,8 +27,9 @@ public class UserOrderListEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private UserOrderEntity order;
 
-    public UserOrderListEntity(MenuEntity menu, UserOrderEntity order) {
+    public UserOrderListEntity(MenuEntity menu, UserOrderEntity order, int quantity) {
         this.menu = menu;
         this.order = order;
+        this.quantity = quantity;
     }
 }
