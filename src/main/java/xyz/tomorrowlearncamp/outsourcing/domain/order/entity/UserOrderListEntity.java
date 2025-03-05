@@ -8,7 +8,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 
 @Getter
 @Entity
-@Table(name = "order_list")
+@Table(name = "order_list_entity")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserOrderListEntity {
 

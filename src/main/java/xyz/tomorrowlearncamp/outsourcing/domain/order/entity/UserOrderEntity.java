@@ -10,7 +10,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 
 @Getter
 @Entity
-@Table(name = "order")
+@Table(name = "order_entity")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserOrderEntity {
 
