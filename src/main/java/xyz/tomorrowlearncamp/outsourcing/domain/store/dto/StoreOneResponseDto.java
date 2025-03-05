@@ -3,12 +3,14 @@ package xyz.tomorrowlearncamp.outsourcing.domain.store.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalTime;
+
 @Getter
 @RequiredArgsConstructor
 public class StoreOneResponseDto {
     private final Long storeId;
     private final String storeTitle;
-    private final String openTime;
-    private final String closeTime;
+    private final LocalTime openTime;
+    private final LocalTime closeTime;
     private final int minimumOrder;
 }

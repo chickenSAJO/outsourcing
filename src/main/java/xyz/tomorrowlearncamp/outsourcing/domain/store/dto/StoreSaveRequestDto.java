@@ -3,11 +3,11 @@ package xyz.tomorrowlearncamp.outsourcing.domain.store.dto;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 //import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreTimeType;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
+
+import java.time.LocalTime;
 
 @Getter
 //@RequiredArgsConstructor
@@ -16,19 +16,17 @@ public class StoreSaveRequestDto {
     private String storeTitle;
 
     @NotBlank
-    @Pattern(regexp = StoreTimeType.TIME_FORMAT_PATTERN)//00:00:00 형식
-    private String openTime;
+    private LocalTime openTime;//00:00:00 형식
 
     @NotBlank
-    @Pattern(regexp = StoreTimeType.TIME_FORMAT_PATTERN) //00:00:00 형식
-    private String closeTime;
+    private LocalTime closeTime;//00:00:00 형식
 
     @Range(min=0, max=99999) //0원부터 10만원 미만까지 (null허용)
     private int minimumOrder;
 
     private UserEntity user;
 
-    public StoreSaveRequestDto(String storeTitle, String openTime, String closeTime, int minimumOrder, UserEntity user) {
+    public StoreSaveRequestDto(String storeTitle, LocalTime openTime, LocalTime closeTime, int minimumOrder, UserEntity user) {
         this.storeTitle = storeTitle;
         this.openTime = openTime;
         this.closeTime = closeTime;

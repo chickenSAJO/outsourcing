@@ -13,36 +13,37 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/stores")
 public class StoreController {
     private final StoreService storeService;
 
     //가게 생성
-    @PostMapping("/api/v1/stores")
+    @PostMapping("")
     public ResponseEntity<StoreSaveResponseDto> saveStore(@Valid @RequestBody StoreSaveRequestDto dto){
         return ResponseEntity.ok(storeService.saveStore(dto));
     }
 
     //가게 수정
-    @PutMapping("/api/v1/stores/{storeId}")
+    @PutMapping("/{storeId}")
     public ResponseEntity<StoreUpdateResponseDto> updateStore(@NotNull @Positive @PathVariable Long storeId){
         return ResponseEntity.ok(storeService.updateStore(storeId));
     }
 
     //가게 다건 조회
-    @GetMapping("/api/v1/stores")
+    @GetMapping("")
     public ResponseEntity<List<StoreResponseDto>> findAllStore(){
         return ResponseEntity.ok(storeService.findAllStore());
     }
 
     //가게 단건 조회
-    /*메뉴 연결 필요*/
-    @GetMapping("/api/v1/stores/{storeId}")
+    /*todo:메뉴 연결 필요*/
+    @GetMapping("/{storeId}")
     public ResponseEntity<StoreOneResponseDto> findOneStore(@NotNull @Positive @PathVariable Long storeId){
         return ResponseEntity.ok(storeService.findOneStore(storeId));
     }
 
     //가게 삭제
-    @DeleteMapping("/api/v1/stores/{storeId}")
+    @DeleteMapping("/{storeId}")
     public void deleteStore(@NotNull @Positive @PathVariable Long storeId){
         storeService.deleteStore(storeId);
     }

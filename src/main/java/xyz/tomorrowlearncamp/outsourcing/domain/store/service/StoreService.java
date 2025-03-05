@@ -80,7 +80,7 @@ public class StoreService {
     }
 
     //가게 단건 조회
-    /*메뉴 연결 필요*/
+    /*todo:메뉴 연결 필요*/
     @Transactional(readOnly = true)
     public StoreOneResponseDto findOneStore(Long storeId) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
