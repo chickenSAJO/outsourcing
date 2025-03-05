@@ -23,11 +23,14 @@ public class AddMenuRequestDto {
     @NotBlank
     private String menuStatus;
 
-    public AddMenuRequestDto(String menuName, String menuContent, int menuPrice, String menuImageUrl, String menuStatus) {
+    private Long storeId;
+
+    public AddMenuRequestDto(String menuName, String menuContent, int menuPrice, String menuImageUrl, String menuStatus, Long storeId) {
         this.menuName = menuName;
         this.menuContent = menuContent;
         this.menuPrice = menuPrice;
         this.menuImageUrl = menuImageUrl;
         this.menuStatus = menuStatus;
+        this.storeId = storeId;
     }
 }
