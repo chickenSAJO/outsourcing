@@ -1,7 +1,6 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,21 +9,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddMenuRequestDto {
 
-    @NotNull
     @NotBlank
     private String menuName;
 
-    @NotNull
     @NotBlank
     private String menuContent;
 
-    @NotNull
     @Positive
     private int menuPrice;
 
     private String menuImageUrl;
 
-    @NotNull
     @NotBlank
     private String menuStatus;
+
+    public AddMenuRequestDto(String menuName, String menuContent, int menuPrice, String menuImageUrl, String menuStatus) {
+        this.menuName = menuName;
+        this.menuContent = menuContent;
+        this.menuPrice = menuPrice;
+        this.menuImageUrl = menuImageUrl;
+        this.menuStatus = menuStatus;
+    }
 }

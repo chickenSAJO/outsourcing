@@ -5,7 +5,6 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
 
 @Getter
-
 public class AddMenuResponseDto {
     private final Long menuId;
     private final String menuName;
