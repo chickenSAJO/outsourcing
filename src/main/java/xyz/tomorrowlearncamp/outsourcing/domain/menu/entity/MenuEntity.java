@@ -39,7 +39,7 @@ public class MenuEntity {
 
     @Builder
     public MenuEntity(String menuName, String menuContent, int menuPrice, String menuImageUrl, MenuType menuStatus) {
-//        this.store = store;
+        this.store = store;
         this.menuName = menuName;
         this.menuContent = menuContent;
         this.menuPrice = menuPrice;
