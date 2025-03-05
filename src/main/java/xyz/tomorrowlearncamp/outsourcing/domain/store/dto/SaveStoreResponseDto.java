@@ -7,11 +7,11 @@ import java.time.LocalTime;
 
 @Getter
 @RequiredArgsConstructor
-public class StoreOneResponseDto {
+public class SaveStoreResponseDto {
     private final Long storeId;
     private final String storeTitle;
     private final LocalTime openTime;
     private final LocalTime closeTime;
     private final int minimumOrder;
-    private final MenuEntity menu;
+    private final String userName;
 }

@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 @Getter
 //@RequiredArgsConstructor
-public class StoreSaveRequestDto {
+public class SaveStoreRequestDto {
     @NotNull
     @Size(max = 100) //100문자까지
     private String storeTitle;
@@ -28,7 +28,7 @@ public class StoreSaveRequestDto {
 
     private UserEntity user;
 
-    public StoreSaveRequestDto(String storeTitle, LocalTime openTime, LocalTime closeTime, int minimumOrder, UserEntity user) {
+    public SaveStoreRequestDto(String storeTitle, LocalTime openTime, LocalTime closeTime, int minimumOrder, UserEntity user) {
         this.storeTitle = storeTitle;
         this.openTime = openTime;
         this.closeTime = closeTime;

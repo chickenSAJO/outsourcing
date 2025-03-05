@@ -56,14 +56,14 @@ public class StoreControllerTest {
                 "서울시 강남구",
                 Usertype.OWNER
         );
-        StoreSaveRequestDto request = new StoreSaveRequestDto(
+        SaveStoreRequestDto request = new SaveStoreRequestDto(
                 "국밥맛집",
                 LocalTime.of(9,0,0),
                 LocalTime.of(21,0,0),
                 15000,
                 mockUser
         );
-        StoreSaveResponseDto responseDto = new StoreSaveResponseDto(
+        SaveStoreResponseDto responseDto = new SaveStoreResponseDto(
                 1L,
                 "국밥맛집",
                 LocalTime.of(9,0,0),
@@ -72,7 +72,7 @@ public class StoreControllerTest {
                 "사장님"
         );
 
-        given(storeService.saveStore(any(StoreSaveRequestDto.class))).willReturn(responseDto);
+        given(storeService.saveStore(any(SaveStoreRequestDto.class))).willReturn(responseDto);
 
         // when & then
         mockMvc.perform(post("/api/v1/stores")
@@ -88,7 +88,7 @@ public class StoreControllerTest {
     @Test
     public void 가게의_정보를_수정한다() throws Exception {
         // given
-        StoreUpdateResponseDto responseDto = new StoreUpdateResponseDto(
+        UpdateStoreResponseDto responseDto = new UpdateStoreResponseDto(
                 1L,
                 "국밥맛집",
                 LocalTime.of(9,0,0),
@@ -137,7 +137,7 @@ public class StoreControllerTest {
     @Test
     public void 가게와_메뉴를_확인한다() throws Exception {
         // given
-        StoreOneResponseDto responseDto = new StoreOneResponseDto(
+        OneStoreResponseDto responseDto = new OneStoreResponseDto(
                 1L,
                 "국밥맛집",
                 LocalTime.of(9,0,0),

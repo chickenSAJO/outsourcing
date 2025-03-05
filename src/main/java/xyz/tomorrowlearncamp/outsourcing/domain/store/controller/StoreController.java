@@ -19,13 +19,13 @@ public class StoreController {
 
     //가게 생성
     @PostMapping("")
-    public ResponseEntity<StoreSaveResponseDto> saveStore(@Valid @RequestBody StoreSaveRequestDto dto){
+    public ResponseEntity<SaveStoreResponseDto> saveStore(@Valid @RequestBody SaveStoreRequestDto dto){
         return ResponseEntity.ok(storeService.saveStore(dto));
     }
 
     //가게 수정
     @PutMapping("/{storeId}")
-    public ResponseEntity<StoreUpdateResponseDto> updateStore(@NotNull @Positive @PathVariable Long storeId){
+    public ResponseEntity<UpdateStoreResponseDto> updateStore(@NotNull @Positive @PathVariable Long storeId){
         return ResponseEntity.ok(storeService.updateStore(storeId));
     }
 
@@ -38,7 +38,7 @@ public class StoreController {
     //가게 단건 조회
     /*todo:메뉴 연결 필요*/
     @GetMapping("/{storeId}")
-    public ResponseEntity<StoreOneResponseDto> findOneStore(@NotNull @Positive @PathVariable Long storeId){
+    public ResponseEntity<OneStoreResponseDto> findOneStore(@NotNull @Positive @PathVariable Long storeId){
         return ResponseEntity.ok(storeService.findOneStore(storeId));
     }
 

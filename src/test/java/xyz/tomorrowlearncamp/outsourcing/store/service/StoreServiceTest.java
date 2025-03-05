@@ -1,20 +1,18 @@
 package xyz.tomorrowlearncamp.outsourcing.store.service;
 
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.StoreSaveRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.StoreSaveResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.SaveStoreRequestDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.SaveStoreResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
-import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 
 import java.time.LocalTime;
 import java.util.Optional;
@@ -50,7 +48,7 @@ public class StoreServiceTest {
                 "서울시 강남구",
                 Usertype.OWNER
         );
-        StoreSaveRequestDto storeSaveRequestDto = new StoreSaveRequestDto(
+        SaveStoreRequestDto saveStoreRequestDto = new SaveStoreRequestDto(
                 "국밥맛집",
                 LocalTime.of(9,0, 0),
                 LocalTime.of(21,0, 0),
@@ -58,11 +56,11 @@ public class StoreServiceTest {
                 mockUser
         );
 
-        given(storeRepository.existsByStoreTitle(storeSaveRequestDto.getStoreTitle())).willReturn(false);//가게 이름 확인?
+        given(storeRepository.existsByStoreTitle(saveStoreRequestDto.getStoreTitle())).willReturn(false);//가게 이름 확인?
         given(userRepository.existsByEmail(mockUser.getEmail())).willReturn(true);//이메일을 알맞게 입력 받았는지 확인
         given(userRepository.findByEmail(mockUser.getEmail())).willReturn(Optional.of(mockUser));//이메일이 이미 있는지 확인
 
-        StoreEntity savedStore = makeStoreEntity(storeSaveRequestDto.getUser());//가게에 유저를 연결?
+        StoreEntity savedStore = makeStoreEntity(saveStoreRequestDto.getUser());//가게에 유저를 연결?
         savedStore.setStoreId(1L);
 
         given(storeRepository.save(any(StoreEntity.class))).willAnswer(invocation -> {
@@ -72,7 +70,7 @@ public class StoreServiceTest {
         });//id가 자동 생성된다고 가정
 
         // when
-        StoreSaveResponseDto result = storeService.saveStore(storeSaveRequestDto);
+        SaveStoreResponseDto result = storeService.saveStore(saveStoreRequestDto);
 
         // when & then
         assertEquals(1L, result.getStoreId());

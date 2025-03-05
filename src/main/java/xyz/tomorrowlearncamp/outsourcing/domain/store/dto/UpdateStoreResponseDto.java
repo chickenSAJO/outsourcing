@@ -7,7 +7,7 @@ import java.time.LocalTime;
 
 @Getter
 @RequiredArgsConstructor
-public class StoreUpdateResponseDto {
+public class UpdateStoreResponseDto {
     private final Long storeId;
     private final String storeTitle;
     private final LocalTime openTime;

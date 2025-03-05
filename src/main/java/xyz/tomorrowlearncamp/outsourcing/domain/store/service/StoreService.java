@@ -3,6 +3,7 @@ package xyz.tomorrowlearncamp.outsourcing.domain.store.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
@@ -21,7 +22,7 @@ public class StoreService {
 
     //가게 생성
     @Transactional
-    public StoreSaveResponseDto saveStore(StoreSaveRequestDto dto) {
+    public SaveStoreResponseDto saveStore(SaveStoreRequestDto dto) {
         if (storeRepository.countByUserId(dto.getUser().getId()) >= 3){
             throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
         }
@@ -34,7 +35,7 @@ public class StoreService {
                 dto.getUser()
         );
         storeRepository.save(storeEntity);
-        return new StoreSaveResponseDto(
+        return new SaveStoreResponseDto(
                 storeEntity.getStoreId(),
                 storeEntity.getStoreTitle(),
                 storeEntity.getOpenTime(),
@@ -46,7 +47,7 @@ public class StoreService {
 
     //가게 수정
     @Transactional
-    public StoreUpdateResponseDto updateStore(Long storeId) {
+    public UpdateStoreResponseDto updateStore(Long storeId) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         storeEntity.update(
@@ -55,7 +56,7 @@ public class StoreService {
                 storeEntity.getCloseTime(),
                 storeEntity.getMinimumOrder()
         );
-        return new StoreUpdateResponseDto(
+        return new UpdateStoreResponseDto(
                 storeEntity.getStoreId(),
                 storeEntity.getStoreTitle(),
                 storeEntity.getOpenTime(),
@@ -85,12 +86,11 @@ public class StoreService {
     //가게 단건 조회
     /*todo:메뉴 연결 필요*/
     @Transactional(readOnly = true)
-    public StoreOneResponseDto findOneStore(Long storeId) {
+    public OneStoreResponseDto findOneStore(Long storeId) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
-        MenuEntity menu = menuRepository.findByStore(storeEntity);
-        //처리해서 메뉴 넣어줌.
-        return new StoreOneResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder(), menu);
+        List<MenuEntity> menuList = menuRepository.findAllByStore(storeEntity);//todo: 처리해서 메뉴 넣어줄 예정.
+        return new OneStoreResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder(), menuList);
     }
 
     //가게 삭제
