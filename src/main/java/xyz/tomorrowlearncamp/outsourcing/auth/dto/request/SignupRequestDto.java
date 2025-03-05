@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.tomorrowlearncamp.outsourcing.auth.AuthValidationMessages;
+import xyz.tomorrowlearncamp.outsourcing.global.etc.RegexpType;
 
 @Getter
 @NoArgsConstructor
@@ -12,12 +13,12 @@ public class SignupRequestDto {
 
     @Schema(description = "이메일", example = "sparta@sparta.com")
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = AuthValidationMessages.EMAIL_VALIDATION_MESSAGE)
+    @Pattern(regexp = RegexpType.EMAIL, message = AuthValidationMessages.EMAIL_VALIDATION_MESSAGE)
     private String email;
 
     @Schema(description = "비밀번호")
     @NotBlank
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\\W_]).{8,}$", message = AuthValidationMessages.PASSWORD_VALIDATION_MESSAGE)
+    @Pattern(regexp = RegexpType.PASSWORD, message = AuthValidationMessages.PASSWORD_VALIDATION_MESSAGE)
     private String password;
 
     @Schema(description = "전화번호")

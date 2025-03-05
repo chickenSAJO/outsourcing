@@ -20,7 +20,7 @@ public class OwnerWriteCommentController {
 
     @PostMapping("/{reviewId}")
     public ResponseEntity<Void> saveComment(
-            /* auth*/
+            /* todo : auth*/
             @NotNull @Positive @PathVariable Long reviewId,
             @Valid @RequestBody WriteCommentRequestDto requestDto
     ) {

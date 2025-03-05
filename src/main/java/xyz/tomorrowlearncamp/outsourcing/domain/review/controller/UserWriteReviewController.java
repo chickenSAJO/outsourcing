@@ -36,7 +36,7 @@ public class UserWriteReviewController {
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReview(
             // todo: 유저값 추가하기
-            @NotBlank @Positive @RequestParam Long reviewId
+            @NotNull @Positive @RequestParam Long reviewId
     ) {
 
         userWriteReviewService.deleteReview(/*Long userId*/ reviewId);

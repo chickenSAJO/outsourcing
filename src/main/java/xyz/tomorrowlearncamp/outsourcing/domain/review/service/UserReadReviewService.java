@@ -1,6 +1,5 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.review.service;
 
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,11 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.dto.response.ReadReviewResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.entity.ReviewEntity;
-import xyz.tomorrowlearncamp.outsourcing.domain.review.enums.ReviewErrorMessage;
+import xyz.tomorrowlearncamp.outsourcing.domain.review.enums.ErrorReviewMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.repository.ReviewRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +22,7 @@ public class UserReadReviewService {
 
     public ReviewEntity findReview(Long reviewId) {
         return reviewRepository.findById(reviewId).orElseThrow(
-                () -> new InvalidRequestException(ReviewErrorMessage.NOT_FOUND_REVIEW.getErrorMessage())
+                () -> new InvalidRequestException(ErrorReviewMessage.NOT_FOUND_REVIEW.getErrorMessage())
         );
     }
 
