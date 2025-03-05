@@ -32,7 +32,7 @@ public class StoreService {
         );
         storeRepository.save(storeEntity);
         return new StoreSaveResponseDto(
-                storeEntity.getId(),
+                storeEntity.getStoreId(),
                 storeEntity.getStoreTitle(),
                 storeEntity.getOpenTime(),
                 storeEntity.getCloseTime(),
@@ -53,7 +53,7 @@ public class StoreService {
                 storeEntity.getMinimumOrder()
         );
         return new StoreUpdateResponseDto(
-                storeEntity.getId(),
+                storeEntity.getStoreId(),
                 storeEntity.getStoreTitle(),
                 storeEntity.getOpenTime(),
                 storeEntity.getCloseTime(),
@@ -68,7 +68,7 @@ public class StoreService {
         List<StoreResponseDto> dtos = new ArrayList<>();
         for (StoreEntity storeEntity : storeEntities) {
             dtos.add(new StoreResponseDto(
-                    storeEntity.getId(),
+                    storeEntity.getStoreId(),
                     storeEntity.getStoreTitle(),
                     storeEntity.getOpenTime(),
                     storeEntity.getCloseTime(),
@@ -85,7 +85,7 @@ public class StoreService {
     public StoreOneResponseDto findOneStore(Long storeId) {
         StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalStateException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
-        return new StoreOneResponseDto(storeEntity.getId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder());
+        return new StoreOneResponseDto(storeEntity.getStoreId(), storeEntity.getStoreTitle(), storeEntity.getOpenTime(), storeEntity.getCloseTime(), storeEntity.getMinimumOrder());
     }
 
     //가게 삭제

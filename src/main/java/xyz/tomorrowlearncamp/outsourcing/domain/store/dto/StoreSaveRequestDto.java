@@ -1,5 +1,6 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.store.dto;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 @Getter
 //@RequiredArgsConstructor
 public class StoreSaveRequestDto {
+    @NotNull
     @Size(max = 100) //100문자까지
     private String storeTitle;
 
