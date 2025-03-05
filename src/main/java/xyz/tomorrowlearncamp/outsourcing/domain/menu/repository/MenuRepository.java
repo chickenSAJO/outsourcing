@@ -7,4 +7,5 @@ import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import java.util.List;
 
 public interface MenuRepository extends JpaRepository<MenuEntity, Long> {
+    List<MenuEntity> findAllByStore(StoreEntity store);
 }

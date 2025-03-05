@@ -30,13 +30,12 @@ public class SaveStoreRequestDto {
     @Range(min=0, max=99999) //0원부터 10만원 미만까지 (null허용)
     private int minimumOrder;
 
-    private UserEntity user;
 
-    public SaveStoreRequestDto(String storeTitle, String openTime, String closeTime, int minimumOrder, UserEntity user) {
+
+    public SaveStoreRequestDto(String storeTitle, String openTime, String closeTime, int minimumOrder) {
         this.storeTitle = storeTitle;
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.minimumOrder = minimumOrder;
-        this.user = user;
     }
 }
