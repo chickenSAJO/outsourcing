@@ -7,11 +7,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.controller.StoreController;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -58,10 +62,9 @@ public class StoreControllerTest {
         );
         SaveStoreRequestDto request = new SaveStoreRequestDto(
                 "국밥맛집",
-                LocalTime.of(9,0,0),
-                LocalTime.of(21,0,0),
-                15000,
-                mockUser
+                "09:00:00",
+                "23:00:00",
+                15000
         );
         SaveStoreResponseDto responseDto = new SaveStoreResponseDto(
                 1L,
@@ -72,7 +75,7 @@ public class StoreControllerTest {
                 "사장님"
         );
 
-        given(storeService.saveStore(any(SaveStoreRequestDto.class))).willReturn(responseDto);
+        given(storeService.saveStore(any(Long.class), any(SaveStoreRequestDto.class))).willReturn(responseDto);
 
         // when & then
         mockMvc.perform(post("/api/v1/stores")
@@ -96,7 +99,7 @@ public class StoreControllerTest {
                 15000
         );
 
-        given(storeService.updateStore(any(Long.class))).willReturn(responseDto);
+        given(storeService.updateStore(any(Long.class), any(Long.class), any(UpdateStoreRequestDto.class))).willReturn(responseDto);
 
         // when & then
         mockMvc.perform(put("/api/v1/stores/{storeId}", responseDto.getStoreId())
@@ -119,7 +122,7 @@ public class StoreControllerTest {
                 15000
         ));
 
-        given(storeService.findAllStore()).willReturn(responseDto);
+        given(storeService.findAllStore(any(Long.class))).willReturn(responseDto);
 
         // when & then
         mockMvc.perform(get("/api/v1/stores")
@@ -137,17 +140,26 @@ public class StoreControllerTest {
     @Test
     public void 가게와_메뉴를_확인한다() throws Exception {
         // given
+        Long id = 1L;
+        MenuResponseDto menuResponseDto = new MenuResponseDto(
+                id,
+                "햄버거",
+                "10",
+                10000,
+                "img.jpg",
+                ACTIVE
+        );
         OneStoreResponseDto responseDto = new OneStoreResponseDto(
             1L,
             "국밥맛집",
             LocalTime.of(9,0,0),
             LocalTime.of(21,0,0),
             15000,
-
+            menuResponseDto
             //todo: 메뉴 연결되면 작성할 예정
         );
 
-        given(storeService.findOneStore(any(Long.class))).willReturn(responseDto);
+        given(storeService.findOneStore(any(Long.class), any(Long.class))).willReturn(responseDto);
 
         // when & then
         mockMvc.perform(get("/api/v1/stores/{storeId}",responseDto.getStoreId())
@@ -165,11 +177,26 @@ public class StoreControllerTest {
         // given
         Long storeId = 1L;
 
-        doNothing().when(storeService).deleteStore(any(Long.class));//삭제와 같이, 출력 아무것도 안할때, 사용하는 given = doNothing
+        doNothing().when(storeService).deleteStore(any(Long.class), any(Long.class));//삭제와 같이, 출력 아무것도 안할때, 사용하는 given = doNothing
 
         // when & then
         mockMvc.perform(delete("/api/v1/stores/{storeId}", storeId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+    }
+
+
+
+    //"가게와_메뉴를_확인한다"에 사용
+    private StoreEntity makeStoreEntity(UserEntity user) {
+        StoreEntity store = new StoreEntity(
+                "국밥맛집",
+                LocalTime.of(9,0,0),
+                LocalTime.of(21,0,0),
+                15000,
+                user
+        );
+        store.setStoreId(1L);
+        return store;
     }
 }

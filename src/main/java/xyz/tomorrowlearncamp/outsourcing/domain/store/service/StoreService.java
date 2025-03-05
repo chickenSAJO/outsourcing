@@ -41,14 +41,6 @@ public class StoreService {
                 user
         );
         storeRepository.save(storeEntity);
-//        return new SaveStoreResponseDto(
-//                storeEntity.getStoreId(),
-//                storeEntity.getStoreTitle(),
-//                storeEntity.getOpenTime(),
-//                storeEntity.getCloseTime(),
-//                storeEntity.getMinimumOrder(),
-//                storeEntity.getUser().getName()
-//        );
         return SaveStoreResponseDto.from(storeEntity);
     }
 
@@ -70,21 +62,12 @@ public class StoreService {
 //            throw new InvalidRequestException();
 //        }
 
-        //UserEntity user = userService.getUserEntity(userId);
-
         storeEntity.update(
                 dto.getStoreTitle(),
                 toLocalTime(dto.getOpenTime()),
                 toLocalTime(dto.getCloseTime()),
                 dto.getMinimumOrder()
         );
-//        return new UpdateStoreResponseDto(
-//                storeEntity.getStoreId(),
-//                storeEntity.getStoreTitle(),
-//                storeEntity.getOpenTime(),
-//                storeEntity.getCloseTime(),
-//                storeEntity.getMinimumOrder()
-//        );
         return UpdateStoreResponseDto.from(storeEntity);
     }
 
@@ -98,15 +81,7 @@ public class StoreService {
         List<StoreEntity> storeEntities = storeRepository.findAll();
         List<StoreResponseDto> dtos = new ArrayList<>();
         for (StoreEntity storeEntity : storeEntities) {
-            dtos.add(StoreResponseDto.from(storeEntity)
-//                    new StoreResponseDto(
-//                        storeEntity.getStoreId(),
-//                        storeEntity.getStoreTitle(),
-//                        storeEntity.getOpenTime(),
-//                        storeEntity.getCloseTime(),
-//                        storeEntity.getMinimumOrder()
-//                    )
-            );
+            dtos.add(StoreResponseDto.from(storeEntity));
         }
         return dtos;
     }
@@ -121,14 +96,6 @@ public class StoreService {
         StoreEntity storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
         List<MenuEntity> menuList = storeRepository.findAllByStore(storeId);//todo: 처리해서 메뉴 넣어줄 예정.
-//        return new OneStoreResponseDto(
-//                storeEntity.getStoreId(),
-//                storeEntity.getStoreTitle(),
-//                storeEntity.getOpenTime(),
-//                storeEntity.getCloseTime(),
-//                storeEntity.getMinimumOrder(),
-//                menuList
-//        );
         return OneStoreResponseDto.from(storeEntity, menuList);
     }
 
