@@ -20,23 +20,22 @@ public class OwnerWriteCommentController {
 
     @PostMapping("/{reviewId}")
     public ResponseEntity<Void> saveComment(
-            /* todo : auth*/
+            @SessionAttribute(name = "LOGIN_USER") Long userId,
             @NotNull @Positive @PathVariable Long reviewId,
             @Valid @RequestBody WriteCommentRequestDto requestDto
     ) {
 
-        ownerWriteCommentService.saveComment(/*userId,*/reviewId, requestDto.getComment());
+        ownerWriteCommentService.saveComment(userId, reviewId, requestDto.getComment());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(
-            /*auth*/
+            @SessionAttribute(name = "LOGIN_USER") Long userId,
             @NotNull @Positive @PathVariable Long commentId
     ) {
-
-        ownerWriteCommentService.deleteComment(/*userId,*/ commentId);
+        ownerWriteCommentService.deleteComment(userId, commentId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
