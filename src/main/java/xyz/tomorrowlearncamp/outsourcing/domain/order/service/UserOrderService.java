@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserOrderService {
 
-    private final OrderRepository userOrderRepository;
+    private final OrderRepository orderRepository;
     private final UserOrderListService userOrderListService;
     private final UserCartService userCartService;
 
@@ -48,7 +48,7 @@ public class UserOrderService {
 //        }
 
         UserOrderEntity order = new UserOrderEntity(totalPrice, dto.getPayment());
-        userOrderRepository.save(order);
+        orderRepository.save(order);
 
         userOrderListService.saveOrderList(order, cartItems);
         userCartService.removeAllCartItem(userId);
@@ -57,7 +57,7 @@ public class UserOrderService {
     }
 
     public void cancelOrder(Long userId, Long orderId) {
-        UserOrderEntity order = userOrderRepository.findById(orderId)
+        UserOrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new InvalidRequestException("주문 내역이 존재하지 않습니다."));
 
         if (!order.getUser().getId().equals(userId)) {
@@ -69,6 +69,11 @@ public class UserOrderService {
         }
 
         order.updateOrderStatus(OrderStatus.CANCELED);
-        userOrderRepository.save(order);
+        orderRepository.save(order);
+    }
+
+    public UserOrderEntity getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new InvalidRequestException("주문 내역이 존재하지 않습니다."));
     }
 }

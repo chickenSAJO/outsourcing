@@ -23,7 +23,7 @@ public class UserOrderController {
         return ResponseEntity.ok(userOrderService.placeOrder(userId, dto));
     }
 
-    @PatchMapping("/{orderId]/cancel")
+    @PatchMapping("/{orderId}/cancel")
     public ResponseEntity<Void> cancelOrder(
             @SessionAttribute(name = "LOGIN_USER") Long userId,
             @PathVariable Long orderId
