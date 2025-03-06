@@ -56,7 +56,7 @@ public class UserWriteReviewService {
                 () -> new InvalidRequestException(ErrorReviewMessage.NOT_FOUND_REVIEW.getErrorMessage())
         );
 
-        if (ObjectUtils.nullSafeEquals(deleteReview.getUser().getId(), userId)) {
+        if (!ObjectUtils.nullSafeEquals(deleteReview.getUser().getId(), userId)) {
             throw new UnauthorizedRequestException(ErrorReviewMessage.UNAUTHORIZED.getErrorMessage());
         }
 

@@ -20,7 +20,7 @@ public class UserReadReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public ReviewEntity findReview(Long reviewId) {
+    public ReviewEntity findReviewEntity(Long reviewId) {
         return reviewRepository.findById(reviewId).orElseThrow(
                 () -> new InvalidRequestException(ErrorReviewMessage.NOT_FOUND_REVIEW.getErrorMessage())
         );
