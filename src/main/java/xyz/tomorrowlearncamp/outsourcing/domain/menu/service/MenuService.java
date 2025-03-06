@@ -29,17 +29,17 @@ public class MenuService {
     private final UserRepository userRepository;
 
     @Transactional
-    public AddMenuResponseDto addMenu(AddMenuRequestDto addMenuRequestDto, Long ownerId) {
+    public AddMenuResponseDto addMenu(AddMenuRequestDto addMenuRequestDto, Long userId) {
         StoreEntity store = storeRepository.findById(addMenuRequestDto.getStoreId())
                 .orElseThrow(
                         () -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage())
                 );
 
         // 가게 소유권 검증 추가
-        UserEntity owner = userRepository.findById(ownerId)
+        UserEntity owner = userRepository.findById(userId)
                 .orElseThrow(() -> new InvalidRequestException("사용자를 찾을 수 없습니다."));
 
-        if (!Objects.equals(ownerId, owner.getId())) {
+        if (!Objects.equals(userId, owner.getId())) {
             throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_ADD_MENU.getErrorMessage());
         }
 
@@ -57,23 +57,23 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
-    public MenuResponseDto findById(Long menuId, Long ownerId) {
+    public MenuResponseDto findById(Long menuId, Long userId) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage())
         );
-        if (!Objects.equals(ownerId, menu.getStore().getUser().getId())) {
+        if (!Objects.equals(userId, menu.getStore().getUser().getId())) {
             throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_VIEW_MENU.getErrorMessage());
         }
         return MenuResponseDto.from(menu);
     }
 
     @Transactional
-    public UpdateMenuResponseDto updateMenu(Long menuId, UpdateMenuRequestDto updateRequestDto, Long ownerId) {
+    public UpdateMenuResponseDto updateMenu(Long menuId, UpdateMenuRequestDto updateRequestDto, Long userId) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage())
         );
 
-        if (!Objects.equals(ownerId, menu.getStore().getUser().getId())) {
+        if (!Objects.equals(userId, menu.getStore().getUser().getId())) {
             throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_UPDATE_MENU.getErrorMessage());
         }
 
@@ -88,12 +88,12 @@ public class MenuService {
     }
 
     @Transactional
-    public void deleteMenuById(Long menuId, Long ownerId) {
+    public void deleteMenuById(Long menuId, Long userId) {
         MenuEntity menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage())
         );
 
-        if (!Objects.equals(ownerId, menu.getStore().getUser().getId())) {
+        if (!Objects.equals(userId, menu.getStore().getUser().getId())) {
             throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_REMOVE_MENU.getErrorMessage());
         }
 

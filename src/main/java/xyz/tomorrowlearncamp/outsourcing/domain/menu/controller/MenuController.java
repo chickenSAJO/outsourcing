@@ -22,33 +22,33 @@ public class MenuController {
 
     @PostMapping
     public ResponseEntity<AddMenuResponseDto> addMenu(
-            @Auth AuthUser owner,
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
             @Valid @RequestBody AddMenuRequestDto addMenuRequestDto) {
-        AddMenuResponseDto response = menuService.addMenu(addMenuRequestDto, owner.getId());
+        AddMenuResponseDto response = menuService.addMenu(addMenuRequestDto,ownerId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{menuId}")
     public ResponseEntity<MenuResponseDto> findMenuById(
-            @Auth AuthUser owner,
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
             @PathVariable Long menuId) {
-        return ResponseEntity.ok(menuService.findById(menuId, owner.getId()));
+        return ResponseEntity.ok(menuService.findById(menuId, ownerId));
     }
 
     @PutMapping("/{menuId}")
     public ResponseEntity<UpdateMenuResponseDto> updateMenu(
-            @Auth AuthUser owner,
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
             @PathVariable Long menuId,
             @Valid @RequestBody UpdateMenuRequestDto updateRequestDto) {
-        return ResponseEntity.ok(menuService.updateMenu(menuId, updateRequestDto, owner.getId()));
+        return ResponseEntity.ok(menuService.updateMenu(menuId, updateRequestDto, ownerId));
     }
 
     @DeleteMapping("/{menuId}")
     public void deleteMenuById(
-            @Auth AuthUser owner,
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
             @PathVariable Long menuId
     ) {
-        menuService.deleteMenuById(menuId, owner.getId());
+        menuService.deleteMenuById(menuId, ownerId);
     }
 
 }

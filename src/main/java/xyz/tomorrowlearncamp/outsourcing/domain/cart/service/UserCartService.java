@@ -37,7 +37,7 @@ public class UserCartService {
         MenuEntity menu = menuRepository.findById(dto.getMenuId())
                 .orElseThrow(() -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage()));
 
-        CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, dto.getMenuId())
+        CartEntity cart = cartRepository.findByUserIdAndMenuMenuId(userId, dto.getMenuId())
                 .map(existingCart -> {
                     existingCart.updateQuantity(dto.getQuantity());
                     return existingCart;
@@ -56,7 +56,7 @@ public class UserCartService {
 
     @Transactional
     public void removeCartItem(Long userId, Long menuId) {
-        CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, menuId)
+        CartEntity cart = cartRepository.findByUserIdAndMenuMenuId(userId, menuId)
                 .orElseThrow(() -> new InvalidRequestException(ErrorCartMessage.CART_ITEM_NOT_FOUND.getMessage()));
         cartRepository.delete(cart);
     }
