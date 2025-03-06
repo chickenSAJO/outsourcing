@@ -2,6 +2,7 @@ package xyz.tomorrowlearncamp.outsourcing.domain.store.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 
@@ -15,9 +16,9 @@ public class OneStoreResponseDto {
     private final LocalTime openTime;
     private final LocalTime closeTime;
     private final int minimumOrder;
-    private final List<MenuEntity> menuList;
+    private final List<MenuResponseDto> menuList;
 
-    public OneStoreResponseDto(Long storeId, String storeTitle, LocalTime openTime, LocalTime closeTime, int minimumOrder, List<MenuEntity> menuList) {
+    public OneStoreResponseDto(Long storeId, String storeTitle, LocalTime openTime, LocalTime closeTime, int minimumOrder, List<MenuResponseDto> menuList) {
         this.storeId = storeId;
         this.storeTitle = storeTitle;
         this.openTime = openTime;
@@ -33,7 +34,16 @@ public class OneStoreResponseDto {
                 storeEntity.getOpenTime(),
                 storeEntity.getCloseTime(),
                 storeEntity.getMinimumOrder(),
-                menuList
+                menuList.stream().map(
+                        item -> new MenuResponseDto(
+                                item.getId(),
+                                item.getMenuName(),
+                                item.getMenuContent(),
+                                item.getMenuPrice(),
+                                item.getMenuImageUrl(),
+                                item.getMenuStatus()
+                        )
+                ).toList()
         );
     }
 }
