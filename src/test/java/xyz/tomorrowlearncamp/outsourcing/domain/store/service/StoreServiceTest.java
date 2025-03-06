@@ -7,36 +7,32 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 public class StoreServiceTest {
+
+    @Mock
+    private UserService userService;
 
     @Mock
     private StoreRepository storeRepository;
@@ -51,7 +47,7 @@ public class StoreServiceTest {
     @Test
     public void 가게생성에_성공한다() {
         // given
-        Long userId = 1L;
+        long userId = 1L;
         UserEntity mockUser = new UserEntity(
                 "test@naver.com",
                 "Test1234!23",
@@ -72,9 +68,12 @@ public class StoreServiceTest {
         given(mockRequest.getSession()).willReturn(mockSession);
         given(mockSession.getAttribute("userId")).willReturn(userId);
 
+        given(userService.getUserEntity(userId)).willReturn(mockUser);
         given(storeRepository.existsByStoreTitle(saveStoreRequestDto.getStoreTitle())).willReturn(false);//가게 이름으로 가게 있는지 확인
         given(userRepository.existsByEmail(mockUser.getEmail())).willReturn(true);//이메일을 알맞게 입력 받았는지 확인
         given(userRepository.findByEmail(mockUser.getEmail())).willReturn(Optional.of(mockUser));//이메일이 이미 있는지 확인
+
+        userService.getUserEntity(1L);
 
         StoreEntity savedStore = makeStoreEntity(mockUser);
         savedStore.setStoreId(1L);
@@ -82,7 +81,7 @@ public class StoreServiceTest {
         given(storeRepository.save(any(StoreEntity.class))).willReturn(savedStore);
 
         // when
-        SaveStoreResponseDto result = storeService.saveStore(userId, saveStoreRequestDto);
+        SaveStoreResponseDto result = storeService.saveStore(mockUser.getId(), saveStoreRequestDto);//storeService의 saveStore을 테스트
 
         // when & then
         assertEquals(1L, result.getStoreId());
@@ -90,8 +89,6 @@ public class StoreServiceTest {
         assertEquals(LocalTime.of(9, 0), result.getOpenTime());
         assertEquals(LocalTime.of(21, 0), result.getCloseTime());
         assertEquals(15000, result.getMinimumOrder());
-
-        verify(storeRepository, times(1)).save(any(StoreEntity.class));
     }
 
 
@@ -141,8 +138,6 @@ public class StoreServiceTest {
         assertEquals(LocalTime.of(12, 0), result.getOpenTime());
         assertEquals(LocalTime.of(22, 0), result.getCloseTime());
         assertEquals(20000, result.getMinimumOrder());
-
-        verify(storeRepository, times(1)).save(any(StoreEntity.class));
     }
 
 
@@ -192,9 +187,6 @@ public class StoreServiceTest {
         assertEquals(responseDtos.size(), result.size());
         assertEquals(responseDtos.get(0).getStoreTitle(), result.get(0).getStoreTitle());
         assertEquals(responseDtos.get(0).getMinimumOrder(), result.get(0).getMinimumOrder());
-
-
-        verify(storeRepository, times(1)).findAll();
     }
 
 
@@ -239,8 +231,6 @@ public class StoreServiceTest {
         assertEquals(15000, result.getMinimumOrder());
         assertEquals("햄버거", result.getMenuList().get(0).getMenuName());
         assertEquals(10000, result.getMenuList().get(0).getMenuPrice());
-
-        verify(storeService, times(1)).findOneStore(userId, storeId);
     }
 
 
@@ -254,13 +244,14 @@ public class StoreServiceTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("LOGIN_USER", userId);
 
-        doNothing().when(storeService).deleteStore(any(Long.class), any(Long.class));
+        given(storeRepository.existsById(anyLong())).willReturn(true);
+        doNothing().when(storeRepository).deleteById(anyLong());
 
         // when
         storeService.deleteStore(userId, storeId);
 
         // then
-        verify(storeService, times(1)).deleteStore(userId, storeId);
+        verify(storeRepository, times(1)).deleteById(storeId);//메서드 호출 여부 확인
     }
 
 

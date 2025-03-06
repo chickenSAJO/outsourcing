@@ -10,6 +10,7 @@ import org.hibernate.annotations.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
+@Setter
 @Getter
 @Setter
 @Entity
@@ -32,6 +33,7 @@ public class UserEntity extends BaseEntity {
     private String name;
     private String address;
     private Usertype usertype;
+    private String refreshToken;
 
     @Column(name = "is_deleted", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isDeleted;
