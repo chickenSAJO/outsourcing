@@ -37,9 +37,9 @@ public class UserOrderEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public UserOrderEntity(UserEntity user/*, StoreEntity store,*/,  int totalPrice, String payment) {
+    public UserOrderEntity(UserEntity user, StoreEntity store,  int totalPrice, String payment) {
         this.user = user;
-//      this.store = store;
+      this.store = store;
         this.totalPrice = totalPrice;
         this.payment = payment;
         this.orderStatus = OrderStatus.PENDING; // 기본값 설정
