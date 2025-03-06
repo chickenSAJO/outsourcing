@@ -77,13 +77,13 @@ public class AuthService {
                 .sameSite("Strict")
                 .build();
 
+        response.setHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Set-Cookie", refreshCookie.toString());
 
         return "access token : " + accessToken;
     }
 
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        Long userId = Long.valueOf(request.getAttribute("userId").toString());
+    public void logout(HttpServletResponse response, Long userId) {
         deleteRefreshToken(userId);
         removeRefreshTokenCookie(response);
     }

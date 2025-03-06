@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.LoginRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.SignupRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.auth.service.AuthService;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 
 import java.net.URI;
 
@@ -41,8 +44,8 @@ public class AuthController {
     }
 
     @PostMapping("/v1/auth/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        authService.logout(request, response);
+    public ResponseEntity<String> logout(HttpServletResponse response, @Auth AuthUser user) {
+        authService.logout(response, user.getId());
         return ResponseEntity.ok().build();
     }
 
