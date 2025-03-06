@@ -8,45 +8,47 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.request.AddToCartReques
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.AddCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.UserCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.service.UserCartService;
+import xyz.tomorrowlearncamp.outsourcing.domain.common.annotation.Auth;
+import xyz.tomorrowlearncamp.outsourcing.domain.common.dto.AuthUser;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/carts")
+@RequestMapping("/api")
 public class UserCartController {
 
     private final UserCartService userCartService;
 
-    @PostMapping
+    @PostMapping("/v1/carts")
     public ResponseEntity<AddCartResponseDto> addCartItem(
-            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @Auth AuthUser user,
             @Valid @RequestBody AddToCartRequestDto dto
     ) {
-        return ResponseEntity.ok(userCartService.addCartItem(userId, dto));
+        return ResponseEntity.ok(userCartService.addCartItem(user.getId(), dto));
     }
 
-    @GetMapping
+    @GetMapping("/v1/carts")
     public ResponseEntity<List<UserCartResponseDto>> getCart(
-            @SessionAttribute(name = "LOGIN_USER") Long userId
+            @Auth AuthUser user
     ) {
-        return ResponseEntity.ok(userCartService.getCart(userId));
+        return ResponseEntity.ok(userCartService.getCart(user.getId()));
     }
 
-    @DeleteMapping("/{menuId}")
+    @DeleteMapping("/v1/carts/{menuId}")
     public ResponseEntity<Void> removeCartItem(
-            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @Auth AuthUser user,
             @PathVariable Long menuId
     ) {
-        userCartService.removeCartItem(userId, menuId);
+        userCartService.removeCartItem(user.getId(), menuId);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/v1/carts")
     public ResponseEntity<Void> removeAllCartItem(
-            @SessionAttribute(name = "LOGIN_USER") Long userId
+            @Auth AuthUser user
     ) {
-        userCartService.removeAllCartItem(userId);
+        userCartService.removeAllCartItem(user.getId());
         return ResponseEntity.noContent().build();
     }
 }
