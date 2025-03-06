@@ -34,7 +34,7 @@ public class ReadReviewResponseDto {
         this.reviewImage = review.getReviewImageUrl();
         this.star = review.getStar();
 
-        this.storeId = review.getStoreId();
+        this.storeId = review.getOrderEntity().getStore().getStoreId();
         this.reviewCreatedAt = review.getCreatedAt();
         this.reviewUpdatedAt = review.getUpdatedAt();
 

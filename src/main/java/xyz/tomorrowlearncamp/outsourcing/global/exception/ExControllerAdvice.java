@@ -22,6 +22,12 @@ public class ExControllerAdvice {
         return getErrorResponse(status, ex.getMessage());
     }
 
+    @ExceptionHandler(UnauthorizedRequestException.class)
+    public ResponseEntity<ErrorResponse> unauthorizedRequestExHandler(UnauthorizedRequestException ex) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        return getErrorResponse(status, ex.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgsExHandler(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getBindingResult().getFieldErrors().stream()
