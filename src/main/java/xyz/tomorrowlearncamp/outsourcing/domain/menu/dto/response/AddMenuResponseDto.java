@@ -24,7 +24,7 @@ public class AddMenuResponseDto {
 
     public static AddMenuResponseDto from(MenuEntity menu) {
         return new AddMenuResponseDto(
-                menu.getId(),
+                menu.getMenuId(),
                 menu.getMenuName(),
                 menu.getMenuContent(),
                 menu.getMenuPrice(),

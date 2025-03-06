@@ -13,7 +13,10 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.enums.ErrorMenuMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreErrorMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
+import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.Objects;
@@ -23,13 +26,22 @@ import java.util.Objects;
 public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public AddMenuResponseDto addMenu(AddMenuRequestDto addMenuRequestDto, Long ownerId) {
         StoreEntity store = storeRepository.findById(addMenuRequestDto.getStoreId())
                 .orElseThrow(
-                        () -> new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_ADD_MENU.getErrorMessage())
+                        () -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage())
                 );
+
+        // 가게 소유권 검증 추가
+        UserEntity owner = userRepository.findById(ownerId)
+                .orElseThrow(() -> new InvalidRequestException("사용자를 찾을 수 없습니다."));
+
+        if (!Objects.equals(ownerId, owner.getId())) {
+            throw new InvalidRequestException(ErrorMenuMessage.NOT_ALLOWED_ADD_MENU.getErrorMessage());
+        }
 
         MenuEntity menu = new MenuEntity(
                 addMenuRequestDto.getMenuName(),
