@@ -17,13 +17,13 @@ import xyz.tomorrowlearncamp.outsourcing.auth.service.AuthService;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class AuthController {
 
     public final AuthService authService;
 
-    @PostMapping("/signup")
+    @PostMapping("/v1/auth/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto dto) {
         Long userId = authService.signup(dto);
         URI location = ServletUriComponentsBuilder
@@ -35,12 +35,12 @@ public class AuthController {
         return ResponseEntity.created(location).body("");
     }
 
-    @PostMapping("/login")
+    @PostMapping("/v1/auth/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto dto, HttpServletResponse response) {
         return ResponseEntity.ok(authService.login(dto, response));
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/v1/auth/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
         authService.logout(request, response);
         return ResponseEntity.ok().build();
