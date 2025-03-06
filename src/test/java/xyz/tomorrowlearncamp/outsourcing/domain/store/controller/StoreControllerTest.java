@@ -163,6 +163,7 @@ public class StoreControllerTest {
             15000,
             menuList
         );
+
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("LOGIN_USER", userId);
 
