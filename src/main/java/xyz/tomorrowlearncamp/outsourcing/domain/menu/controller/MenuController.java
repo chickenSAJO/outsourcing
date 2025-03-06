@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.tomorrowlearncamp.outsourcing.domain.common.annotation.Auth;
+import xyz.tomorrowlearncamp.outsourcing.domain.common.dto.AuthUser;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request.AddMenuRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.request.UpdateMenuRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.AddMenuResponseDto;
@@ -20,33 +22,33 @@ public class MenuController {
 
     @PostMapping
     public ResponseEntity<AddMenuResponseDto> addMenu(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser user,
             @Valid @RequestBody AddMenuRequestDto addMenuRequestDto) {
-        AddMenuResponseDto response = menuService.addMenu(addMenuRequestDto,ownerId);
+        AddMenuResponseDto response = menuService.addMenu(addMenuRequestDto,user.getId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{menuId}")
     public ResponseEntity<MenuResponseDto> findMenuById(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser user,
             @PathVariable Long menuId) {
-        return ResponseEntity.ok(menuService.findById(menuId, ownerId));
+        return ResponseEntity.ok(menuService.findById(menuId, user.getId()));
     }
 
     @PutMapping("/{menuId}")
     public ResponseEntity<UpdateMenuResponseDto> updateMenu(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser user,
             @PathVariable Long menuId,
             @Valid @RequestBody UpdateMenuRequestDto updateRequestDto) {
-        return ResponseEntity.ok(menuService.updateMenu(menuId, updateRequestDto, ownerId));
+        return ResponseEntity.ok(menuService.updateMenu(menuId, updateRequestDto, user.getId()));
     }
 
     @DeleteMapping("/{menuId}")
     public void deleteMenuById(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser user,
             @PathVariable Long menuId
     ) {
-        menuService.deleteMenuById(menuId, ownerId);
+        menuService.deleteMenuById(menuId, user.getId());
     }
 
 }

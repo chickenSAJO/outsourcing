@@ -66,7 +66,7 @@ public class UserCartServiceTest {
 
         when(userService.getUserEntity(userId)).thenReturn(user);
         when(menuRepository.findById(menuId)).thenReturn(Optional.of(menu));
-        when(cartRepository.findByUserIdAndMenuId(userId, menuId)).thenReturn(Optional.empty());
+        when(cartRepository.findByUserIdAndMenuMenuId(userId, menuId)).thenReturn(Optional.empty());
         when(cartRepository.save(any(CartEntity.class))).thenReturn(cart);
 
         // when
@@ -89,7 +89,7 @@ public class UserCartServiceTest {
         MenuEntity menu = new MenuEntity();
         CartEntity cart = new CartEntity(user, menu, quantity);
 
-        when(cartRepository.findByUserIdAndMenuId(userId, menuId)).thenReturn(Optional.of(cart));
+        when(cartRepository.findByUserIdAndMenuMenuId(userId, menuId)).thenReturn(Optional.of(cart));
 
         // when
         userCartService.removeCartItem(userId, menuId);
@@ -160,7 +160,7 @@ public class UserCartServiceTest {
 
         when(userService.getUserEntity(userId)).thenReturn(user);
         when(menuRepository.findById(menuId)).thenReturn(Optional.of(menu));
-        when(cartRepository.findByUserIdAndMenuId(userId, menuId)).thenReturn(Optional.empty());
+        when(cartRepository.findByUserIdAndMenuMenuId(userId, menuId)).thenReturn(Optional.empty());
         when(cartRepository.save(any(CartEntity.class))).thenReturn(newCart);
 
         // when
@@ -197,7 +197,7 @@ public class UserCartServiceTest {
 
         when(userService.getUserEntity(userId)).thenReturn(user);
         when(menuRepository.findById(menuId)).thenReturn(Optional.of(menu));
-        when(cartRepository.findByUserIdAndMenuId(userId, menuId)).thenReturn(Optional.of(existingCart));
+        when(cartRepository.findByUserIdAndMenuMenuId(userId, menuId)).thenReturn(Optional.of(existingCart));
 
         // when
         userCartService.addCartItem(userId, new AddToCartRequestDto(menuId, newQuantity));
