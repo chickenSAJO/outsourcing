@@ -4,13 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.outsourcing.domain.common.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.domain.common.dto.AuthUser;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.request.PlaceOrderRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.OrderStatusResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.PlaceOrderResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.service.UserOrderService;
-import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.annotation.Order;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 
