@@ -15,12 +15,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/carts")
+@RequestMapping("/api")
 public class UserCartController {
 
     private final UserCartService userCartService;
 
-    @PostMapping
+    @PostMapping("/v1/carts")
     public ResponseEntity<AddCartResponseDto> addCartItem(
             @Auth AuthUser user,
             @Valid @RequestBody AddToCartRequestDto dto
@@ -28,14 +28,14 @@ public class UserCartController {
         return ResponseEntity.ok(userCartService.addCartItem(user.getId(), dto));
     }
 
-    @GetMapping
+    @GetMapping("/v1/carts")
     public ResponseEntity<List<UserCartResponseDto>> getCart(
             @Auth AuthUser user
     ) {
         return ResponseEntity.ok(userCartService.getCart(user.getId()));
     }
 
-    @DeleteMapping("/{menuId}")
+    @DeleteMapping("/v1/carts/{menuId}")
     public ResponseEntity<Void> removeCartItem(
             @Auth AuthUser user,
             @PathVariable Long menuId
@@ -44,7 +44,7 @@ public class UserCartController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/v1/carts")
     public ResponseEntity<Void> removeAllCartItem(
             @Auth AuthUser user
     ) {
