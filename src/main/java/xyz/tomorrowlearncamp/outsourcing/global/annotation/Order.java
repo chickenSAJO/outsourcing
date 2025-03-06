@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.outsourcing.global.config.aop.annotation;
+package xyz.tomorrowlearncamp.outsourcing.global.annotation;
 
 import java.lang.annotation.*;
 

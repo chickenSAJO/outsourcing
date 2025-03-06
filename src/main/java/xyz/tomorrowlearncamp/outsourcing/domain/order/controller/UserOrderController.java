@@ -8,7 +8,9 @@ import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.request.PlaceOrderRequ
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.OrderStatusResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.PlaceOrderResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.service.UserOrderService;
-import xyz.tomorrowlearncamp.outsourcing.global.config.aop.annotation.Order;
+import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
+import xyz.tomorrowlearncamp.outsourcing.global.annotation.Order;
+import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,18 +22,18 @@ public class UserOrderController {
     @Order
     @PostMapping
     public ResponseEntity<PlaceOrderResponseDto> placeOrder(
-            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @Auth AuthUser user,
             @Valid @RequestBody PlaceOrderRequestDto dto
     ) {
-        return ResponseEntity.ok(userOrderService.placeOrder(userId, dto));
+        return ResponseEntity.ok(userOrderService.placeOrder(user.getId(), dto));
     }
 
     @Order
     @PatchMapping("/{orderId}/cancel")
     public ResponseEntity<OrderStatusResponseDto> cancelOrder(
-            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @Auth AuthUser user,
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(userOrderService.cancelOrder(userId, orderId));
+        return ResponseEntity.ok(userOrderService.cancelOrder(user.getId(), orderId));
     }
 }

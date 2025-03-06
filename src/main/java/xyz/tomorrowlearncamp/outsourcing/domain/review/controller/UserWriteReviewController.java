@@ -12,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.dto.request.WriteReviewRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.service.UserWriteReviewService;
+import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
+import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
@@ -22,21 +24,21 @@ public class UserWriteReviewController {
 
     @PostMapping("")
     public ResponseEntity<Void> saveReview(
-            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @Auth AuthUser user,
             @Valid @RequestBody WriteReviewRequestDto requestDto
     ) {
-        userWriteReviewService.saveReview(userId, requestDto.getOrderId(), requestDto.getContents(), requestDto.getStar(), requestDto.getReviewUrl());
+        userWriteReviewService.saveReview(user.getId(), requestDto.getOrderId(), requestDto.getContents(), requestDto.getStar(), requestDto.getReviewUrl());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReview(
-            @SessionAttribute(name = "LOGIN_USER") Long userId,
+            @Auth AuthUser user,
             @NotNull @Positive @RequestParam Long reviewId
     ) {
 
-        userWriteReviewService.deleteReview(userId, reviewId);
+        userWriteReviewService.deleteReview(user.getId(), reviewId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

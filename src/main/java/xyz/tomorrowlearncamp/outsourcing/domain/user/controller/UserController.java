@@ -10,6 +10,8 @@ import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.UpdateInfoUserR
 import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.UpdatePasswordUserRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.response.InfoUserResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
+import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
+import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
 import xyz.tomorrowlearncamp.outsourcing.global.etc.RegexpType;
 
 @RestController
@@ -21,39 +23,39 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<InfoUserResponseDto> getUser(
-            @SessionAttribute(name = "LOGIN_USER") Long loginUser
+            @Auth AuthUser user
     ) {
-        InfoUserResponseDto responseDto = userService.getUser(loginUser);
+        InfoUserResponseDto responseDto = userService.getUser(user.getId());
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PatchMapping("")
     public ResponseEntity<Void> patchInfoUser(
-            @SessionAttribute(name = "LOGIN_USER") Long loginUser,
+            @Auth AuthUser user,
             @Valid @RequestBody UpdateInfoUserRequestDto requestDto
     ) {
-        userService.updateUserInfo(loginUser, requestDto.getNickname(), requestDto.getAddress());
+        userService.updateUserInfo(user.getId(), requestDto.getNickname(), requestDto.getAddress());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/password")
     public ResponseEntity<Void> patchPasswordUser(
-            @SessionAttribute(name = "LOGIN_USER") Long loginUser,
+            @Auth AuthUser user,
             @Valid @RequestBody UpdatePasswordUserRequestDto requestDto
     ) {
-        userService.updateUserPassword(loginUser, requestDto.getOldPassword(), requestDto.getNewPassword());
+        userService.updateUserPassword(user.getId(), requestDto.getOldPassword(), requestDto.getNewPassword());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<Void> deleteUser(
-            @SessionAttribute(name = "LOGIN_USER") Long loginUser,
+            @Auth AuthUser user,
             @Pattern(regexp = RegexpType.PASSWORD) @RequestHeader String password
     ) {
-        userService.deleteUser(loginUser, password);
+        userService.deleteUser(user.getId(), password);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

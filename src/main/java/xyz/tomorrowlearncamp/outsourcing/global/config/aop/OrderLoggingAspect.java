@@ -24,7 +24,7 @@ public class OrderLoggingAspect {
 
     private final UserOrderService userOrderService;
 
-    @Around("@annotation(xyz.tomorrowlearncamp.outsourcing.global.config.aop.annotation.Order)")
+    @Around("@annotation(xyz.tomorrowlearncamp.outsourcing.global.annotation.Order)")
     public Object logOrderApiAccess(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();

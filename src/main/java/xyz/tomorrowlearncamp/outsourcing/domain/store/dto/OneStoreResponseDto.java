@@ -36,12 +36,13 @@ public class OneStoreResponseDto {
                 storeEntity.getMinimumOrder(),
                 menuList.stream().map(
                         item -> new MenuResponseDto(
-                                item.getId(),
+                                item.getMenuId(),
                                 item.getMenuName(),
                                 item.getMenuContent(),
                                 item.getMenuPrice(),
                                 item.getMenuImageUrl(),
-                                item.getMenuStatus()
+                                item.getMenuStatus(),
+                                item.getStore().getStoreId()
                         )
                 ).toList()
         );

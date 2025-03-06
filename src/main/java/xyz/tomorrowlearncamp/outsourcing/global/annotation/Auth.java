@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.outsourcing.domain.common.annotation;
+package xyz.tomorrowlearncamp.outsourcing.global.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

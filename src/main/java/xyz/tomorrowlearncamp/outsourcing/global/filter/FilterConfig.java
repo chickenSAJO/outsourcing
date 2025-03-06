@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import xyz.tomorrowlearncamp.outsourcing.auth.filter.JwtFilter;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
-import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
+import xyz.tomorrowlearncamp.outsourcing.global.util.JwtUtil;
 
 @Configuration
 @RequiredArgsConstructor
