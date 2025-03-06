@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.outsourcing.domain.common.dto;
+package xyz.tomorrowlearncamp.outsourcing.auth.dto;
 
 import lombok.Getter;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;

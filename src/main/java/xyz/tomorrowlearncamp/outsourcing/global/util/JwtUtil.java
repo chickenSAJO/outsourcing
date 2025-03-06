@@ -1,4 +1,4 @@
-package xyz.tomorrowlearncamp.outsourcing.global.config;
+package xyz.tomorrowlearncamp.outsourcing.global.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

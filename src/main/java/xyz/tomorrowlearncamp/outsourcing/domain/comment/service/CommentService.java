@@ -12,7 +12,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.comment.entity.CommentEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.comment.repository.CommentRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.comment.enums.ErrorCommentMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.entity.ReviewEntity;
-import xyz.tomorrowlearncamp.outsourcing.domain.review.service.UserReadReviewService;
+import xyz.tomorrowlearncamp.outsourcing.domain.review.service.ReadReviewService;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
@@ -20,13 +20,13 @@ import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestExceptio
 @Service
 @RequiredArgsConstructor
 @Validated
-public class OwnerWriteCommentService {
+public class CommentService {
 
     private final CommentRepository commentRepository;
 
     private final UserService userService;
 
-    private final UserReadReviewService reviewService;
+    private final ReadReviewService reviewService;
 
     @Transactional
     public void saveComment(Long userId, @NotNull @Positive Long reviewId, @NotNull @Size(min = 1, max = 100) String comment) {
