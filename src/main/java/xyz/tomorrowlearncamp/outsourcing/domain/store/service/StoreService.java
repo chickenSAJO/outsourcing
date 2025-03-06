@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreErrorMessage;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.ErrorStoreMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
@@ -28,7 +28,7 @@ public class StoreService {
     @Transactional
     public SaveStoreResponseDto saveStore(Long userId, SaveStoreRequestDto dto) {
         if (storeRepository.countByUser_Id(userId) >= STORE_CREATION_LIMIT){
-            throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
+            throw new InvalidRequestException(ErrorStoreMessage.STORE_THREE_OVER.getErrorMessage());
         }
 
         UserEntity user = userService.getUserEntity(userId);
@@ -52,11 +52,11 @@ public class StoreService {
             UpdateStoreRequestDto dto
     ) {
         if (storeRepository.countByUser_Id(userId) >= STORE_CREATION_LIMIT){
-            throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
+            throw new InvalidRequestException(ErrorStoreMessage.STORE_THREE_OVER.getErrorMessage());
         }
 
         StoreEntity storeEntity = storeRepository.findById(storeId)
-                .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
+                .orElseThrow(() -> new InvalidRequestException(ErrorStoreMessage.NOT_FOUND_STORE.getErrorMessage()));
 
 //        if(ObjectUtils.NullSafeEquals(userId, )) {
 //            throw new InvalidRequestException();
@@ -75,7 +75,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public List<StoreResponseDto> findAllStore(Long userId) {
         if (storeRepository.countByUser_Id(userId) >= STORE_CREATION_LIMIT){
-            throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
+            throw new InvalidRequestException(ErrorStoreMessage.STORE_THREE_OVER.getErrorMessage());
         }
 
         List<StoreEntity> storeEntities = storeRepository.findAll();
@@ -91,10 +91,10 @@ public class StoreService {
     @Transactional(readOnly = true)
     public OneStoreResponseDto findOneStore(Long userId, Long storeId) {
         if (storeRepository.countByUser_Id(userId) >= STORE_CREATION_LIMIT){
-            throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
+            throw new InvalidRequestException(ErrorStoreMessage.STORE_THREE_OVER.getErrorMessage());
         }
         StoreEntity storeEntity = storeRepository.findById(storeId)
-                .orElseThrow(() -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage()));
+                .orElseThrow(() -> new InvalidRequestException(ErrorStoreMessage.NOT_FOUND_STORE.getErrorMessage()));
         List<MenuEntity> menuList = storeRepository.findAllByStore(storeId);//todo: 처리해서 메뉴 넣어줄 예정.
         return OneStoreResponseDto.from(storeEntity, menuList);
     }
@@ -103,7 +103,7 @@ public class StoreService {
     @Transactional
     public void deleteStore(Long userId, Long storeId) {
         if (storeRepository.countByUser_Id(userId) >= STORE_CREATION_LIMIT){
-            throw new InvalidRequestException(StoreErrorMessage.STORE_THREE_OVER.getErrorMessage());
+            throw new InvalidRequestException(ErrorStoreMessage.STORE_THREE_OVER.getErrorMessage());
         }
         storeRepository.deleteById(storeId);
     }
