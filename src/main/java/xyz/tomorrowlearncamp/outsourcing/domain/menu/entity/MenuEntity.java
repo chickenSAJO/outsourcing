@@ -9,16 +9,12 @@ import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 
 @Getter
 @Entity
-@Table(name = "MENU")
+@Table(name = "menu")
 @NoArgsConstructor
 public class MenuEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "STORE_ID", nullable = false)
-    private StoreEntity store;
 
     @Column(name = "menu_name", length = 100, nullable = false)
     private String menuName;
@@ -36,15 +32,19 @@ public class MenuEntity {
     @Column(name = "menu_status", length = 20)
     private MenuType menuStatus;
 
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    private StoreEntity store;
+
 
     @Builder
-    public MenuEntity(StoreEntity store, String menuName, String menuContent, int menuPrice, String menuImageUrl, MenuType menuStatus) {
-        this.store = store;
+    public MenuEntity(String menuName, String menuContent, int menuPrice, String menuImageUrl, MenuType menuStatus, StoreEntity store) {
         this.menuName = menuName;
         this.menuContent = menuContent;
         this.menuPrice = menuPrice;
         this.menuImageUrl = menuImageUrl;
         this.menuStatus = menuStatus;
+        this.store = store;
     }
 
     public void updateMenu(String menuName, String menuContent, int menuPrice, String imageUrl, MenuType menuStatus) {

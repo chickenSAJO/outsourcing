@@ -28,6 +28,9 @@ public class StoreEntity extends BaseEntity {
     private LocalTime closeTime;
     private int minimumOrder;
 
+    @Column(name = "is_deleted")
+    private boolean is_deleted;
+
     /*todo:추가할것*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)

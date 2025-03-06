@@ -12,15 +12,17 @@ public class MenuResponseDto {
     private final int menuPrice;
     private final String imageUrl;
     private final MenuType menuStatus;
+    private final Long storeId;
 
 
-    public MenuResponseDto(Long menuId, String menuName, String menuContent, int menuPrice, String imageUrl, MenuType menuStatus) {
+    public MenuResponseDto(Long menuId, String menuName, String menuContent, int menuPrice, String imageUrl, MenuType menuStatus, Long storeId) {
         this.menuId = menuId;
         this.menuName = menuName;
         this.menuContent = menuContent;
         this.menuPrice = menuPrice;
         this.imageUrl = imageUrl;
         this.menuStatus = menuStatus;
+        this.storeId = storeId;
     }
 
     public static MenuResponseDto from(MenuEntity menu) {
@@ -30,7 +32,8 @@ public class MenuResponseDto {
                 menu.getMenuContent(),
                 menu.getMenuPrice(),
                 menu.getMenuImageUrl(),
-                menu.getMenuStatus()
+                menu.getMenuStatus(),
+                menu.getStore().getStoreId()
         );
     }
 }

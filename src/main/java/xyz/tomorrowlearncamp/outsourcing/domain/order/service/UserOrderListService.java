@@ -9,10 +9,10 @@ import xyz.tomorrowlearncamp.outsourcing.domain.order.entity.UserOrderListEntity
 import xyz.tomorrowlearncamp.outsourcing.domain.order.repository.OrderListRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserOrderListService {
 
     private final OrderListRepository orderListRepository;
@@ -20,8 +20,8 @@ public class UserOrderListService {
     @Transactional
     public void saveOrderList(UserOrderEntity order, List<CartEntity> cartItems) {
         List<UserOrderListEntity> orderLists = cartItems.stream()
-                .map(cart -> new UserOrderListEntity(cart.getMenu(), order))
-                .toList();
+                .map(cart -> new UserOrderListEntity(cart.getMenu(), order, cart.getQuantity()))
+                .collect(Collectors.toList());
         orderListRepository.saveAll(orderLists);
     }
 

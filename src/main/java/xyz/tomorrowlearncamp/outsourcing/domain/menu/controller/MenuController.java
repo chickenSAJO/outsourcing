@@ -20,31 +20,33 @@ public class MenuController {
 
     @PostMapping
     public ResponseEntity<AddMenuResponseDto> addMenu(
-            //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
             @Valid @RequestBody AddMenuRequestDto addMenuRequestDto) {
-        AddMenuResponseDto response = menuService.addMenu(addMenuRequestDto);
+        AddMenuResponseDto response = menuService.addMenu(addMenuRequestDto,ownerId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{menuId}")
-    public ResponseEntity<MenuResponseDto> findMenuById(@PathVariable Long menuId) {
-        return ResponseEntity.ok(menuService.findById(menuId));
+    public ResponseEntity<MenuResponseDto> findMenuById(
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @PathVariable Long menuId) {
+        return ResponseEntity.ok(menuService.findById(menuId, ownerId));
     }
 
     @PutMapping("/{menuId}")
     public ResponseEntity<UpdateMenuResponseDto> updateMenu(
-            //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
             @PathVariable Long menuId,
             @Valid @RequestBody UpdateMenuRequestDto updateRequestDto) {
-        return ResponseEntity.ok(menuService.updateMenu(menuId, updateRequestDto));
+        return ResponseEntity.ok(menuService.updateMenu(menuId, updateRequestDto, ownerId));
     }
 
     @DeleteMapping("/{menuId}")
     public void deleteMenuById(
-            //@SessionAttribute(name = "LOGIN_USER") Long userId, todo: 세션 기반 인증 구현
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
             @PathVariable Long menuId
     ) {
-        menuService.deleteMenuById(menuId);
+        menuService.deleteMenuById(menuId, ownerId);
     }
 
 }
