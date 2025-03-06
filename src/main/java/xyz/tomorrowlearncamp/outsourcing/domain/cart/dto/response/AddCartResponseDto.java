@@ -7,15 +7,15 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
 public class AddCartResponseDto {
 
     private final Long id;
-//    private final String storeName;
+    private final String storeName;
     private final String menuName;
     private final int menuPrice;
     private final String menuImageUrl;
     private final int quantity;
 
-    public AddCartResponseDto(Long id/* ,String storeName */, String menuName, int menuPrice, String menuImageUrl, int quantity) {
+    public AddCartResponseDto(Long id ,String storeName, String menuName, int menuPrice, String menuImageUrl, int quantity) {
         this.id = id;
-//        this.storeName = storeName;
+        this.storeName = storeName;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
         this.menuImageUrl = menuImageUrl;
@@ -25,7 +25,7 @@ public class AddCartResponseDto {
     public static AddCartResponseDto from(CartEntity cart) {
         return new AddCartResponseDto(
                 cart.getId(),
-//                cart.getMenu().getStore().getName(),
+                cart.getMenu().getStore().getStoreTitle(),
                 cart.getMenu().getMenuName(),
                 cart.getMenu().getMenuPrice(),
                 cart.getMenu().getMenuImageUrl(),
