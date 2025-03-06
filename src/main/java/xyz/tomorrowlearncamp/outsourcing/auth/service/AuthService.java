@@ -58,5 +58,6 @@ public class AuthService {
         }
 
         session.setAttribute("LOGIN_USER", user.getId());
+        session.setAttribute("AUTH", user.getUsertype().name());
     }
 }
