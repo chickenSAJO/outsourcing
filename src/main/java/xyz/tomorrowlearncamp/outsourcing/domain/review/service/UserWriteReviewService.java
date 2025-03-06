@@ -31,7 +31,6 @@ public class UserWriteReviewService {
     @Transactional
     public void saveReview(
             Long userId,
-            /*@NotBlank @Positive Long orderId,*/
             @NotNull @Positive Long orderId,
             @NotNull @Size(min = 10, max = 100) String contents,
             @NotNull @Min(1) @Max(5) Integer star,
