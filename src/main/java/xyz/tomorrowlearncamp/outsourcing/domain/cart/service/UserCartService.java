@@ -10,7 +10,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.enums.ErrorCartMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.repository.CartRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
-import xyz.tomorrowlearncamp.outsourcing.domain.menu.enums.MenuErrorMessage;
+import xyz.tomorrowlearncamp.outsourcing.domain.menu.enums.ErrorMenuMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
@@ -35,7 +35,7 @@ public class UserCartService {
         UserEntity user = userService.getUserEntity(userId);
 
         MenuEntity menu = menuRepository.findById(dto.getMenuId())
-                .orElseThrow(() -> new InvalidRequestException(MenuErrorMessage.NOT_FOUND_MENU.getErrorMessage()));
+                .orElseThrow(() -> new InvalidRequestException(ErrorMenuMessage.NOT_FOUND_MENU.getErrorMessage()));
 
         CartEntity cart = cartRepository.findByUserIdAndMenuId(userId, dto.getMenuId())
                 .map(existingCart -> {
