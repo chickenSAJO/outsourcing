@@ -1,9 +1,9 @@
 package xyz.tomorrowlearncamp.outsourcing.auth.service;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -13,8 +13,11 @@ import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.SignupRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
+import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
 import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public Long signup(SignupRequestDto dto) {
@@ -50,14 +54,29 @@ public class AuthService {
     }
 
     @Transactional
-    public void login(@Valid LoginRequestDto dto, HttpSession session) {
-        UserEntity user = userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다."));
+    public String login(@Valid LoginRequestDto dto, HttpServletResponse response) {
+        UserEntity user = userRepository.findByEmail(dto.getEmail()).orElseThrow(()-> new InvalidRequestException(AuthValidationMessages.EMAIL_OR_PASSWORD_DIFF_MESSAGE));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new InvalidRequestException("이메일 또는 비밀번호가 일치하지 않습니다.");
+            throw new InvalidRequestException(AuthValidationMessages.EMAIL_OR_PASSWORD_DIFF_MESSAGE);
         }
 
-        session.setAttribute("LOGIN_USER", user.getId());
-        session.setAttribute("AUTH", user.getUsertype().name());
+        String accessToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUsertype());
+        String refreshToken = UUID.randomUUID().toString();
+
+        user.setRefreshToken(refreshToken);
+        userRepository.save(user);
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", refreshCookie.toString());
+
+        return "access token : " + accessToken;
     }
 }

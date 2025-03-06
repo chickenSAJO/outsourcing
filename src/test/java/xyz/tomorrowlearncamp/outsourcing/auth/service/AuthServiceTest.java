@@ -1,16 +1,19 @@
 package xyz.tomorrowlearncamp.outsourcing.auth.service;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletResponse;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.LoginRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.SignupRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
+import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
 import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
@@ -19,6 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +38,13 @@ class AuthServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private HttpSession session;
+    private JwtUtil jwtUtil;
+
+    @Mock
+    private HttpServletResponse response;
+
+    @Mock
+    private HttpServletRequest request;
 
     @Test
     public void 회원가입에_성공한다() {
@@ -96,12 +106,18 @@ class AuthServiceTest {
         given(userRepository.findByEmail(loginRequestDto.getEmail())).willReturn(Optional.of(savedUser));
         given(passwordEncoder.matches(loginRequestDto.getPassword(), savedUser.getPassword())).willReturn(true);
 
+        given(jwtUtil.createToken(savedUser.getId(), savedUser.getEmail(), savedUser.getUsertype())).willReturn("accessToken");
+        savedUser.setRefreshToken("refreshToken");
+
+        response = new MockHttpServletResponse();
+
         // when
-        authService.login(loginRequestDto, session);
+        String accessToken = authService.login(loginRequestDto, response);
 
         // then
-        assertEquals(savedUser.getId(), session.getAttribute("LOGIN_USER"));
-        assertNull(session.getAttribute("LOGIN_USER"));
+        assertEquals("access token : accessToken", accessToken);
+        String setCookieHeader = response.getHeader("Set-Cookie");
+        assertNotNull(setCookieHeader);
     }
 
     @Test
@@ -115,7 +131,7 @@ class AuthServiceTest {
         given(userRepository.findByEmail(loginRequestDto.getEmail())).willReturn(Optional.empty());
 
         // when & then
-        assertThrows(InvalidRequestException.class, () -> authService.login(loginRequestDto, session));
+        assertThrows(InvalidRequestException.class, () -> authService.login(loginRequestDto, response));
     }
 
     @Test
@@ -132,7 +148,7 @@ class AuthServiceTest {
         given(passwordEncoder.matches(loginRequestDto.getPassword(), userEntity.getPassword())).willReturn(false);
 
         // when & then
-        assertThrows(InvalidRequestException.class, () -> authService.login(loginRequestDto, session));
+        assertThrows(InvalidRequestException.class, () -> authService.login(loginRequestDto, response));
     }
 
     private UserEntity makeUserEntity() {
@@ -145,5 +161,25 @@ class AuthServiceTest {
                 "testAddress",
                 Usertype.USER
         );
+    }
+
+    @Test
+    public void 로그아웃에_성공한다() {
+        // given
+        Long userId = 1L;
+        UserEntity userEntity = makeUserEntity();
+        userEntity.setId(userId);
+        userEntity.setRefreshToken("refreshToken");
+
+        given(request.getAttribute("userId")).willReturn(userId);
+        given(userRepository.findById(userId)).willReturn(Optional.of(userEntity));
+
+        // when
+        authService.logout(request, response);
+
+        // then
+        assertNull(userEntity.getRefreshToken());
+        verify(userRepository).save(userEntity);
+
     }
 }
