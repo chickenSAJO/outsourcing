@@ -14,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
             "SELECT new xyz.tomorrowlearncamp.outsourcing.domain.review.dto.response.ReadReviewResponseDto(r, c) " +
                     "FROM ReviewEntity r " +
                     "LEFT JOIN CommentEntity c ON r.id = c.review.id " +
-                    "WHERE r.storeId = :storeId"
+                    "WHERE r.orderEntity.store.storeId = :storeId"
     )
     Page<ReadReviewResponseDto> findAllByStore_Id(@Positive Long storeId, Pageable pageable);
 

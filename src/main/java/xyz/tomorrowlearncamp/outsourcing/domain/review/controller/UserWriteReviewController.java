@@ -22,24 +22,21 @@ public class UserWriteReviewController {
 
     @PostMapping("")
     public ResponseEntity<Void> saveReview(
-            // todo: session 값 추가하기
+            @SessionAttribute(name = "LOGIN_USER") Long userId,
             @Valid @RequestBody WriteReviewRequestDto requestDto
     ) {
-        userWriteReviewService.saveReview(/*Long userId, requestDto.getOrderId(),*/requestDto.getStoreId(), requestDto.getContents(), requestDto.getStar(), requestDto.getReviewUrl());
+        userWriteReviewService.saveReview(userId, requestDto.getOrderId(), requestDto.getContents(), requestDto.getStar(), requestDto.getReviewUrl());
 
-
-        // todo: location 값 추가하기
-        // ResponseEntity.created(location);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReview(
-            // todo: 유저값 추가하기
+            @SessionAttribute(name = "LOGIN_USER") Long userId,
             @NotNull @Positive @RequestParam Long reviewId
     ) {
 
-        userWriteReviewService.deleteReview(/*Long userId*/ reviewId);
+        userWriteReviewService.deleteReview(userId, reviewId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
