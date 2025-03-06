@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.OrderStatusResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.service.OwnerOrderService;
-import xyz.tomorrowlearncamp.outsourcing.global.config.aop.annotation.Order;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.domain.order.annotation.Order;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,45 +19,45 @@ public class OwnerOrderController {
     @Order
     @PatchMapping("/{orderId}/accept")
     public ResponseEntity<OrderStatusResponseDto> acceptOrder(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser owner,
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(ownerOrderService.acceptOrder(ownerId, orderId));
+        return ResponseEntity.ok(ownerOrderService.acceptOrder(owner.getId(), orderId));
     }
 
     @Order
     @PatchMapping("/{orderId}/reject")
     public ResponseEntity<OrderStatusResponseDto> rejectOrder(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser owner,
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(ownerOrderService.rejectOrder(ownerId, orderId));
+        return ResponseEntity.ok(ownerOrderService.rejectOrder(owner.getId(), orderId));
     }
 
     @Order
     @PatchMapping("/{orderId}/cook")
     public ResponseEntity<OrderStatusResponseDto> startCooking(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser owner,
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(ownerOrderService.startCooking(ownerId, orderId));
+        return ResponseEntity.ok(ownerOrderService.startCooking(owner.getId(), orderId));
     }
 
     @Order
     @PatchMapping("/{orderId}/deliver")
     public ResponseEntity<OrderStatusResponseDto> startDelivery(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser owner,
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(ownerOrderService.startDelivery(ownerId, orderId));
+        return ResponseEntity.ok(ownerOrderService.startDelivery(owner.getId(), orderId));
     }
 
     @Order
     @PatchMapping("/{orderId}/complete")
     public ResponseEntity<OrderStatusResponseDto> completeDelivery(
-            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @Auth AuthUser owner,
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(ownerOrderService.completeDelivery(ownerId, orderId));
+        return ResponseEntity.ok(ownerOrderService.completeDelivery(owner.getId(), orderId));
     }
 }

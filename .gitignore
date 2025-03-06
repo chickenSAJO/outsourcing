@@ -42,6 +42,7 @@ out/
 
 
 ### security ###
+.env.*
 .env
 .key
 .pem
