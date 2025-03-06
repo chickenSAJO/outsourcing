@@ -33,7 +33,7 @@ public class OwnerWriteCommentService {
 
         UserEntity user = userService.getUserEntity(userId);
 
-        ReviewEntity review = reviewService.findReview(reviewId);
+        ReviewEntity review = reviewService.findReviewEntity(reviewId);
 
         CommentEntity commentEntity = new CommentEntity(user, review, comment);
 
