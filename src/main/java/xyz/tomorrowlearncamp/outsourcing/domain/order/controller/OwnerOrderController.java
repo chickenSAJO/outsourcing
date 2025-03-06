@@ -3,8 +3,6 @@ package xyz.tomorrowlearncamp.outsourcing.domain.order.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.tomorrowlearncamp.outsourcing.domain.common.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.domain.common.dto.AuthUser;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.OrderStatusResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.service.OwnerOrderService;
 import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
