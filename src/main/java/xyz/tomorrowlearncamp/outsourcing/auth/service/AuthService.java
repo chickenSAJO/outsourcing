@@ -1,8 +1,11 @@
 package xyz.tomorrowlearncamp.outsourcing.auth.service;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,5 +81,28 @@ public class AuthService {
         response.addHeader("Set-Cookie", refreshCookie.toString());
 
         return "access token : " + accessToken;
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        Long userId = Long.valueOf(request.getAttribute("userId").toString());
+        deleteRefreshToken(userId);
+        removeRefreshTokenCookie(response);
+    }
+
+    private void deleteRefreshToken(Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다.(ID : " + userId + ")"));
+
+        user.setRefreshToken(null);
+        userRepository.save(user);
+    }
+
+    private void removeRefreshTokenCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refresh_token", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 }
