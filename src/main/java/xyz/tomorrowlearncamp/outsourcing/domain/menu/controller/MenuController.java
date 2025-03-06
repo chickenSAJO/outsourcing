@@ -20,7 +20,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.service.MenuService;
 public class MenuController {
     private final MenuService menuService;
 
-    @PostMapping
+    @PostMapping("/v1/menus")
     public ResponseEntity<AddMenuResponseDto> addMenu(
             @Auth AuthUser user,
             @Valid @RequestBody AddMenuRequestDto addMenuRequestDto) {

@@ -14,8 +14,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 public class MenuEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "menu_id")
-    private Long menuId;
+    private Long id;
 
     @Column(name = "menu_name", length = 100, nullable = false)
     private String menuName;
@@ -48,8 +47,8 @@ public class MenuEntity {
         this.store = store;
     }
 
-    public MenuEntity(long menuId, String menuName, String menuContent, int menuPrice, String menuImageUrl, MenuType menuStatus, StoreEntity store) {
-        this.menuId = menuId;
+    public MenuEntity(long id, String menuName, String menuContent, int menuPrice, String menuImageUrl, MenuType menuStatus, StoreEntity store) {
+        this.id = id;
         this.menuName = menuName;
         this.menuContent = menuContent;
         this.menuPrice = menuPrice;
