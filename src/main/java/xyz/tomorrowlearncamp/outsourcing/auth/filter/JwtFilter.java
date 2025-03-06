@@ -56,9 +56,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 throw new ExpiredJwtException(null, claims, "JWT 토큰이 만료되었습니다.");
             }
 
-            request.setAttribute("userId", Long.parseLong(claims.getSubject()));
-            request.setAttribute("email", claims.get("email"));
-            request.setAttribute("userType", claims.get("usertype"));
+            request.setAttribute("LOGIN_USER", Long.parseLong(claims.getSubject()));
+            request.setAttribute("EMAIL", claims.get("email"));
+            request.setAttribute("AUTH", claims.get("usertype"));
 
             // 권한에 따른 검증 코드 진행
 
