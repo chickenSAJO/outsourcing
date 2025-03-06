@@ -23,7 +23,6 @@ public class ReviewEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    // todo : Entity 연결하기
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_entity_id")
     private UserOrderEntity orderEntity;

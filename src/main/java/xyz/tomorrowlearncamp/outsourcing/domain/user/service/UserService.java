@@ -38,6 +38,7 @@ public class UserService {
         );
 
         return InfoUserResponseDto.builder()
+                .userId(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .build();
