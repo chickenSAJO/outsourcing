@@ -24,7 +24,7 @@ public class UpdateMenuResponseDto {
 
     public static UpdateMenuResponseDto from(MenuEntity menu) {
         return new UpdateMenuResponseDto(
-                menu.getId(),
+                menu.getMenuId(),
                 menu.getMenuName(),
                 menu.getMenuContent(),
                 menu.getMenuPrice(),
