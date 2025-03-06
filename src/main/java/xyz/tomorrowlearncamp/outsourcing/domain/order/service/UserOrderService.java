@@ -8,6 +8,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.entity.CartEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.enums.ErrorCartMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.service.UserCartService;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.request.PlaceOrderRequestDto;
+import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.OrderStatusResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.PlaceOrderResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.entity.UserOrderEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.enums.ErrorOrderMessage;
@@ -24,7 +25,6 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserOrderService {
 
     private final OrderRepository orderRepository;
@@ -66,7 +66,7 @@ public class UserOrderService {
     }
 
     @Transactional
-    public void cancelOrder(Long userId, Long orderId) {
+    public OrderStatusResponseDto cancelOrder(Long userId, Long orderId) {
         UserOrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new InvalidRequestException(ErrorOrderMessage.ORDER_NOT_FOUND.getMessage()));
 
@@ -79,7 +79,8 @@ public class UserOrderService {
         }
 
         order.updateOrderStatus(OrderStatus.CANCELED);
-        orderRepository.save(order);
+
+        return OrderStatusResponseDto.from(order);
     }
 
     public UserOrderEntity getOrderById(Long orderId) {

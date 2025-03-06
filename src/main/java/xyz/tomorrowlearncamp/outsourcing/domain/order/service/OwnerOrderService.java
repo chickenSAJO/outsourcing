@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.OrderStatusResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.entity.UserOrderEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.enums.ErrorOrderMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.enums.OrderStatus;
-import xyz.tomorrowlearncamp.outsourcing.domain.order.repository.OrderRepository;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.util.Objects;
@@ -17,10 +17,9 @@ import java.util.Objects;
 public class OwnerOrderService {
 
     private final UserOrderService userOrderService;
-    private final OrderRepository orderRepository;
 
     @Transactional
-    public void acceptOrder(Long ownerId, Long orderId) {
+    public OrderStatusResponseDto acceptOrder(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
         if (!Objects.equals(ownerId, order.getStore().getUser().getId())) {
@@ -32,11 +31,12 @@ public class OwnerOrderService {
         }
 
         order.updateOrderStatus(OrderStatus.ACCEPTED);
-        orderRepository.save(order);
+
+        return OrderStatusResponseDto.from(order);
     }
 
     @Transactional
-    public void rejectOrder(Long ownerId, Long orderId) {
+    public OrderStatusResponseDto rejectOrder(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
         if (!Objects.equals(ownerId, order.getStore().getUser().getId())) {
@@ -48,10 +48,12 @@ public class OwnerOrderService {
         }
 
         order.updateOrderStatus(OrderStatus.REJECTED);
+
+        return OrderStatusResponseDto.from(order);
     }
 
     @Transactional
-    public void startCooking(Long ownerId, Long orderId) {
+    public OrderStatusResponseDto startCooking(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
         if (!Objects.equals(ownerId, order.getStore().getUser().getId())) {
@@ -68,10 +70,12 @@ public class OwnerOrderService {
         }
 
         order.updateOrderStatus(OrderStatus.COOKING);
+
+        return OrderStatusResponseDto.from(order);
     }
 
     @Transactional
-    public void startDelivery(Long ownerId, Long orderId) {
+    public OrderStatusResponseDto startDelivery(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
         if (!ObjectUtils.nullSafeEquals(ownerId, order.getStore().getUser().getId())) {
@@ -88,10 +92,12 @@ public class OwnerOrderService {
         }
 
         order.updateOrderStatus(OrderStatus.DELIVERING);
+
+        return OrderStatusResponseDto.from(order);
     }
 
     @Transactional
-    public void completeDelivery(Long ownerId, Long orderId) {
+    public OrderStatusResponseDto completeDelivery(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
         if (!ObjectUtils.nullSafeEquals(ownerId, order.getStore().getUser().getId())) {
@@ -107,6 +113,8 @@ public class OwnerOrderService {
         }
 
         order.updateOrderStatus(OrderStatus.COMPLETED);
+
+        return OrderStatusResponseDto.from(order);
     }
 
 }
