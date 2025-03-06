@@ -10,6 +10,7 @@ import org.hibernate.annotations.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
+@Setter
 @Getter
 @Entity
 @NoArgsConstructor
