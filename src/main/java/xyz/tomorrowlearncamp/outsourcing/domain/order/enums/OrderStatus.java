@@ -11,6 +11,8 @@ public enum OrderStatus {
     CANCELED("주문 취소"),
     ACCEPTED("주문 접수"),
     REJECTED("주문 거절"),
+    COOKING("조리중"),
+    DELIVERING("배달중"),
     COMPLETED("배달 완료");
 
     private final String description;

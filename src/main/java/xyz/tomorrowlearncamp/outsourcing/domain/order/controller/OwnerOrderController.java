@@ -29,4 +29,31 @@ public class OwnerOrderController {
         ownerOrderService.rejectOrder(ownerId, orderId);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{orderId}/cook")
+    public ResponseEntity<Void> startCooking(
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @PathVariable Long orderId
+    ) {
+        ownerOrderService.startCooking(ownerId, orderId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{orderId}/deliver")
+    public ResponseEntity<Void> startDelivery(
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @PathVariable Long orderId
+    ) {
+        ownerOrderService.startDelivery(ownerId, orderId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{orderId}/complete")
+    public ResponseEntity<Void> completeDelivery(
+            @SessionAttribute(name = "LOGIN_USER") Long ownerId,
+            @PathVariable Long orderId
+    ) {
+        ownerOrderService.completeDelivery(ownerId, orderId);
+        return ResponseEntity.noContent().build();
+    }
 }
