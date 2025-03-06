@@ -45,7 +45,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserInfo(Long userId, @NotBlank @Size(min = 1, max = 10) String nickname, @NotNull String address) {
+    public void updateUserInfo(Long userId, String nickname, String address) {
         UserEntity user = userRepository.findById(userId).orElseThrow(
                 () -> new InvalidRequestException(ErrorUserMessage.NOT_FOUND_USER.getErrorMassage())
         );
@@ -54,7 +54,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserPassword(Long userId, @NotNull String oldPassword, @NotNull @Pattern(regexp = RegexpType.PASSWORD) String newPassword) {
+    public void updateUserPassword(Long userId, String oldPassword, String newPassword) {
         UserEntity user = userRepository.findById(userId).orElseThrow(
                 () -> new InvalidRequestException(ErrorUserMessage.NOT_FOUND_USER.getErrorMassage())
         );
@@ -69,7 +69,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(Long userId, @Pattern(regexp = RegexpType.PASSWORD) String password) {
+    public void deleteUser(Long userId, String password) {
 
         UserEntity user = userRepository.findById(userId).orElseThrow(
                 () -> new InvalidRequestException(ErrorUserMessage.NOT_FOUND_USER.getErrorMassage())

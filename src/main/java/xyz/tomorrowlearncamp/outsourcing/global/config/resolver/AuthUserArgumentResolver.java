@@ -7,8 +7,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.AuthException;
 

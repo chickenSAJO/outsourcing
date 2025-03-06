@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
-import xyz.tomorrowlearncamp.outsourcing.domain.comment.service.OwnerWriteCommentService;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.entity.UserOrderEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.service.UserOrderService;
 import xyz.tomorrowlearncamp.outsourcing.domain.review.entity.ReviewEntity;
@@ -20,7 +19,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.exception.UnauthorizedRequestExc
 @Service
 @RequiredArgsConstructor
 @Validated
-public class UserWriteReviewService {
+public class WriteReviewService {
 
     private final ReviewRepository reviewRepository;
 
@@ -31,9 +30,9 @@ public class UserWriteReviewService {
     @Transactional
     public void saveReview(
             Long userId,
-            @NotNull @Positive Long orderId,
-            @NotNull @Size(min = 10, max = 100) String contents,
-            @NotNull @Min(1) @Max(5) Integer star,
+            Long orderId,
+            String contents,
+            Integer star,
             String reviewImageUrl
     ) {
         UserEntity user = userService.getUserEntity(userId);
@@ -51,7 +50,7 @@ public class UserWriteReviewService {
     }
 
     @Transactional
-    public void deleteReview(Long userId, @NotNull @Positive Long reviewId) {
+    public void deleteReview(Long userId, Long reviewId) {
         ReviewEntity deleteReview = reviewRepository.findById(reviewId).orElseThrow(
                 () -> new InvalidRequestException(ErrorReviewMessage.NOT_FOUND_REVIEW.getErrorMessage())
         );

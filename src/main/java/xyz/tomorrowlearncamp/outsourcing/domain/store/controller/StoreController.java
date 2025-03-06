@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.dto.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.service.StoreService;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 
 import java.util.List;
 

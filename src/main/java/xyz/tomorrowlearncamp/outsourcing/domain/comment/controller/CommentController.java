@@ -8,34 +8,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.tomorrowlearncamp.outsourcing.domain.comment.dto.request.WriteCommentRequestDto;
-import xyz.tomorrowlearncamp.outsourcing.domain.comment.service.OwnerWriteCommentService;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
+import xyz.tomorrowlearncamp.outsourcing.domain.comment.service.CommentService;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 
 @RestController
-@RequestMapping("/api/v1/comments")
+@RequestMapping("/api")
 @RequiredArgsConstructor
-public class OwnerWriteCommentController {
+public class CommentController {
 
-    private final OwnerWriteCommentService ownerWriteCommentService;
+    private final CommentService commentService;
 
-    @PostMapping("/{reviewId}")
+    @PostMapping("/v1/comments/{reviewId}")
     public ResponseEntity<Void> saveComment(
             @Auth AuthUser user,
             @NotNull @Positive @PathVariable Long reviewId,
             @Valid @RequestBody WriteCommentRequestDto requestDto
     ) {
-        ownerWriteCommentService.saveComment(user.getId(), reviewId, requestDto.getComment());
+        commentService.saveComment(user.getId(), reviewId, requestDto.getComment());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{commentId}")
+    @DeleteMapping("/v1/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(
             @Auth AuthUser user,
             @NotNull @Positive @PathVariable Long commentId
     ) {
-        ownerWriteCommentService.deleteComment(user.getId(), commentId);
+        commentService.deleteComment(user.getId(), commentId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -8,9 +8,9 @@ import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.request.PlaceOrderRequ
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.OrderStatusResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.dto.response.PlaceOrderResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.order.service.UserOrderService;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Order;
-import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.domain.order.annotation.Order;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 
 @RestController
 @RequiredArgsConstructor

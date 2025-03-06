@@ -8,8 +8,8 @@ import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.request.AddToCartReques
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.AddCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.dto.response.UserCartResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.cart.service.UserCartService;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 
 import java.util.List;
 

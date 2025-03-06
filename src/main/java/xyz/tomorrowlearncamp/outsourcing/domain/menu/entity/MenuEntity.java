@@ -14,6 +14,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
 public class MenuEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "menu_id")
     private Long menuId;
 
     @Column(name = "menu_name", length = 100, nullable = false)

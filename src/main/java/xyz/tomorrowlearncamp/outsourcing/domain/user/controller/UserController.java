@@ -10,18 +10,18 @@ import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.UpdateInfoUserR
 import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.request.UpdatePasswordUserRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.dto.response.InfoUserResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.service.UserService;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
+import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
+import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 import xyz.tomorrowlearncamp.outsourcing.global.etc.RegexpType;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("")
+    @GetMapping("/v1/users")
     public ResponseEntity<InfoUserResponseDto> getUser(
             @Auth AuthUser user
     ) {
@@ -30,7 +30,7 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PatchMapping("")
+    @PatchMapping("/v1/users")
     public ResponseEntity<Void> patchInfoUser(
             @Auth AuthUser user,
             @Valid @RequestBody UpdateInfoUserRequestDto requestDto
@@ -40,7 +40,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping("/password")
+    @PatchMapping("/v1/users/password")
     public ResponseEntity<Void> patchPasswordUser(
             @Auth AuthUser user,
             @Valid @RequestBody UpdatePasswordUserRequestDto requestDto
@@ -50,7 +50,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/v1/users")
     public ResponseEntity<Void> deleteUser(
             @Auth AuthUser user,
             @Pattern(regexp = RegexpType.PASSWORD) @RequestHeader String password

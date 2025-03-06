@@ -16,7 +16,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestExceptio
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserReadReviewService {
+public class ReadReviewService {
 
     private final ReviewRepository reviewRepository;
 
@@ -26,7 +26,7 @@ public class UserReadReviewService {
         );
     }
 
-    public Page<ReadReviewResponseDto> getReviews(@Nullable Long storeId, Integer minStar, Integer maxStar, int page, int size) {
+    public Page<ReadReviewResponseDto> getReviews(Long storeId, Integer minStar, Integer maxStar, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
         Page<ReadReviewResponseDto> result;

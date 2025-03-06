@@ -11,8 +11,6 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.AddMenuRespons
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.UpdateMenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.service.MenuService;
-import xyz.tomorrowlearncamp.outsourcing.global.annotation.Auth;
-import xyz.tomorrowlearncamp.outsourcing.global.entity.AuthUser;
 
 @RestController
 @RequiredArgsConstructor

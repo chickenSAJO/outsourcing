@@ -24,7 +24,7 @@ public class CartEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
-    MenuEntity menu;
+    private MenuEntity menu;
 
     @Column(nullable = false)
     private Integer quantity;
