@@ -13,12 +13,12 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class OwnerOrderService {
 
     private final UserOrderService userOrderService;
     private final OrderRepository orderRepository;
 
+    @Transactional
     public void acceptOrder(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 
@@ -34,6 +34,7 @@ public class OwnerOrderService {
         orderRepository.save(order);
     }
 
+    @Transactional
     public void rejectOrder(Long ownerId, Long orderId) {
         UserOrderEntity order = userOrderService.getOrderById(orderId);
 

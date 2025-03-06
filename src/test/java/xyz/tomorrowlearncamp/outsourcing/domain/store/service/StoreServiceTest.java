@@ -265,7 +265,6 @@ public class StoreServiceTest {
 
 
 
-
     //"가게생성에_성공한다"에 사용
     private StoreEntity makeStoreEntity(UserEntity user) {
         StoreEntity store = new StoreEntity();
