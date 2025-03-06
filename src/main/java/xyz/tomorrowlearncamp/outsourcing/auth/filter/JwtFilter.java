@@ -18,6 +18,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,6 +52,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
 
+            if (claims.getExpiration().before(new Date())) {
+                throw new ExpiredJwtException(null, claims, "JWT 토큰이 만료되었습니다.");
+            }
+
             request.setAttribute("userId", Long.parseLong(claims.getSubject()));
             request.setAttribute("email", claims.get("email"));
             request.setAttribute("userType", claims.get("usertype"));
@@ -59,7 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token. Trying to refresh, 만료된 JWT token 입니다. 재발급을 진행합니다.", e);
+            log.info("Expired JWT token. Trying to refresh, 만료된 JWT token 입니다. 재발급을 진행합니다.", e);
             handleExpiredToken(request, response);
         } catch (SecurityException | MalformedJwtException e) {
             log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.", e);
@@ -74,10 +79,12 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void handleExpiredToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info("handleExpiredToken 실행");
         String refreshToken = getRefreshTokenFromCookie(request);
 
         if (refreshToken == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "리프레쉬 토큰이 없습니다.");
+            return;
         }
 
         UserEntity user = userRepository.findByRefreshToken(refreshToken)
