@@ -12,7 +12,7 @@ import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestExceptio
 @Getter
 @Entity
 @Table(name = "order_entity")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class UserOrderEntity {
 
     @Id
