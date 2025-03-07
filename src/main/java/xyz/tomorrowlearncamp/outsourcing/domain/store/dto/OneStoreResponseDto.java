@@ -1,7 +1,6 @@
 package xyz.tomorrowlearncamp.outsourcing.domain.store.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.dto.response.MenuResponseDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
