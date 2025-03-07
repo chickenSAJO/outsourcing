@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.ServerException;
+import xyz.tomorrowlearncamp.outsourcing.global.util.JwtUtil;
 
 import java.security.Key;
 import java.util.Base64;
