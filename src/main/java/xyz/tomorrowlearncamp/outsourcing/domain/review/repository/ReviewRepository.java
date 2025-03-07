@@ -3,6 +3,7 @@ package xyz.tomorrowlearncamp.outsourcing.domain.review.repository;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.review.dto.response.ReadReviewRe
 import xyz.tomorrowlearncamp.outsourcing.domain.review.entity.ReviewEntity;
 
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
+    @EntityGraph(attributePaths = {"comment_entity"})
     @Query(
             "SELECT new xyz.tomorrowlearncamp.outsourcing.domain.review.dto.response.ReadReviewResponseDto(r, c) " +
                     "FROM ReviewEntity r " +
@@ -18,6 +20,7 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
     )
     Page<ReadReviewResponseDto> findAllByStore_Id(@Positive Long storeId, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"comment_entity"})
     @Query(
             "SELECT new xyz.tomorrowlearncamp.outsourcing.domain.review.dto.response.ReadReviewResponseDto(r, c) " +
                     "FROM ReviewEntity r " +

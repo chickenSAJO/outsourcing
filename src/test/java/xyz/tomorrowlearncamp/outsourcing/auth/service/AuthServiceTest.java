@@ -7,13 +7,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.LoginRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.request.SignupRequestDto;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
-import xyz.tomorrowlearncamp.outsourcing.global.config.JwtUtil;
+import xyz.tomorrowlearncamp.outsourcing.global.util.JwtUtil;
 import xyz.tomorrowlearncamp.outsourcing.global.config.PasswordEncoder;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.InvalidRequestException;
 
@@ -22,7 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -41,10 +42,10 @@ class AuthServiceTest {
     private JwtUtil jwtUtil;
 
     @Mock
-    private HttpServletResponse response;
+    private MockHttpServletResponse response;
 
     @Mock
-    private HttpServletRequest request;
+    private MockHttpServletRequest request;
 
     @Test
     public void 회원가입에_성공한다() {
@@ -171,11 +172,10 @@ class AuthServiceTest {
         userEntity.setId(userId);
         userEntity.setRefreshToken("refreshToken");
 
-        given(request.getAttribute("userId")).willReturn(userId);
         given(userRepository.findById(userId)).willReturn(Optional.of(userEntity));
 
         // when
-        authService.logout(request, response);
+        authService.logout(response, userEntity.getId());
 
         // then
         assertNull(userEntity.getRefreshToken());
