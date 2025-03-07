@@ -1,8 +1,11 @@
 package xyz.tomorrowlearncamp.outsourcing.global.config.resolver;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -11,8 +14,13 @@ import xyz.tomorrowlearncamp.outsourcing.auth.annotaion.Auth;
 import xyz.tomorrowlearncamp.outsourcing.auth.dto.AuthUser;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.enums.Usertype;
 import xyz.tomorrowlearncamp.outsourcing.global.exception.AuthException;
+import xyz.tomorrowlearncamp.outsourcing.global.util.JwtUtil;
 
+@Component
+@RequiredArgsConstructor
 public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private final JwtUtil jwtUtil;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -34,10 +42,18 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
             @Nullable WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        String authorizationHeader = request.getHeader("Authorization");
 
-        Long userId = (Long) request.getAttribute("userId");
-        String email = (String) request.getAttribute("email");
-        Usertype userType = Usertype.valueOf(request.getParameter("userType"));
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new AuthException("Authorization 헤더가 없거나 올바르지 않습니다.");
+        }
+
+        String token = authorizationHeader.substring(7);
+        Claims claims = jwtUtil.extractClaims(token);
+
+        Long userId = Long.parseLong(claims.getSubject());
+        String email = claims.get("email", String.class);
+        Usertype userType = Usertype.valueOf(claims.get("usertype", String.class));
 
         return new AuthUser(userId, email, userType);
     }
