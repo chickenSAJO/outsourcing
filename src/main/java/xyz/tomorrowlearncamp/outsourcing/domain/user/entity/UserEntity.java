@@ -12,7 +12,6 @@ import xyz.tomorrowlearncamp.outsourcing.global.entity.BaseEntity;
 
 @Setter
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
