@@ -13,7 +13,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.enums.ErrorMenuMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.menu.repository.MenuRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.entity.StoreEntity;
-import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.StoreErrorMessage;
+import xyz.tomorrowlearncamp.outsourcing.domain.store.enums.ErrorStoreMessage;
 import xyz.tomorrowlearncamp.outsourcing.domain.store.repository.StoreRepository;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.entity.UserEntity;
 import xyz.tomorrowlearncamp.outsourcing.domain.user.repository.UserRepository;
@@ -32,7 +32,7 @@ public class MenuService {
     public AddMenuResponseDto addMenu(AddMenuRequestDto addMenuRequestDto, Long userId) {
         StoreEntity store = storeRepository.findById(addMenuRequestDto.getStoreId())
                 .orElseThrow(
-                        () -> new InvalidRequestException(StoreErrorMessage.NOT_FOUND_STORE.getErrorMessage())
+                        () -> new InvalidRequestException(ErrorStoreMessage.NOT_FOUND_STORE.getErrorMessage())
                 );
 
         // 가게 소유권 검증 추가
