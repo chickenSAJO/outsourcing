@@ -90,7 +90,7 @@ class MenuServiceTest {
         AddMenuResponseDto result = menuService.addMenu(addMenuRequestDto, ownerId);
 
         // then
-        assertEquals(1L, result.getMenuId());
+        assertEquals(1L, result.getId());
     }
 
 
@@ -125,7 +125,7 @@ class MenuServiceTest {
         MenuResponseDto result = menuService.findById(menuId, ownerId);
 
         //then
-        assertEquals(menuId, result.getMenuId());
+        assertEquals(menuId, result.getId());
         assertEquals("짬뽕", result.getMenuName());
         assertEquals("불맛 짬뽕", result.getMenuContent());
         assertEquals(8000, result.getMenuPrice());
@@ -213,7 +213,7 @@ class MenuServiceTest {
         UpdateMenuResponseDto result = menuService.updateMenu(menuId, updateMenuRequestDto, ownerId);
 
         // then
-        assertEquals(menuId, result.getMenuId());
+        assertEquals(menuId, result.getId());
         assertEquals("짜장면", result.getMenuName());
         assertEquals("맛있는 짜장면", result.getMenuContent());
         assertEquals(7000, result.getMenuPrice());

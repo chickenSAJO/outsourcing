@@ -6,7 +6,7 @@ import xyz.tomorrowlearncamp.outsourcing.domain.menu.entity.MenuType;
 
 @Getter
 public class MenuResponseDto {
-    private final Long menuId;
+    private final Long id;
     private final String menuName;
     private final String menuContent;
     private final int menuPrice;
@@ -15,8 +15,8 @@ public class MenuResponseDto {
     private final Long storeId;
 
 
-    public MenuResponseDto(Long menuId, String menuName, String menuContent, int menuPrice, String imageUrl, MenuType menuStatus, Long storeId) {
-        this.menuId = menuId;
+    public MenuResponseDto(Long id, String menuName, String menuContent, int menuPrice, String imageUrl, MenuType menuStatus, Long storeId) {
+        this.id = id;
         this.menuName = menuName;
         this.menuContent = menuContent;
         this.menuPrice = menuPrice;
@@ -27,7 +27,7 @@ public class MenuResponseDto {
 
     public static MenuResponseDto from(MenuEntity menu) {
         return new MenuResponseDto(
-                menu.getMenuId(),
+                menu.getId(),
                 menu.getMenuName(),
                 menu.getMenuContent(),
                 menu.getMenuPrice(),
