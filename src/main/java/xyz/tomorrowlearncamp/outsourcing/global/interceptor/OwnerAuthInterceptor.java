@@ -13,7 +13,7 @@ public class OwnerAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String auth = request.getAttribute("AUTH").toString();
+        String auth = request.getAttribute("usertype").toString();
 
         // 권한이 OWNER가 아닌 경우
         if (!Usertype.OWNER.name().equals(auth)) {
