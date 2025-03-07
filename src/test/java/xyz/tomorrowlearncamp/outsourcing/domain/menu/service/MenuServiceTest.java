@@ -74,12 +74,12 @@ class MenuServiceTest {
         store.setUser(user);
         store.setStoreId(storeId);
         MenuEntity savedMenu = new MenuEntity(1L, "짬뽕", "불맛 짬뽕", 8000, "", MenuType.ACTIVE, store);
-        ReflectionTestUtils.setField(savedMenu, "menuId", menuId);
+        ReflectionTestUtils.setField(savedMenu, "id", menuId);
 
         given(menuRepository.save(any(MenuEntity.class)))
                 .willAnswer(invocation -> {
                     MenuEntity menu = invocation.getArgument(0);
-                    ReflectionTestUtils.setField(menu, "menuId", 1L); // ReflectionTestUtils 사용
+                    ReflectionTestUtils.setField(menu, "id", 1L); // ReflectionTestUtils 사용
                     return menu;
                 });
 
